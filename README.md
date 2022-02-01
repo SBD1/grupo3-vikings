@@ -6,7 +6,7 @@
 | 170013693 | João Rossi |
 | - | João Matheus |
 | - | João Gabriel Antunes |
-| - | Arthur Aguiar |
+| 16/0112974 | Arthur Rodrigues |
 | - | MArcelo Magalhães|
 
 ## Sobre
