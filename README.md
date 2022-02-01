@@ -3,7 +3,7 @@
 ## Alunos
 |Matrícula | Aluno |
 | -- | -- |
-| 170013693 | João Rossi |
+| 17/0013693 | João Rossi |
 | - | João Matheus |
 | - | João Gabriel Antunes |
 | 16/0112974 | Arthur Rodrigues |
