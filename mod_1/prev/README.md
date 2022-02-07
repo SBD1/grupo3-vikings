@@ -6,7 +6,7 @@
 | ------ | ---------- | ----- |
 | [0.1](./vikings_db-v0.1.png) | | |
 | [0.2](./vikings_db-v0.2.png) | Adiciona entidade Personagem e relacionadas | [J-Matheus](https://github.com/J-Matheus) |
-| [0.3](./vikings_db-v0.3.png) | | |
+| [0.3](./vikings_db-v0.3.png) | Adiciona entidade NPC com os respectivos relacionamentos  | [João Gabriel A](https://github.com/flyerjohn) |
 | [0.4](./vikings_db-v0.4.png) | | |
 | [0.5](./vikings_db-v0.5.png) | | |
 | [0.6](./vikings_db-v0.6.png) | | |
