@@ -5,7 +5,7 @@
 | -- | -- |
 | 17/0013693 | João Rossi |
 | - | João Matheus |
-| - | João Gabriel Antunes |
+| 17/0013651 | João Gabriel Antunes |
 | 16/0112974 | Arthur Rodrigues |
 | - | MArcelo Magalhães|
 
