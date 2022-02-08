@@ -8,7 +8,7 @@
 | 17/0013812 | João Matheus |
 | 17/0013651 | João Gabriel Antunes |
 | 16/0112974 | Arthur Rodrigues |
-| - | Marcelo Magalhães |
+| 19/0047348 | Marcelo Magalhães |
 
 ## Sobre
 
