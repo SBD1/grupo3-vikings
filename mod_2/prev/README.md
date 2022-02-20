@@ -13,3 +13,5 @@
 | [0.7](./vikings_MRel_v0.7.drawio.png) | Mapeando a entidade barco | [Arthur Rodrigues](https://github.com/arthurarp) |
 | [0.8](./vikings_MRel_v0.8.png) | Adicionando os devidos relacionamentos às entidades Barco, Fala e NPC | [João Gabriel Antunes](https://github.com/flyerjohn) |
 | [0.9](./vikings_MRel_v0.9.png) | Adicionando os devidos relacionamentos às entidades Armadura, Monstro e Tipo | [João Gabriel Antunes](https://github.com/flyerjohn) |
+| [0.10](./vikings_MRel_v0.10.png) |  |  |
+| [0.11](./vikings_MRel_v0.9.png) | Mapeamento ternário de entidade, habilidades e viking | [João Rossi](https://github.com/bielrossi15) |
