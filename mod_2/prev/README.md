@@ -10,3 +10,4 @@
 | [0.4](./vikings_MRel-v0.4.png) | | [João Matheus](https://github.com/J-Matheus) |
 | [0.5](./vikings_MRel-v0.5.png) | | [João Matheus](https://github.com/J-Matheus) |
 | [0.6](./vikings_MRel-v0.6.png) | Mapeada a generalização de entidade, nível e viking e habilidades e entidade | [João Rossi](https://github.com/bielrossi15) |
+| [0.7](./vikings_MRel_v0.7.drawio.png) | Mapeando a entidade barco | [Arthur Rodrigues](https://github.com/arthurarp) |
