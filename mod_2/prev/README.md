@@ -15,3 +15,5 @@
 | [0.9](./vikings_MRel_v0.9.png) | Adicionando os devidos relacionamentos às entidades Armadura, Monstro e Tipo | [João Gabriel Antunes](https://github.com/flyerjohn) |
 | [0.10](./vikings_MRel_v0.10.png) |  |  |
 | [0.11](./vikings_MRel_v0.9.png) | Mapeamento ternário de entidade, habilidades e viking | [João Rossi](https://github.com/bielrossi15) |
+| [0.12](./vikings_MRel_v0.12.drawio.png) | Mapeando a entidade barco | |
+| [0.13](./vikings_MRel_v0.13.png) | Mapeando a instancias dos itens à mochila | [Arthur Rodrigues](https://github.com/arthurarp) |
