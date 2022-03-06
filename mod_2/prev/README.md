@@ -6,9 +6,9 @@
 | ------ | ---------- | ----- |
 | [0.1](./vikings_MRel-v0.1.png) | Transcrição das entidades e atributos | [João Rossi](https://github.com/bielrossi15) |
 | [0.2](./vikings_MRel-v0.2.png) | Mapeamento do mapa, área e quadrados | [João Rossi](https://github.com/bielrossi15) |
-| [0.3](./vikings_MRel-v0.3.png) | | [João Matheus](https://github.com/J-Matheus) |
-| [0.4](./vikings_MRel-v0.4.png) | | [João Matheus](https://github.com/J-Matheus) |
-| [0.5](./vikings_MRel-v0.5.png) | | [João Matheus](https://github.com/J-Matheus) |
+| [0.3](./vikings_MRel-v0.3.png) | Mapeamento da generalização de personagem, da vida e dos atributos de luta | [João Matheus](https://github.com/J-Matheus) |
+| [0.4](./vikings_MRel-v0.4.png) | Mapeamento de viking e seus relacionamentos | [João Matheus](https://github.com/J-Matheus) |
+| [0.5](./vikings_MRel-v0.5.png) | Mapeamento da mochila, do tipo de mochila e dos itens da mochila | [João Matheus](https://github.com/J-Matheus) |
 | [0.6](./vikings_MRel-v0.6.png) | Mapeada a generalização de entidade, nível e viking e habilidades e entidade | [João Rossi](https://github.com/bielrossi15) |
 | [0.7](./vikings_MRel-v0.7.png) | Mapeando a entidade barco | [Arthur Rodrigues](https://github.com/arthurarp) |
 | [0.8](./vikings_MRel-v0.8.png) | Adicionando os devidos relacionamentos às entidades Barco, Fala e NPC | [João Gabriel Antunes](https://github.com/flyerjohn) |
