@@ -9,5 +9,6 @@ Visto que não existem atributos compostos e os atributos são sempre dependente
 ## Terceira Forma Normal
 Conforme a Terceira Forma Normal, as entidades e seus respectivos tipos foram desenhados justamente para não conflitar com nenhuma objeção das primeiras e segundas formas normais, e respeitar as particularidades da terceira forma normal, a partir da [versão 0.3](./prev/vikings_MRel_Normalizado-v0.3.png) do Modelo Relacional Normalizado.
 ## Forma Normal de Boyce-Codd
+Analisando o modelo relacional, é possível perceber que todo atributo não primo depende funcionalmente da chave primária nas tabelas, com isso concluímos que se enquadra na forma normal de boyce-codd.
   
 ## Quarta Forma Normal
