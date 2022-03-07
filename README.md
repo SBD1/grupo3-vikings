@@ -19,3 +19,5 @@ Repositório direcionado para o desenvolvimento do projeto da disciplina. Será 
 | Módulo | Entrega | Desenvolvimento |
 | ------ | ------- | --------------- |
 | 1 | [Entrega](./mod_1/README.md) | [Versões Prévias](./mod_1/prev/README.md) |
+| 2 | [Entrega](./mod_2/README.md) | [Versões Prévias](./mod_2/prev/README.md) |
+| 3 | [Entrega](./mod_3/README.md) | [Versões Prévias](./mod_3/prev/README.md) |
