@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db_postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - viking_volume:/var/lib/postgresql/data 
+    networks:
+      - vikingNet
+
+networks:
+  vikingNet:
+
+volumes:
+  viking_volume:
