@@ -9,44 +9,6 @@ CREATE TABLE Personagem (
   CONSTRAINT personagem_pk PRIMARY KEY (Nome)
 );
 
-CREATE TABLE Viking (
-  Nome VARCHAR(100) NOT NULL,
-  Experiencia INTEGER NOT NULL,
-  Mochila INTEGER NOT NULL,
-  MaoEsquerda INTEGER,
-  MaoDireita INTEGER,
-  MaosOcupadas BOOLEAN NOT NULL,
-  Quadrado VARCHAR(10) NOT NULL,
-  Nivel INTEGER NOT NULL,
-
-  -- Atributos_de_Luta
-  Ataque INTEGER NOT NULL,
-  Defesa INTEGER NOT NULL,
-  Roubo_de_Vida INTEGER NULL,
-  Agilidade INTEGER NOT NULL,
-  Velocidade INTEGER NOT NULL,
-
-  -- Vida
-  Nivel_de_Vida INTEGER NOT NULL,
-  Vida_Restante INTEGER NOT NULL,
-
-  CONSTRAINT viking_pk PRIMARY KEY (Nome),
-
-  CONSTRAINT viking_mochila_fk FOREIGN KEY (Mochila) REFERENCES Mochila (Numero) ON DELETE CASCADE,
-  CONSTRAINT viking_mao_esquerda_fk FOREIGN KEY (MaoEsquerda) REFERENCES InstanciaItem (Id) ON DELETE CASCADE,
-  CONSTRAINT viking_mao_direita_fk FOREIGN KEY (MaoDireita) REFERENCES InstanciaItem (Id) ON DELETE CASCADE,
-  CONSTRAINT viking_quadrado_fk FOREIGN KEY (Quadrado) REFERENCES Quadrado (Coordenadas) ON DELETE CASCADE,
-  CONSTRAINT viking_nivel_fk FOREIGN KEY (Nivel) REFERENCES Nivel (Valor) ON DELETE CASCADE,
-
-  CONSTRAINT viking_ck_ataque CHECK(Ataque > 0),
-  CONSTRAINT viking_ck_defesa CHECK(Defesa > 0),
-  CONSTRAINT viking_ck_roubo_de_vida CHECK(Roubo_de_Vida > 0),
-  CONSTRAINT viking_ck_agilidade CHECK(Agilidade > 0),
-  CONSTRAINT viking_ck_velocidade CHECK(Velocidade > 0),
-  CONSTRAINT viking_ck_nivel_de_vida CHECK(Nivel_de_Vida >= 0),
-  CONSTRAINT viking_ck_vida_restante CHECK(Vida_Restante >= 0)
-);
-
 CREATE TABLE Tipo_Mochila (
   Nome VARCHAR(20) NOT NULL,
   Capacidade INTEGER NOT NULL,
@@ -62,5 +24,47 @@ CREATE TABLE Mochila (
   VolumeOcupado INTEGER NOT NULL DEFAULT 0,
 
   CONSTRAINT mochila_pk PRIMARY KEY (Numero),
-  CONSTRAINT mochila_tipo_fk FOREIGN KEY (Tipo) REFERENCES Tipo_Mochila (Nome) ON DELETE CASCADE
+  CONSTRAINT mochila_tipo_fk FOREIGN KEY (Tipo) REFERENCES Tipo_Mochila (Nome) ON DELETE CASCADE,
+  CONSTRAINT tipo_mochila_ck_volume_ocupado CHECK(VolumeOcupado >= 0)
+);
+
+CREATE TABLE Viking (
+  Nome VARCHAR(100) NOT NULL,
+  Experiencia INTEGER NOT NULL,
+  
+  Mochila INTEGER,
+  
+  -- MaoEsquerda INTEGER,
+  -- MaoDireita INTEGER,
+  -- MaosOcupadas BOOLEAN NOT NULL,
+  -- Quadrado VARCHAR(10) NOT NULL,
+  -- Nivel INTEGER NOT NULL,
+
+  -- Atributos_de_Luta
+  Ataque INTEGER NOT NULL,
+  Defesa INTEGER NOT NULL,
+  Roubo_de_Vida INTEGER NULL,
+  Agilidade INTEGER NOT NULL,
+  Velocidade INTEGER NOT NULL,
+
+  -- Vida
+  Nivel_de_Vida INTEGER NOT NULL,
+  Vida_Restante INTEGER NOT NULL,
+
+  CONSTRAINT viking_pk PRIMARY KEY (Nome),
+  CONSTRAINT viking_nome_fk FOREIGN KEY (Nome) REFERENCES Personagem (Nome) ON DELETE CASCADE,
+  CONSTRAINT viking_mochila_fk FOREIGN KEY (Mochila) REFERENCES Mochila (Numero) ON DELETE SET NULL,
+
+  -- CONSTRAINT viking_mao_esquerda_fk FOREIGN KEY (MaoEsquerda) REFERENCES InstanciaItem (Id) ON DELETE CASCADE,
+  -- CONSTRAINT viking_mao_direita_fk FOREIGN KEY (MaoDireita) REFERENCES InstanciaItem (Id) ON DELETE CASCADE,
+  -- CONSTRAINT viking_quadrado_fk FOREIGN KEY (Quadrado) REFERENCES Quadrado (Coordenadas) ON DELETE CASCADE,
+  -- CONSTRAINT viking_nivel_fk FOREIGN KEY (Nivel) REFERENCES Nivel (Valor) ON DELETE CASCADE,
+
+  CONSTRAINT viking_ck_ataque CHECK(Ataque > 0),
+  CONSTRAINT viking_ck_defesa CHECK(Defesa > 0),
+  CONSTRAINT viking_ck_roubo_de_vida CHECK(Roubo_de_Vida > 0),
+  CONSTRAINT viking_ck_agilidade CHECK(Agilidade > 0),
+  CONSTRAINT viking_ck_velocidade CHECK(Velocidade > 0),
+  CONSTRAINT viking_ck_nivel_de_vida CHECK(Nivel_de_Vida >= 0),
+  CONSTRAINT viking_ck_vida_restante CHECK(Vida_Restante >= 0)
 );
