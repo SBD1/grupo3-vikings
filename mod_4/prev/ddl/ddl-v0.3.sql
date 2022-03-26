@@ -1,10 +1,10 @@
 CREATE DOMAIN PERSONAGEM_TYPE
-    AS CHAR(6)
-    CHECK (VALUE IN ('viking', 'monstro'));
+  AS CHAR(6)
+  CHECK (VALUE IN ('viking', 'monstro'));
 
 CREATE TABLE Personagem (
   Nome VARCHAR(100) NOT NULL,
-  Tipo PERSONAGEM_TYPE NOT NULL
+  Tipo PERSONAGEM_TYPE NOT NULL,
 
   CONSTRAINT personagem_pk PRIMARY KEY (Nome)
 );
@@ -19,12 +19,32 @@ CREATE TABLE Viking (
   Quadrado VARCHAR(10) NOT NULL,
   Nivel INTEGER NOT NULL,
 
+  -- Atributos_de_Luta
+  Ataque INTEGER NOT NULL,
+  Defesa INTEGER NOT NULL,
+  Roubo_de_Vida INTEGER NULL,
+  Agilidade INTEGER NOT NULL,
+  Velocidade INTEGER NOT NULL,
+
+  -- Vida
+  Nivel_de_Vida INTEGER NOT NULL,
+  Vida_Restante INTEGER NOT NULL,
+
   CONSTRAINT viking_pk PRIMARY KEY (Nome),
+
   CONSTRAINT viking_mochila_fk FOREIGN KEY (Mochila) REFERENCES Mochila (Numero) ON DELETE CASCADE,
   CONSTRAINT viking_mao_esquerda_fk FOREIGN KEY (MaoEsquerda) REFERENCES InstanciaItem (Id) ON DELETE CASCADE,
   CONSTRAINT viking_mao_direita_fk FOREIGN KEY (MaoDireita) REFERENCES InstanciaItem (Id) ON DELETE CASCADE,
   CONSTRAINT viking_quadrado_fk FOREIGN KEY (Quadrado) REFERENCES Quadrado (Coordenadas) ON DELETE CASCADE,
-  CONSTRAINT viking_nivel_fk FOREIGN KEY (Nivel) REFERENCES Nivel (Valor) ON DELETE CASCADE
+  CONSTRAINT viking_nivel_fk FOREIGN KEY (Nivel) REFERENCES Nivel (Valor) ON DELETE CASCADE,
+
+  CONSTRAINT viking_ck_ataque CHECK(Ataque > 0),
+  CONSTRAINT viking_ck_defesa CHECK(Defesa > 0),
+  CONSTRAINT viking_ck_roubo_de_vida CHECK(Roubo_de_Vida > 0),
+  CONSTRAINT viking_ck_agilidade CHECK(Agilidade > 0),
+  CONSTRAINT viking_ck_velocidade CHECK(Velocidade > 0),
+  CONSTRAINT viking_ck_nivel_de_vida CHECK(Nivel_de_Vida >= 0),
+  CONSTRAINT viking_ck_vida_restante CHECK(Vida_Restante >= 0)
 );
 
 CREATE TABLE Tipo_Mochila (
