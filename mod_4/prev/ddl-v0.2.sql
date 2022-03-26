@@ -6,7 +6,6 @@ CREATE TABLE Personagem (
   CONSTRAINT personagem_ck_tipo CHECK(Tipo IN ('viking', 'monstro'))
 );
 
-
 CREATE TABLE Viking (
   Nome VARCHAR(100) NOT NULL,
   Experiencia INTEGER NOT NULL,
@@ -22,5 +21,23 @@ CREATE TABLE Viking (
   CONSTRAINT viking_mao_esquerda_fk FOREIGN KEY (MaoEsquerda) REFERENCES InstanciaItem (Id) ON DELETE CASCADE,
   CONSTRAINT viking_mao_direita_fk FOREIGN KEY (MaoDireita) REFERENCES InstanciaItem (Id) ON DELETE CASCADE,
   CONSTRAINT viking_quadrado_fk FOREIGN KEY (Quadrado) REFERENCES Quadrado (Coordenadas) ON DELETE CASCADE,
-  CONSTRAINT viking_nivel_fk FOREIGN KEY (Nivel) REFERENCES Nivel (Valor) ON DELETE CASCADE,
+  CONSTRAINT viking_nivel_fk FOREIGN KEY (Nivel) REFERENCES Nivel (Valor) ON DELETE CASCADE
+);
+
+CREATE TABLE Tipo_Mochila (
+  Nome VARCHAR(20) NOT NULL,
+  Capacidade INTEGER NOT NULL,
+
+  CONSTRAINT tipo_mochila_pk PRIMARY KEY (Nome),
+  CONSTRAINT tipo_mochila_uq UNIQUE (Capacidade),
+  CONSTRAINT tipo_mochila_ck_capacidade CHECK(Capacidade > 0)
+);
+
+CREATE TABLE Mochila (
+  Numero INTEGER NOT NULL,
+  Tipo VARCHAR(20) NOT NULL,
+  VolumeOcupado INTEGER NOT NULL DEFAULT 0,
+
+  CONSTRAINT mochila_pk PRIMARY KEY (Numero),
+  CONSTRAINT mochila_tipo_fk FOREIGN KEY (Tipo) REFERENCES Tipo_Mochila (Nome) ON DELETE CASCADE
 );
