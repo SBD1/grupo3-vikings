@@ -284,3 +284,64 @@ CREATE TABLE Armadura (
   CONSTRAINT id_armadura_fk FOREIGN KEY(Id) REFERENCES Especializacao_do_item(Id)
 );
 
+CREATE TABLE Habilidade (
+    Nome VARCHAR(100) NOT NULL,
+    Multiplicador_agilidade INTEGER NOT NULL,
+    Multiplicador_ataque INTEGER NOT NULL,
+    Multiplicador_defesa INTEGER NOT NULL,
+    Multiplicador_roubo_de_vida INTEGER NOT NULL,
+    Descricao VARCHAR(300) NOT NULL,
+    
+    CONSTRAINT habilidade_pk PRIMARY KEY(Nome)
+);
+
+CREATE TABLE Recebe (
+    Nome_habilidade VARCHAR(100) NOT NULL,
+    Nome_viking VARCHAR(100) NOT NULL,
+    Nome_entidade VARCHAR(100) NOT NULL,
+    
+    CONSTRAINT recebe_pk PRIMARY KEY(Nome_habilidade),
+    CONSTRAINT habilidade_nome_fk FOREIGN KEY(Nome_habilidade) REFERENCES Habilidade(Nome),
+    CONSTRAINT viking_nome_fk FOREIGN KEY(Nome_viking) REFERENCES Habilidade(Nome),
+    CONSTRAINT entidade_nome_fk FOREIGN KEY(Nome_entidade) REFERENCES Entidade(Nome)
+);
+
+CREATE TABLE Entidade (
+    Nome VARCHAR(100) NOT NULL,
+    Descricao VARCHAR(300) NOT NULL,
+    Tipo VARCHAR(100) NOT NULL,
+    
+    CONSTRAINT entidade_pk PRIMARY KEY(Nome)
+);
+
+CREATE TABLE Aesir (
+    Id VARCHAR(100) NOT NULL,
+    TipoEntidade VARCHAR(100) NOT NULL,
+    Bonus_ataque INTEGER NOT NULL,
+    Bonus_agilidade INTEGER NOT NULL,
+    
+    CONSTRAINT aesir_pk PRIMARY KEY(Id),
+    CONSTRAINT aesir_entidade_fk FOREIGN KEY(Id) REFERENCES Entidade(Nome)
+);
+
+CREATE TABLE Vanir (
+    Id VARCHAR(100) NOT NULL,
+    TipoEntidade VARCHAR(100) NOT NULL,
+    Bonus_defesa INTEGER NOT NULL,
+    Bonus_agilidade INTEGER NOT NULL,
+    
+    CONSTRAINT vanir_pk PRIMARY KEY(Id),
+    CONSTRAINT vanir_entidade_fk FOREIGN KEY(Id) REFERENCES Entidade(Nome)
+);
+
+CREATE TABLE Jotun (
+    Id VARCHAR(100) NOT NULL,
+    TipoEntidade VARCHAR(100) NOT NULL,
+    Bonus_ataque INTEGER NOT NULL,
+    Bonus_defesa INTEGER NOT NULL,
+    Bonus_agilidade INTEGER NOT NULL,
+    Maldicao INTEGER NOT NULL,
+    
+    CONSTRAINT jotun_pk PRIMARY KEY(Id),
+    CONSTRAINT jotun_entidade_fk FOREIGN KEY(Id) REFERENCES Entidade(Nome)
+);
