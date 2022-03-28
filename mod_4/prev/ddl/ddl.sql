@@ -88,6 +88,15 @@ CREATE TABLE Instancia_item(
     CONSTRAINT id_item_instancia_item_fk FOREIGN KEY(Id_item) REFERENCES Especializacao_do_item(Id)
 );
 
+CREATE TABLE Item_Mochila (
+  Numero_Mochila INTEGER NOT NULL,
+  Id_Item INTEGER NOT NULL,
+
+  CONSTRAINT item_mochila_pk PRIMARY KEY (Numero_Mochila, Id_Item),
+  CONSTRAINT item_mochila_numero_mochila_fk FOREIGN KEY (Numero_Mochila) REFERENCES Mochila (Numero) ON DELETE CASCADE,
+  CONSTRAINT item_mochila_id_item_fk FOREIGN KEY (Id_Item) REFERENCES Instancia_item (Id) ON DELETE CASCADE
+);
+
 CREATE TABLE Viking (
   Nome VARCHAR(100) NOT NULL,
   

@@ -64,6 +64,13 @@ INSERT INTO Viking (
     Nome, Experiencia, Nivel, Mochila, MaoEsquerda, MaosOcupadas, Quadrado, Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade, Nivel_de_Vida, Vida_Restante
 ) VALUES ('joao', 2500, 3, 3, 5, false, '2,2', 16, 17, 18, 19, 20, 21, 2);
 
+-- Adicionando Tuplas de Item de Mochila
+
+INSERT INTO Item_Mochila VALUES (1, 3);
+INSERT INTO Item_Mochila VALUES (1, 4);
+INSERT INTO Item_Mochila VALUES (2, 5);
+INSERT INTO Item_Mochila VALUES (3, 3);
+
 -- Adicionando Tuplas de Barco
 
 INSERT INTO Barco VALUES ('knarr', 15, 10, 100, 80);
