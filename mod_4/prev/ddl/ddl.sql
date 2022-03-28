@@ -197,6 +197,90 @@ CREATE TABLE Monstro (
   CONSTRAINT monstro_ck_vida_restante CHECK(Vida_Restante >= 0)
 );
 
+CREATE DOMAIN ITEM_TIPO
+  AS CHAR(8)
+  CHECK (VALUE IN ('arma', 'comida', 'pocao', 'armadura'));
+
+CREATE DOMAIN ITEM_RARIDADE
+  AS CHAR(8)
+  CHECK (VALUE IN ('comum', 'incomum', 'raro', 'epico', 'lendario', 'mitico'));
 
 
+CREATE TABLE Instancia_item(
+    Id INTEGER NOT NULL,
+    Id_item INTEGER NOT NULL,
+
+    CONSTRAINT instancia_item_pk PRIMARY KEY(Id),
+    CONSTRAINT id_item_instancia_item_fk FOREIGN KEY(id_item) REFERENCES Especializacao_do_item(id_item)
+);
+
+CREATE TABLE Especializacao_do_item(
+    Id INTEGER NOT NULL,
+    Tipo ITEM_TIPO NOT NULL,
+
+    CONSTRAINT especializacao_do_item_pk PRIMARY KEY(Id)
+);
+
+CREATE TABLE Arma (
+    Id INTEGER NOT NULL,
+    Nome VARCHAR(100) NOT NULL,
+    Tipo ITEM_TIPO NOT NULL,
+    Descricao VARCHAR(300) NOT NULL,
+    Peso INTEGER NOT NULL,
+    Raridade ITEM_RARIDADE NOT NULL,
+    Consumivel BOOLEAN,
+    Valor_de_ataque INTEGER NOT NULL,
+    Valor_de_defesa INTEGER NOT NULL,
+    Valor_de_agilidade INTEGER NOT NULL,
+
+    CONSTRAINT arma_pk PRIMARY KEY(Id),
+    CONSTRAINT id_arma_fk FOREIGN KEY(Id) REFERENCES Especializacao_do_item(Id)
+);
+
+CREATE TABLE Comida (
+    Id INTEGER NOT NULL,
+    Nome VARCHAR(100) NOT NULL,
+    Tipo ITEM_TIPO NOT NULL,
+    Descricao VARCHAR(300) NOT NULL,
+    Peso INTEGER NOT NULL,
+    Raridade ITEM_RARIDADE NOT NULL,
+    Consumivel BOOLEAN,
+    Valor_de_cura INTEGER NOT NULL,
+
+    CONSTRAINT comida_pk PRIMARY KEY(Id),
+    CONSTRAINT id_comida_fk FOREIGN KEY(Id) REFERENCES Especializacao_do_item(Id)
+);
+
+
+CREATE TABLE Pocao (
+  Id INTEGER NOT NULL,
+  Nome VARCHAR(100) NOT NULL,
+  Tipo ITEM_TIPO NOT NULL,
+  Descricao VARCHAR(300) NOT NULL,
+  Peso INTEGER NOT NULL,
+  Raridade ITEM_RARIDADE NOT NULL,
+  Consumivel BOOLEAN,
+  Bonus INTEGER NOT NULL,
+  Duracao INTEGER NOT NULL,
+
+  CONSTRAINT pocao_pk PRIMARY KEY(Id),
+  CONSTRAINT id_pocao_fk FOREIGN KEY(Id) REFERENCES Especializacao_do_item(Id)
+);
+
+
+CREATE TABLE Armadura (
+  Id INTEGER NOT NULL,
+  Nome VARCHAR(100) NOT NULL,
+  Tipo ITEM_TIPO NOT NULL,
+  Descricao VARCHAR(300) NOT NULL,
+  Peso INTEGER NOT NULL,
+  Raridade ITEM_RARIDADE NOT NULL,
+  Consumivel BOOLEAN,
+  Valor_de_defesa INTEGER NOT NULL,
+  Valor_de_agilidade INTEGER NOT NULL,
+
+
+  CONSTRAINT armadura_pk PRIMARY KEY(Id),
+  CONSTRAINT id_armadura_fk FOREIGN KEY(Id) REFERENCES Especializacao_do_item(Id)
+);
 
