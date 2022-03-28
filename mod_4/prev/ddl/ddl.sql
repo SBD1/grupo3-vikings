@@ -83,11 +83,11 @@ CREATE TABLE Especializacao_do_item(
 CREATE TABLE Instancia_item(
     Id INTEGER NOT NULL,
     Id_item INTEGER NOT NULL,
-    Quadrado VARCHAR(9) NOT NULL,
+    Quadrado VARCHAR(9),
 
     CONSTRAINT instancia_item_pk PRIMARY KEY(Id),
     CONSTRAINT id_item_instancia_item_fk FOREIGN KEY(Id_item) REFERENCES Especializacao_do_item(Id),
-    CONSTRAINT viking_quadrado_fk FOREIGN KEY (Quadrado) REFERENCES Quadrado (Coordenadas) ON DELETE CASCADE
+    CONSTRAINT instancia_item_quadrado_fk FOREIGN KEY (Quadrado) REFERENCES Quadrado (Coordenadas) ON DELETE SET NULL
 );
 
 CREATE TABLE Item_Mochila (
