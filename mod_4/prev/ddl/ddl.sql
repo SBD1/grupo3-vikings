@@ -67,6 +67,25 @@ CREATE TABLE Mochila (
   CONSTRAINT tipo_mochila_ck_volume_ocupado CHECK(VolumeOcupado >= 0)
 );
 
+CREATE DOMAIN ITEM_TIPO
+  AS CHAR(8)
+  CHECK (VALUE IN ('arma', 'comida', 'pocao', 'armadura'));
+
+CREATE TABLE Especializacao_do_item(
+    Id INTEGER NOT NULL,
+    Tipo ITEM_TIPO NOT NULL,
+
+    CONSTRAINT especializacao_do_item_pk PRIMARY KEY(Id)
+);
+
+CREATE TABLE Instancia_item(
+    Id INTEGER NOT NULL,
+    Id_item INTEGER NOT NULL,
+
+    CONSTRAINT instancia_item_pk PRIMARY KEY(Id),
+    CONSTRAINT id_item_instancia_item_fk FOREIGN KEY(Id_item) REFERENCES Especializacao_do_item(Id)
+);
+
 CREATE TABLE Viking (
   Nome VARCHAR(100) NOT NULL,
   
@@ -74,8 +93,8 @@ CREATE TABLE Viking (
   Nivel INTEGER NOT NULL,
 
   Mochila INTEGER,
-  -- MaoEsquerda INTEGER,
-  -- MaoDireita INTEGER,
+  MaoEsquerda INTEGER,
+  MaoDireita INTEGER,
   MaosOcupadas BOOLEAN NOT NULL,
 
   Quadrado VARCHAR(9) NOT NULL,
@@ -94,11 +113,9 @@ CREATE TABLE Viking (
   CONSTRAINT viking_pk PRIMARY KEY (Nome),
   CONSTRAINT viking_nome_fk FOREIGN KEY (Nome) REFERENCES Personagem (Nome) ON DELETE CASCADE,
   CONSTRAINT viking_nivel_fk FOREIGN KEY (Nivel) REFERENCES Nivel (Valor) ON DELETE CASCADE,
-
   CONSTRAINT viking_mochila_fk FOREIGN KEY (Mochila) REFERENCES Mochila (Numero) ON DELETE SET NULL,
-  -- CONSTRAINT viking_mao_esquerda_fk FOREIGN KEY (MaoEsquerda) REFERENCES InstanciaItem (Id) ON DELETE SET NULL,
-  -- CONSTRAINT viking_mao_direita_fk FOREIGN KEY (MaoDireita) REFERENCES InstanciaItem (Id) ON DELETE SET NULL,
-
+  CONSTRAINT viking_mao_esquerda_fk FOREIGN KEY (MaoEsquerda) REFERENCES Instancia_item (Id) ON DELETE SET NULL,
+  CONSTRAINT viking_mao_direita_fk FOREIGN KEY (MaoDireita) REFERENCES Instancia_item (Id) ON DELETE SET NULL,
   CONSTRAINT viking_quadrado_fk FOREIGN KEY (Quadrado) REFERENCES Quadrado (Coordenadas) ON DELETE CASCADE,
 
   CONSTRAINT viking_ck_ataque CHECK(Ataque > 0),
@@ -109,9 +126,6 @@ CREATE TABLE Viking (
   CONSTRAINT viking_ck_nivel_de_vida CHECK(Nivel_de_Vida >= 0),
   CONSTRAINT viking_ck_vida_restante CHECK(Vida_Restante >= 0)
 );
-
--- Tipo_Monstro
-
 
 CREATE TABLE Barco (
   Tipo VARCHAR(20) NOT NULL,
@@ -197,29 +211,9 @@ CREATE TABLE Monstro (
   CONSTRAINT monstro_ck_vida_restante CHECK(Vida_Restante >= 0)
 );
 
-CREATE DOMAIN ITEM_TIPO
-  AS CHAR(8)
-  CHECK (VALUE IN ('arma', 'comida', 'pocao', 'armadura'));
-
 CREATE DOMAIN ITEM_RARIDADE
   AS CHAR(8)
   CHECK (VALUE IN ('comum', 'incomum', 'raro', 'epico', 'lendario', 'mitico'));
-
-
-CREATE TABLE Instancia_item(
-    Id INTEGER NOT NULL,
-    Id_item INTEGER NOT NULL,
-
-    CONSTRAINT instancia_item_pk PRIMARY KEY(Id),
-    CONSTRAINT id_item_instancia_item_fk FOREIGN KEY(id_item) REFERENCES Especializacao_do_item(id_item)
-);
-
-CREATE TABLE Especializacao_do_item(
-    Id INTEGER NOT NULL,
-    Tipo ITEM_TIPO NOT NULL,
-
-    CONSTRAINT especializacao_do_item_pk PRIMARY KEY(Id)
-);
 
 CREATE TABLE Arma (
     Id INTEGER NOT NULL,
@@ -251,7 +245,6 @@ CREATE TABLE Comida (
     CONSTRAINT id_comida_fk FOREIGN KEY(Id) REFERENCES Especializacao_do_item(Id)
 );
 
-
 CREATE TABLE Pocao (
   Id INTEGER NOT NULL,
   Nome VARCHAR(100) NOT NULL,
@@ -267,7 +260,6 @@ CREATE TABLE Pocao (
   CONSTRAINT id_pocao_fk FOREIGN KEY(Id) REFERENCES Especializacao_do_item(Id)
 );
 
-
 CREATE TABLE Armadura (
   Id INTEGER NOT NULL,
   Nome VARCHAR(100) NOT NULL,
@@ -279,9 +271,15 @@ CREATE TABLE Armadura (
   Valor_de_defesa INTEGER NOT NULL,
   Valor_de_agilidade INTEGER NOT NULL,
 
-
   CONSTRAINT armadura_pk PRIMARY KEY(Id),
   CONSTRAINT id_armadura_fk FOREIGN KEY(Id) REFERENCES Especializacao_do_item(Id)
+);
+
+CREATE TABLE Entidade (
+    Nome VARCHAR(100) NOT NULL,
+    Descricao VARCHAR(300) NOT NULL,
+    
+    CONSTRAINT entidade_pk PRIMARY KEY(Nome)
 );
 
 CREATE TABLE Habilidade (
@@ -306,13 +304,6 @@ CREATE TABLE Recebe (
     CONSTRAINT habilidade_nome_fk FOREIGN KEY(Nome_habilidade) REFERENCES Habilidade(Nome),
     CONSTRAINT viking_nome_fk FOREIGN KEY(Nome_viking) REFERENCES Habilidade(Nome),
     CONSTRAINT entidade_nome_fk FOREIGN KEY(Nome_entidade) REFERENCES Entidade(Nome)
-);
-
-CREATE TABLE Entidade (
-    Nome VARCHAR(100) NOT NULL,
-    Descricao VARCHAR(300) NOT NULL,
-    
-    CONSTRAINT entidade_pk PRIMARY KEY(Nome)
 );
 
 CREATE TABLE Aesir (
