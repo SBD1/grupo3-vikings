@@ -291,8 +291,10 @@ CREATE TABLE Habilidade (
     Multiplicador_defesa INTEGER NOT NULL,
     Multiplicador_roubo_de_vida INTEGER NOT NULL,
     Descricao VARCHAR(300) NOT NULL,
+    Entidade VARCHAR(100) NOT NULL,
     
-    CONSTRAINT habilidade_pk PRIMARY KEY(Nome)
+    CONSTRAINT habilidade_pk PRIMARY KEY(Nome),
+    CONSTRAINT entidade_habilidade_fk FOREIGN KEY(Entidade) REFERENCES Entidade(Nome)
 );
 
 CREATE TABLE Recebe (
@@ -309,7 +311,7 @@ CREATE TABLE Recebe (
 CREATE TABLE Entidade (
     Nome VARCHAR(100) NOT NULL,
     Descricao VARCHAR(300) NOT NULL,
-    Tipo VARCHAR(100) NOT NULL,
+    Habilidades VARCHAR(100) NOT NULL,
     
     CONSTRAINT entidade_pk PRIMARY KEY(Nome)
 );
