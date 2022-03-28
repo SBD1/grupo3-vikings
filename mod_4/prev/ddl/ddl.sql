@@ -1,3 +1,5 @@
+BEGIN TRANSACTION;
+
 CREATE TABLE Mapa (
     ID INTEGER NOT NULL,
 
@@ -173,6 +175,15 @@ CREATE TABLE InstanciaNPC (
   CONSTRAINT instancia_npc_quadrado_fk FOREIGN KEY (Quadrado) REFERENCES Quadrado (Coordenadas) ON DELETE CASCADE
 );
 
+CREATE TABLE Fala (
+  IdNPC VARCHAR(100) NOT NULL,
+  Texto VARCHAR(100) NOT NULL,
+
+  CONSTRAINT fala_pk PRIMARY KEY (IdNPC),
+  CONSTRAINT fala_npc_fk FOREIGN KEY (IdNPC) REFERENCES NPC (IdNPC) ON DELETE CASCADE,
+  CONSTRAINT fala_texto_ck CHECK(Texto != '')
+);
+
 CREATE TABLE TipoMonstro (
   Nome VARCHAR(100) NOT NULL,
   Experiencia INTEGER NOT NULL,
@@ -337,3 +348,5 @@ CREATE TABLE Jotun (
     CONSTRAINT jotun_pk PRIMARY KEY(Id),
     CONSTRAINT jotun_entidade_fk FOREIGN KEY(Id) REFERENCES Entidade(Nome)
 );
+
+COMMIT;

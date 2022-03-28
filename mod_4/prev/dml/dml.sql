@@ -1,3 +1,5 @@
+BEGIN TRANSACTION;
+
 -- Adicionando Tuplas de Mapa
 
 INSERT INTO Mapa VALUES(2);
@@ -80,6 +82,7 @@ INSERT INTO InstanciaBarco (
 -- Adicionando Tuplas de NPC
 
 INSERT INTO Npc VALUES ('Ferreiro', 'tribo 01', 0, 51);
+INSERT INTO Npc VALUES ('Vendedor', 'tribo 01', 0, 51);
 
 -- Adicionando Tuplas de Instância de NPC
 
@@ -104,7 +107,12 @@ INSERT INTO Aesir VALUES('Loki', 'Aesir', 1, 5);
 INSERT INTO Vanir VALUES('Thor', 'Vanir', 2, 4);
 INSERT INTO Jotun VALUES('Surtur', 'Jotun', 5, 5, 0, 5);
 
-INSERT INTO Habilidades VALUES('Arma de Trovao', 3, 5, 1, 1, 'Ao levantar sua arma e gritar o nome de Thor, o deus faz descer um raio para aumentar seu dano e agilidade', 'Thor');
-INSERT INTO Habilidades VALUES('Arma de Fogo e Sangue', 5, 2, 1, 5, 'Um pouco de sangue e uma  faisca sao o suficiente para Loki te ajudar a aumentar o dano e roubo de vida', 'Loki');
-INSERT INTO Habilidades VALUES('Visao do Futuro', 5, 1, 5, 1, 'Uma visao do futuro que ajuda na esquiva e defesa de ataques', 'Freyja');
-INSERT INTO Habilidades VALUES('Fogo primeval', 1, 1, 10, 1, 'Receba o poder do fogo primeval de Surtur, ganhando um enorme bonus de dano', 'Surtur');
+INSERT INTO Habilidade VALUES('Arma de Trovao', 3, 5, 1, 1, 'Ao levantar sua arma e gritar o nome de Thor, o deus faz descer um raio para aumentar seu dano e agilidade', 'Thor');
+INSERT INTO Habilidade VALUES('Arma de Fogo e Sangue', 5, 2, 1, 5, 'Um pouco de sangue e uma  faisca sao o suficiente para Loki te ajudar a aumentar o dano e roubo de vida', 'Loki');
+INSERT INTO Habilidade VALUES('Visao do Futuro', 5, 1, 5, 1, 'Uma visao do futuro que ajuda na esquiva e defesa de ataques', 'Freyja');
+INSERT INTO Habilidade VALUES('Fogo primeval', 1, 1, 10, 1, 'Receba o poder do fogo primeval de Surtur, ganhando um enorme bonus de dano', 'Surtur');
+
+INSERT INTO NPC VALUES('Guia de Jornada', 'Tribo', 0, 62);
+INSERT INTO Fala VALUES('Guia de Jornada', 'Olá, eu sou o Guia de Jornada, seja bem vindo à vila.');
+
+COMMIT;
