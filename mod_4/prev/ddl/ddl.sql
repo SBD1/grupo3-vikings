@@ -311,7 +311,6 @@ CREATE TABLE Recebe (
 CREATE TABLE Entidade (
     Nome VARCHAR(100) NOT NULL,
     Descricao VARCHAR(300) NOT NULL,
-    Habilidades VARCHAR(100) NOT NULL,
     
     CONSTRAINT entidade_pk PRIMARY KEY(Nome)
 );
