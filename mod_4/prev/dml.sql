@@ -1,46 +1,36 @@
 BEGIN TRANSACTION;
 
--- Adicionando Tuplas de Mapa
-
+INSERT INTO Mapa VALUES(1);
 INSERT INTO Mapa VALUES(2);
 
--- Adicionando Tuplas de Area
-
+INSERT INTO Area VALUES(1, '0,0', 'terra', 2, 1);
 INSERT INTO Area VALUES(3, '0,0', 'mar', 2, 2);
 INSERT INTO Area (IdArea, Coordenadas, Tamanho, IdMapa) VALUES(4, '2,2', 4, 2);
 
--- Adicionando Tuplas de Quadrado
+INSERT INTO Quadrado VALUES ('0,0', 1, 'Floresta');
+INSERT INTO Quadrado VALUES ('0,1', 1, 'Floresta');
+INSERT INTO Quadrado VALUES ('1,1', 1, 'Floresta');
+INSERT INTO Quadrado VALUES ('0,2', 1, 'Floresta');
 
-INSERT INTO Quadrado VALUES('0,0', 3, 'Mar Gelado');
 INSERT INTO Quadrado VALUES('2,2', 4, 'Floresta Negra');
 INSERT INTO Quadrado VALUES('3,3', 4, 'Vila velha');
-
--- Adicionando Tuplas de Personagem
 
 INSERT INTO Personagem VALUES('marcelo', 'viking');
 INSERT INTO Personagem VALUES('arthur', 'viking');
 INSERT INTO Personagem VALUES('sa', 'monstro');
 
--- Adicionando Tuplas de Nível
-
 INSERT INTO Nivel VALUES(1, 100, 1000);
 INSERT INTO Nivel VALUES(2, 200, 2000);
 INSERT INTO Nivel VALUES(3, 300, 3000);
-
--- Adicionando Tuplas de Tipo de Mochila
 
 INSERT INTO Tipo_Mochila VALUES('basica', 20);
 INSERT INTO Tipo_Mochila VALUES('normal', 35);
 INSERT INTO Tipo_Mochila VALUES('reforcada', 50);
 
--- Adicionando Tuplas de Mochila
-
 INSERT INTO Mochila VALUES(1, 'basica');
 INSERT INTO Mochila VALUES(2, 'normal');
 INSERT INTO Mochila VALUES(3, 'reforcada');
 INSERT INTO Mochila VALUES(4, 'basica');
-
--- Adicionando Tuplas de Viking
 
 INSERT INTO Especializacao_do_item VALUES (1, 'arma');
 INSERT INTO Especializacao_do_item VALUES (2, 'arma');
@@ -48,9 +38,14 @@ INSERT INTO Especializacao_do_item VALUES (2, 'arma');
 INSERT INTO Arma VALUES (1, 'Machado', 'arma', 'Machado corta cabeças', 20, 'comum', false, 30, 4, 3);
 INSERT INTO Arma VALUES (2, 'Espada', 'arma', 'Espada de prata', 6, 'epico', false, 70, 2, 90);
 
-INSERT INTO Instancia_item VALUES (3, 1);
-INSERT INTO Instancia_item VALUES (4, 1);
-INSERT INTO Instancia_item VALUES (5, 2);
+INSERT INTO Instancia_item VALUES (1, 1, '1,1');
+INSERT INTO Instancia_item VALUES (2, 1, '1,1');
+
+INSERT INTO Instancia_item (Id, Id_item) VALUES (3, 1);
+INSERT INTO Instancia_item (Id, Id_item) VALUES (4, 1);
+INSERT INTO Instancia_item (Id, Id_item) VALUES (5, 2);
+
+INSERT INTO Instancia_item VALUES (6, 1, '0,1');
 
 INSERT INTO Viking (
     Nome, Experiencia, Nivel, MaosOcupadas, Quadrado, Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade, Nivel_de_Vida, Vida_Restante
@@ -64,19 +59,11 @@ INSERT INTO Viking (
     Nome, Experiencia, Nivel, Mochila, MaoEsquerda, MaosOcupadas, Quadrado, Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade, Nivel_de_Vida, Vida_Restante
 ) VALUES ('joao', 2500, 3, 3, 5, false, '2,2', 16, 17, 18, 19, 20, 21, 2);
 
--- Adicionando Tuplas de Item de Mochila
-
 INSERT INTO Item_Mochila VALUES (1, 3);
 INSERT INTO Item_Mochila VALUES (1, 4);
-INSERT INTO Item_Mochila VALUES (2, 5);
-INSERT INTO Item_Mochila VALUES (3, 3);
-
--- Adicionando Tuplas de Barco
 
 INSERT INTO Barco VALUES ('knarr', 15, 10, 100, 80);
 INSERT INTO Barco VALUES ('langskip', 15, 10, 100, 80);
-
--- Adicionando Tuplas de Instancia de Barco
 
 INSERT INTO InstanciaBarco VALUES (1, 'knarr', 'arthur', 'barco1', 100, '4,5');
 INSERT INTO InstanciaBarco VALUES (2, 'knarr', 'arthur', 'barco2', 100, '6,5');
@@ -86,12 +73,8 @@ INSERT INTO InstanciaBarco (
     IdBarco, Tipo, Integridade, Coordenadas
 ) VALUES (4, 'knarr', 100, '9,5');
 
--- Adicionando Tuplas de NPC
-
 INSERT INTO Npc VALUES ('Ferreiro', 'tribo 01', 0, 51);
 INSERT INTO Npc VALUES ('Vendedor', 'tribo 01', 0, 51);
-
--- Adicionando Tuplas de Instância de NPC
 
 INSERT INTO Quadrado VALUES('5,1', 3, 'Mar Gelado');
 INSERT INTO Quadrado VALUES('0,6', 4, 'Vila velha');

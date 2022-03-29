@@ -18,4 +18,3 @@
 | [0.2](dml/dml-v0.2.sql) | Adicionando tuplas para as tabelas Mochila e TipoMochila | [Arthur Rodrigues](https://github.com/arthurarp) |
 | [0.5](dml/dml-v0.5.sql) | Adicionando tuplas para as tabelas Barco e InstanciaBarco | [Arthur Rodrigues](https://github.com/arthurarp) |
 | [0.6](dml/dml-v0.6.sql) | Adicionando Tuplas Npc e Monstro | [Arthur Rodrigues](https://github.com/arthurarp) |
-
