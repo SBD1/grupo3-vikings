@@ -11,8 +11,8 @@ services:
       - "5432:5432"
     volumes:
       - viking_volume:/var/lib/postgresql/data 
-      - ../mod_4/prev/ddl/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
-      - ../mod_4/prev/dml/dml.sql:/docker-entrypoint-initdb.d/dml.sql
+      - ../mod_4/prev/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
+      - ../mod_4/prev/dml.sql:/docker-entrypoint-initdb.d/dml.sql
     networks:
       - vikingNet
 

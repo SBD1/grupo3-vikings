@@ -48,8 +48,8 @@ INSERT INTO Instancia_item (Id, Id_item) VALUES (5, 2);
 INSERT INTO Instancia_item VALUES (6, 1, '0,1');
 
 INSERT INTO Viking (
-    Nome, Experiencia, Nivel, MaosOcupadas, Quadrado, Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade, Nivel_de_Vida, Vida_Restante
-) VALUES ('arthur', 1500, 2, false, '2,2', 10, 11, 12, 13, 14, 15, 3);
+    Nome, Experiencia, Nivel, MaosOcupadas, Quadrado, Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade, Nivel_de_Vida, Vida_Restante, Mochila
+) VALUES ('arthur', 1500, 2, false, '2,2', 10, 11, 12, 13, 14, 15, 3, 1);
 
 INSERT INTO Viking VALUES ('marcelo', 150, 1, 2, 3, 4, true, '0,0', 3, 4, 5, 6, 7, 8, 9);
 
