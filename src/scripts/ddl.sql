@@ -130,7 +130,8 @@ CREATE TABLE Viking (
   CONSTRAINT viking_mao_esquerda_fk FOREIGN KEY (MaoEsquerda) REFERENCES Instancia_item (Id) ON DELETE SET NULL,
   CONSTRAINT viking_mao_direita_fk FOREIGN KEY (MaoDireita) REFERENCES Instancia_item (Id) ON DELETE SET NULL,
   CONSTRAINT viking_quadrado_fk FOREIGN KEY (Quadrado) REFERENCES Quadrado (Coordenadas) ON DELETE CASCADE,
-
+  CONSTRAINT viking_mao_esquerda_uq UNIQUE (MaoEsquerda),
+  CONSTRAINT viking_mao_direita_uq UNIQUE (MaoDireita),
   CONSTRAINT viking_ck_ataque CHECK(Ataque > 0),
   CONSTRAINT viking_ck_defesa CHECK(Defesa > 0),
   CONSTRAINT viking_ck_roubo_de_vida CHECK(Roubo_de_Vida > 0),

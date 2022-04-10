@@ -3,9 +3,10 @@ import sys
 
 class Database():
   def __init__(self):
-    self.connection = psycopg2.connect(host='src_db_postgres_1', \
-                                        database='vikings_db', \
-                                        user='admin', password='123123aa'
+    self.connection = psycopg2.connect(
+      host='src_db_postgres_1',
+      database='vikings_db',
+      user='admin', password='123123aa'
     )
     self.cursor = self.connection.cursor()
 

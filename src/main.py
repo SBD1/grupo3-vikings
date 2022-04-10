@@ -1,4 +1,3 @@
-import psycopg2
 from database import Database
 
 class Game():
@@ -14,12 +13,11 @@ class Game():
 
   def start_game(self):
     self.show_menu()
+
      
   def close_db_connection(self):
     self.db.close()
 
 
-
 game = Game()
 game.close_db_connection()
-
