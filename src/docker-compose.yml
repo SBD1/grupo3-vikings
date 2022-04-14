@@ -15,6 +15,17 @@ services:
       - ./scripts/dml.sql:/docker-entrypoint-initdb.d/dml.sql
     networks:
       - vikingNet
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "16543:80"
+    depends_on:
+      - db_postgres
+    networks:
+      - vikingNet
 
 networks:
   vikingNet:
