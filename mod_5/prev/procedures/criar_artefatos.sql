@@ -17,7 +17,7 @@ BEGIN
   FOR i IN 1..30 LOOP
     INSERT INTO Nivel
       (Valor, Pontos_ao_Subir, Experiencia_para_Subir_de_Nivel)
-    VALUES(i, i * 5, i * 100);
+    VALUES(i, random()*(1-10)+10, i * 100);
   END LOOP;
   
   -- Adição dos Barcos

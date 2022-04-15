@@ -16,10 +16,11 @@ services:
       - ../mod_5/prev/trigger_functions/verificar_maos_ocupadas.sql:/docker-entrypoint-initdb.d/3verificar_maos_ocupadas.sql
       - ../mod_5/prev/trigger_functions/atualizar_volume_ocupado_mochila.sql:/docker-entrypoint-initdb.d/4atualizar_volume_ocupado_mochila.sql
       - ../mod_5/prev/trigger_functions/atribuir_se_item_consumivel.sql:/docker-entrypoint-initdb.d/5atribuir_se_item_consumivel.sql
-      - ../mod_5/prev/procedures/criar_mapa_jogo.sql:/docker-entrypoint-initdb.d/6criar_mapa_jogo.sql
-      - ../mod_5/prev/procedures/criar_artefatos.sql:/docker-entrypoint-initdb.d/7criar_artefatos.sql
-      - ../mod_5/prev/procedures/criar_itens.sql:/docker-entrypoint-initdb.d/8criar_itens.sql
-      - ../mod_5/prev/procedures/criar_viking.sql:/docker-entrypoint-initdb.d/9criar_viking.sql
+      - ../mod_5/prev/trigger_functions/verificar_quadrado_barco.sql:/docker-entrypoint-initdb.d/6verificar_quadrado_barco.sql
+      - ../mod_5/prev/procedures/criar_mapa_jogo.sql:/docker-entrypoint-initdb.d/7criar_mapa_jogo.sql
+      - ../mod_5/prev/procedures/criar_artefatos.sql:/docker-entrypoint-initdb.d/8criar_artefatos.sql
+      - ../mod_5/prev/procedures/criar_itens.sql:/docker-entrypoint-initdb.d/9criar_itens.sql
+      - ../mod_5/prev/procedures/criar_viking.sql:/docker-entrypoint-initdb.d/criar_viking.sql
       - ./scripts/dml.sql:/docker-entrypoint-initdb.d/dml.sql
     networks:
       - vikingNet
