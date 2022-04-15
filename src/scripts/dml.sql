@@ -1,19 +1,6 @@
 BEGIN TRANSACTION;
 
-INSERT INTO Mapa VALUES(1);
-INSERT INTO Mapa VALUES(2);
-
-INSERT INTO Area VALUES(1, '0,0', 'terra', 2, 1);
-INSERT INTO Area VALUES(3, '0,0', 'mar', 2, 2);
-INSERT INTO Area (IdArea, Coordenadas, Tamanho, IdMapa) VALUES(4, '2,2', 4, 2);
-
-INSERT INTO Quadrado VALUES ('0,0', 1, 'Floresta');
-INSERT INTO Quadrado VALUES ('0,1', 1, 'Floresta');
-INSERT INTO Quadrado VALUES ('1,1', 1, 'Floresta');
-INSERT INTO Quadrado VALUES ('0,2', 1, 'Floresta');
-
-INSERT INTO Quadrado VALUES('2,2', 4, 'Floresta Negra');
-INSERT INTO Quadrado VALUES('3,3', 4, 'Vila velha');
+SELECT criar_mapa_jogo();
 
 INSERT INTO Personagem VALUES('marcelo', 'viking');
 INSERT INTO Personagem VALUES('arthur', 'viking');
@@ -103,6 +90,6 @@ INSERT INTO Habilidade VALUES('Visao do Futuro', 5, 1, 5, 1, 'Uma visao do futur
 INSERT INTO Habilidade VALUES('Fogo primeval', 1, 1, 10, 1, 'Receba o poder do fogo primeval de Surtur, ganhando um enorme bonus de dano', 'Surtur');
 
 INSERT INTO NPC VALUES('Guia de Jornada', 'Tribo', 0, 62);
-INSERT INTO Fala VALUES('Guia de Jornada', 'Olá, eu sou o Guia de Jornada, seja bem vindo à vila.');
+INSERT INTO Fala VALUES('Guia de Jornada', 'Olá, eu sou o Guia de Jornada, seja bem vindo à vila.');  
 
 COMMIT;
