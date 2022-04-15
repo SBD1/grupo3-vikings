@@ -6,6 +6,8 @@ SELECT criar_itens();
 
 SELECT criar_artefatos();
 
+SELECT criar_monstros();
+
 SELECT criar_viking('arthur');
 SELECT criar_viking('marcelo');
 SELECT criar_viking('joao');
@@ -35,11 +37,6 @@ INSERT INTO Npc VALUES ('Vendedor', 'tribo 01', 0, 51);
 
 INSERT INTO InstanciaNPC VALUES (1, 'Ferreiro', true, '5,1');
 
-INSERT INTO TipoMonstro VALUES ('Demonio', 1300, 'Assustador Demonio Viking', 'Pantano');
-
-INSERT INTO Personagem VALUES('Monstro 01', 'monstro');
-INSERT INTO Personagem VALUES('Monstro 02', 'monstro');
-INSERT INTO Monstro VALUES ('Monstro 01', '0,6', 'Demonio', 300, 250, 10, 50, 40, 100, 100);
 
 INSERT INTO Entidade VALUES('Thor', 'Deus nordico associado a forca, trovoes, relampagos e tempestades.');
 INSERT INTO Entidade VALUES('Loki', 'Deus nordico associado a trapaca, travessuras, fogo e tambem magia.');
