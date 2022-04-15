@@ -69,6 +69,12 @@ CREATE TABLE Mochila (
   CONSTRAINT tipo_mochila_ck_volume_ocupado CHECK(VolumeOcupado >= 0)
 );
 
+CREATE SEQUENCE id_mochila_sequence
+START 1
+INCREMENT 1
+MINVALUE 1
+OWNED BY Mochila.Numero;
+
 CREATE DOMAIN ITEM_TIPO
   AS CHAR(8)
   CHECK (VALUE IN ('arma', 'comida', 'pocao', 'armadura'));
@@ -396,6 +402,32 @@ CREATE TRIGGER PreencherVariavelMaosOcupadas
 FOR EACH ROW EXECUTE PROCEDURE verificar_maos_ocupadas();
 
 CREATE OR REPLACE FUNCTION 
+	verificar_id_repetido()
+RETURNS TRIGGER AS $verificar_id_repetido$
+
+DECLARE
+  viking_row viking%ROWTYPE;
+BEGIN
+  IF (NEW.MaoEsquerda = NEW.MaoDireita)
+  THEN
+    RAISE EXCEPTION 'A mesma instância de item está sendo adicionada nas duas mãos';
+  END IF;
+  SELECT * into viking_row from Viking where MaoEsquerda = NEW.MaoDireita OR MaoDireita = NEW.MaoEsquerda;
+  IF (viking_row IS NULL) 
+  THEN
+    RETURN NEW;
+  ELSE
+    RAISE EXCEPTION 'Item já referenciado por outra coluna';
+  END IF;
+  RETURN NULL;
+END;
+$verificar_id_repetido$ LANGUAGE plpgsql;
+
+CREATE TRIGGER VerificarSeIdIgual
+	BEFORE INSERT OR UPDATE ON Viking
+FOR EACH ROW EXECUTE PROCEDURE verificar_id_repetido();
+
+CREATE OR REPLACE FUNCTION 
 	criar_mapa_jogo()
 RETURNS VOID AS $$
 
@@ -552,6 +584,54 @@ BEGIN
     (Id, Nome, Descricao, Raridade, Peso, Valor_de_defesa, Valor_de_agilidade)
   VALUES (14, 'Armadura Básica', 'Te protege de ataques básicos', 'comum', 2, 70, 30);
   INSERT INTO Armadura VALUES (15, 'Armadura Reforçada', 'Te proteje dos principais ataques', 'comum', 2, 100, 30);
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION 
+	criar_artefatos()
+RETURNS VOID AS $$
+
+DECLARE 
+
+  i INTEGER;
+
+BEGIN
+
+  -- Adição das mochilas do Jogo
+  INSERT INTO Tipo_Mochila VALUES('basica', 20);
+  INSERT INTO Tipo_Mochila VALUES('normal', 35);
+  INSERT INTO Tipo_Mochila VALUES('reforcada', 50);
+
+  -- Adição dos Níveis
+  FOR i IN 1..30 LOOP
+    INSERT INTO Nivel
+      (Valor, Pontos_ao_Subir, Experiencia_para_Subir_de_Nivel)
+    VALUES(i, i * 5, i * 100);
+  END LOOP;
+  
+  -- Adição dos Barcos
+  INSERT INTO Barco 
+    (Tipo, Capacidade, Velocidade, Ataque, Defesa)
+  VALUES ('knarr', 15, 10, 100, 80);
+  INSERT INTO Barco VALUES ('langskip', 15, 10, 100, 80);
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION 
+	criar_viking(nome VARCHAR(100))
+RETURNS VOID AS $$
+
+DECLARE
+  id_mochila INTEGER;
+BEGIN
+  INSERT INTO Personagem (Nome, Tipo) VALUES (nome, 'viking');
+  id_mochila := nextval('id_mochila_sequence');
+  INSERT INTO Mochila VALUES (id_mochila, 'basica');
+  INSERT INTO Viking
+    (Nome, Experiencia, Nivel, Mochila, Quadrado, Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade, Nivel_de_Vida, Vida_Restante)
+  VALUES (nome, 0, 1, id_mochila, '8,0', 10, 10, 1, 5, 5, 100, 100);
 
 END;
 $$ LANGUAGE plpgsql;

@@ -4,22 +4,11 @@ SELECT criar_mapa_jogo();
 
 SELECT criar_itens();
 
-INSERT INTO Personagem VALUES('marcelo', 'viking');
-INSERT INTO Personagem VALUES('arthur', 'viking');
-INSERT INTO Personagem VALUES('sa', 'monstro');
+SELECT criar_artefatos();
 
-INSERT INTO Nivel VALUES(1, 100, 1000);
-INSERT INTO Nivel VALUES(2, 200, 2000);
-INSERT INTO Nivel VALUES(3, 300, 3000);
-
-INSERT INTO Tipo_Mochila VALUES('basica', 20);
-INSERT INTO Tipo_Mochila VALUES('normal', 35);
-INSERT INTO Tipo_Mochila VALUES('reforcada', 50);
-
-INSERT INTO Mochila VALUES(1, 'basica');
-INSERT INTO Mochila VALUES(2, 'normal');
-INSERT INTO Mochila VALUES(3, 'reforcada');
-INSERT INTO Mochila VALUES(4, 'basica');
+SELECT criar_viking('arthur');
+SELECT criar_viking('marcelo');
+SELECT criar_viking('joao');
 
 INSERT INTO Instancia_item VALUES (1, 1, '1,1');
 INSERT INTO Instancia_item VALUES (2, 1, '1,1');
@@ -30,23 +19,8 @@ INSERT INTO Instancia_item (Id, Id_item) VALUES (5, 2);
 
 INSERT INTO Instancia_item VALUES (6, 1, '0,1');
 
-INSERT INTO Viking (
-    Nome, Experiencia, Nivel, Quadrado, Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade, Nivel_de_Vida, Vida_Restante, Mochila
-) VALUES ('arthur', 1500, 2, '2,2', 10, 11, 12, 13, 14, 15, 3, 1);
-
-INSERT INTO Viking VALUES ('marcelo', 150, 1, 2, 3, 4, true, '0,0', 3, 4, 5, 6, 7, 8, 9);
-
-INSERT INTO Personagem VALUES('joao', 'viking');
-
-INSERT INTO Viking (
-    Nome, Experiencia, Nivel, Mochila, MaoEsquerda, Quadrado, Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade, Nivel_de_Vida, Vida_Restante
-) VALUES ('joao', 2500, 3, 3, 5, '2,2', 16, 17, 18, 19, 20, 21, 2);
-
 INSERT INTO Item_Mochila VALUES (1, 3);
 INSERT INTO Item_Mochila VALUES (1, 4);
-
-INSERT INTO Barco VALUES ('knarr', 15, 10, 100, 80);
-INSERT INTO Barco VALUES ('langskip', 15, 10, 100, 80);
 
 INSERT INTO InstanciaBarco VALUES (1, 'knarr', 'arthur', 'barco1', 100, '4,5');
 INSERT INTO InstanciaBarco VALUES (2, 'knarr', 'arthur', 'barco2', 100, '6,5');
