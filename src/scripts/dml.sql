@@ -2,6 +2,8 @@ BEGIN TRANSACTION;
 
 SELECT criar_mapa_jogo();
 
+SELECT criar_itens();
+
 INSERT INTO Personagem VALUES('marcelo', 'viking');
 INSERT INTO Personagem VALUES('arthur', 'viking');
 INSERT INTO Personagem VALUES('sa', 'monstro');
@@ -18,12 +20,6 @@ INSERT INTO Mochila VALUES(1, 'basica');
 INSERT INTO Mochila VALUES(2, 'normal');
 INSERT INTO Mochila VALUES(3, 'reforcada');
 INSERT INTO Mochila VALUES(4, 'basica');
-
-INSERT INTO Especializacao_do_item VALUES (1, 'arma');
-INSERT INTO Especializacao_do_item VALUES (2, 'arma');
-
-INSERT INTO Arma VALUES (1, 'Machado', 'arma', 'Machado corta cabeças', 20, 'comum', false, 30, 4, 3);
-INSERT INTO Arma VALUES (2, 'Espada', 'arma', 'Espada de prata', 6, 'epico', false, 70, 2, 90);
 
 INSERT INTO Instancia_item VALUES (1, 1, '1,1');
 INSERT INTO Instancia_item VALUES (2, 1, '1,1');
@@ -62,9 +58,6 @@ INSERT INTO InstanciaBarco (
 
 INSERT INTO Npc VALUES ('Ferreiro', 'tribo 01', 0, 51);
 INSERT INTO Npc VALUES ('Vendedor', 'tribo 01', 0, 51);
-
-INSERT INTO Quadrado VALUES('5,1', 3, 'Mar Gelado');
-INSERT INTO Quadrado VALUES('0,6', 4, 'Vila velha');
 
 INSERT INTO InstanciaNPC VALUES (1, 'Ferreiro', true, '5,1');
 

@@ -49,7 +49,6 @@ BEGIN
       iterador_coluna := 0;
     END IF;
     FOR j IN iterador_coluna..limite_y LOOP
-
       coordenadas := replace(to_char(i, '99'), ' ', '') || ',' || replace(to_char(j, '99'), ' ', '');
       INSERT INTO Quadrado (Coordenadas, Area, Descricao) VALUES (coordenadas, 2, 'Quadrado Floresta Negra');
     END LOOP;
@@ -75,8 +74,11 @@ BEGIN
   limite_y := 23; 
   FOR i IN iterador_linha..limite_x LOOP
     FOR j IN iterador_coluna..limite_y LOOP
-      coordenadas := replace(to_char(i, '99'), ' ', '') || ',' || replace(to_char(j, '99'), ' ', '');
-      INSERT INTO Quadrado (Coordenadas, Area, Descricao) VALUES (coordenadas, 4, 'Quadrado Mar');
+      BEGIN
+          coordenadas := replace(to_char(i, '99'), ' ', '') || ',' || replace(to_char(j, '99'), ' ', '');
+          INSERT INTO Quadrado (Coordenadas, Area, Descricao) VALUES (coordenadas, 4, 'Quadrado Mar');
+      EXCEPTION WHEN unique_violation THEN
+      END;
     END LOOP;
   END LOOP;
 
