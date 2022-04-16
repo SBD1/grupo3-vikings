@@ -12,6 +12,8 @@ SELECT criar_viking('arthur');
 SELECT criar_viking('marcelo');
 SELECT criar_viking('joao');
 
+SELECT criar_deus();
+
 INSERT INTO Instancia_item VALUES (1, 1, '1,1');
 INSERT INTO Instancia_item VALUES (2, 1, '1,1');
 
@@ -36,17 +38,6 @@ INSERT INTO Npc VALUES ('Ferreiro', 'tribo 01', 0, 51);
 INSERT INTO Npc VALUES ('Vendedor', 'tribo 01', 0, 51);
 
 INSERT INTO InstanciaNPC VALUES (1, 'Ferreiro', true, '5,1');
-
-
-INSERT INTO Entidade VALUES('Thor', 'Deus nordico associado a forca, trovoes, relampagos e tempestades.');
-INSERT INTO Entidade VALUES('Loki', 'Deus nordico associado a trapaca, travessuras, fogo e tambem magia.');
-INSERT INTO Entidade VALUES('Freyja', 'Deusa-mae dos Vanir, associada a beleza,  fertilidade,  amor e seidhr, magia para visualizacao e alteracao do futuro.');
-INSERT INTO Entidade VALUES('Surtur', 'Lider dos gigantes de fogo e inimigo dos deuses, causador de destruicao extrema durante o ragnarok.');
-
-INSERT INTO Aesir VALUES('Thor', 'Aesir', 5, 1);
-INSERT INTO Aesir VALUES('Loki', 'Aesir', 1, 5);
-INSERT INTO Vanir VALUES('Thor', 'Vanir', 2, 4);
-INSERT INTO Jotun VALUES('Surtur', 'Jotun', 5, 5, 0, 5);
 
 INSERT INTO Habilidade VALUES('Arma de Trovao', 3, 5, 1, 1, 'Ao levantar sua arma e gritar o nome de Thor, o deus faz descer um raio para aumentar seu dano e agilidade', 'Thor');
 INSERT INTO Habilidade VALUES('Arma de Fogo e Sangue', 5, 2, 1, 5, 'Um pouco de sangue e uma  faisca sao o suficiente para Loki te ajudar a aumentar o dano e roubo de vida', 'Loki');

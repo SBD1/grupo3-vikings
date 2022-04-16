@@ -4,7 +4,7 @@ import sys
 class Database():
   def __init__(self):
     self.connection = psycopg2.connect(
-      host='src_db_postgres_1',
+      host='localhost',
       database='vikings_db',
       user='admin', password='123123aa'
     )

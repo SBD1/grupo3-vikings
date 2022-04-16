@@ -21,6 +21,8 @@ services:
       - ../mod_5/prev/procedures/criar_artefatos.sql:/docker-entrypoint-initdb.d/8criar_artefatos.sql
       - ../mod_5/prev/procedures/criar_itens.sql:/docker-entrypoint-initdb.d/9criar_itens.sql
       - ../mod_5/prev/procedures/criar_viking.sql:/docker-entrypoint-initdb.d/criar_viking.sql
+      - ../mod_5/prev/procedures/criar_monstros.sql:/docker-entrypoint-initdb.d/criar_monstros.sql
+      - ../mod_5/prev/procedures/criar_deus.sql:/docker-entrypoint-initdb.d/criar_deus.sql
       - ./scripts/dml.sql:/docker-entrypoint-initdb.d/dml.sql
     networks:
       - vikingNet
