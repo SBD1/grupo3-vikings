@@ -114,6 +114,15 @@ class Game():
     print("1 - Iniciar Jogo")
     print("2 - Sair")
 
+  # check if monster is in squere
+  def check_squere(self):
+    a = self.db.query("SELECT Quadrado FROM Monstro WHERE Quadrado = '1,1' ")
+    if a:
+      print('Voce encontrou um monstro!')
+      return 1
+    else:
+      return 0
+
   def start_game(self):
     self.show_menu()
     action = input('--------> ')
@@ -123,6 +132,7 @@ class Game():
       while(self.take_action() != -1):
         # check if local has enemy
           # if enemy exists, fight
+        self.check_squere()
         # check if local has item to be dropped
           # if exists, player choose to grab
         # check if local has npc
