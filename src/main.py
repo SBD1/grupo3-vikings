@@ -166,6 +166,68 @@ class Game():
     else:
       print('Não há item para ser dropado!')
 
+  # pick up item
+  def pick_up_item(self):
+    if self.check_item_squere():
+      self.db.insert("INSERT INTO Item (Item) VALUES ('1,1')")
+      print('Item pegado!')
+    else:
+      print('Não há item neste quadrado!')
+  
+  # show status
+  def show_status(self):
+    a = self.db.query("SELECT Nome, Vida, Ataque, Defesa, Inteligencia, Forca, Destreza, Sorte FROM Viking WHERE Nome = 'joao' ")
+    print(f'Nome: {a[0][0]}')
+    print(f'Vida: {a[0][1]}')
+    print(f'Ataque: {a[0][2]}')
+    print(f'Defesa: {a[0][3]}')
+    print(f'Inteligencia: {a[0][4]}')
+    print(f'Forca: {a[0][5]}')
+    print(f'Destreza: {a[0][6]}')
+    print(f'Sorte: {a[0][7]}')
+
+  # show skills
+  def show_skills(self):
+    a = self.db.query("SELECT Nome, Habilidade1, Habilidade2, Habilidade3 FROM Viking WHERE Nome = 'joao' ")
+    print(f'Nome: {a[0][0]}')
+    print(f'Habilidade 1: {a[0][1]}')
+    print(f'Habilidade 2: {a[0][2]}')
+    print(f'Habilidade 3: {a[0][3]}')
+  
+  # show inventory
+  def show_inventory(self):
+    a = self.db.query("SELECT Item FROM Item WHERE Item = '1,1' ")
+    if a:
+      print('Voce possui um item!')
+    else:
+      print('Voce não possui nenhum item!')
+  
+  # use skill during fight
+  def use_skill(self):
+    a = self.db.query("SELECT Nome, Habilidade1, Habilidade2, Habilidade3 FROM Viking WHERE Nome = 'joao' ")
+    print(f'Nome: {a[0][0]}')
+    print(f'Habilidade 1: {a[0][1]}')
+    print(f'Habilidade 2: {a[0][2]}')
+    print(f'Habilidade 3: {a[0][3]}')
+    action = input('--------> ')
+    if action == '1':
+      print('Voce usou a habilidade 1')
+    elif action == '2':
+      print('Voce usou a habilidade 2')
+    elif action == '3':
+      print('Voce usou a habilidade 3')
+    else:
+      print('Acao invalida.')
+  
+  # check player's health 
+  def check_health(self):
+    a = self.db.query("SELECT Vida FROM Viking WHERE Nome = 'joao' ")
+    if a[0][0] <= 0:
+      print('Voce morreu!')
+      return -1
+    else:
+      return 0
+
   def start_game(self):
     self.show_menu()
     action = input('--------> ')
