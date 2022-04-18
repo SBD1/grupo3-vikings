@@ -2,6 +2,9 @@ CREATE OR REPLACE FUNCTION
     verificar_especializacao_viking()
 RETURNS TRIGGER AS $verificar_especializacao_viking$
 
+DECLARE
+    personagem_row personagem%ROWTYPE;
+
 BEGIN
     PERFORM * FROM Monstro WHERE Nome = NEW.Nome;
     IF FOUND THEN
