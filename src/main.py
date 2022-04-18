@@ -106,7 +106,10 @@ class Game():
     if action == '1':
       self.movement()
       self.db.commit()
-      self.map_graph.update_graph()
+      try:
+        self.map_graph.update_graph(self.char)
+      except:
+        return 0
       return 0
     elif action == '2':
       return 0
@@ -115,7 +118,11 @@ class Game():
     elif action == '4':
       return 0
     elif action == '5':
-      self.open_map()
+      try:
+        self.open_map()
+      except:
+        print('Nao foi possivel abrir o mapa')
+        return 0
     elif action == '6':
       return -1
     else:
