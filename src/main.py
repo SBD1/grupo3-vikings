@@ -1,10 +1,13 @@
 import os
 from database import Database
+from map_graph import MapGraph
 
 class Game():
   def __init__(self):
     self.db = Database()
     self.start_game()
+    self.map_graph = MapGraph()
+    self.map_graph.map_squares_to_graph_vertex()
 
   def movement(self):
     print("Escolha para onde ir")
