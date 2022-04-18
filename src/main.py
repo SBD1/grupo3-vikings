@@ -21,11 +21,11 @@ class Game():
       pos = a[0][0]
       new_pos = pos.split(',')
 
-      if new_pos[1] == '0':
+      if new_pos[0] == '0':
         print('Impossivel se mover nessa direcao!')
         return -1
 
-      new_pos = f'{new_pos[0]},{str(int(new_pos[1]) - 1)}'
+      new_pos = f'{str(int(new_pos[0]) - 1)},{new_pos[1]}'
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='joao';")
       print(f'Voce esta agora no quadrado {new_pos}')
       return 0
@@ -35,11 +35,11 @@ class Game():
       pos = a[0][0]
       new_pos = pos.split(',')
 
-      if new_pos[1] == '15':
+      if new_pos[0] == '15':
         print('Impossivel se mover nessa direcao!')
         return -1 
 
-      new_pos = f'{new_pos[0]},{str(int(new_pos[1]) + 1)}'
+      new_pos = f'{str(int(new_pos[0]) + 1)},{new_pos[1]}'
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='joao';")
       print(f'Voce esta agora no quadrado {new_pos}')
       return 0
@@ -49,11 +49,11 @@ class Game():
       pos = a[0][0]
       new_pos = pos.split(',')
 
-      if new_pos[0] == '0':
+      if new_pos[1] == '0':
         print('Impossivel se mover nessa direcao!')
         return -1
 
-      new_pos = f'{str(int(new_pos[0]) - 1)},{new_pos[1]}'
+      new_pos = f'{new_pos[0]},{str(int(new_pos[1]) - 1)}'
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='joao';")
       print(f'Voce esta agora no quadrado {new_pos}')
       return 0
@@ -63,11 +63,11 @@ class Game():
       pos = a[0][0]
       new_pos = pos.split(',')
 
-      if new_pos[0] == '23':
+      if new_pos[1] == '23':
         print('Impossivel se mover nessa direcao!')
         return -1
 
-      new_pos = f'{str(int(new_pos[0]) + 1)},{new_pos[1]}'
+      new_pos = f'{new_pos[0]},{str(int(new_pos[1]) + 1)}'
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='joao';")
       print(f'Voce esta agora no quadrado {new_pos}')
       return 0
@@ -314,11 +314,11 @@ class Game():
       while(self.take_action() != -1):
         # check if local has enemy
           # if enemy exists, fight
-        self.check_squere()
-        self.check_player_monster()
+        # self.check_squere()
+        # self.check_player_monster()
 
         # check if local has item to be dropped
-        self.check_item_squere()
+        # self.check_item_squere()
           # if exists, player choose to grab
         # check if local has npc
           # if npc exists, start conversation
