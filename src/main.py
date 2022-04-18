@@ -268,6 +268,43 @@ class Game():
     else:
       return 0
 
+  # use life potion
+  def use_life_potion(self):
+    a = self.db.query("SELECT Vida FROM Viking WHERE Nome = 'joao' ")
+    if a[0][0] <= 0:
+      print('Voce está morto!')
+      return -1
+    else:
+      self.db.insert("UPDATE Viking SET Vida = Vida + 10 WHERE Nome = 'joao' ")
+      print('Vida restaurada!')
+
+  # use item
+  def use_item(self):
+    a = self.db.query("SELECT Item FROM Item WHERE Item = '1,1' ")
+    if a:
+      print('Voce usou um item!')
+      self.db.insert("DELETE FROM Item WHERE Item = '1,1' ")
+    else:
+      print('Voce não possui nenhum item!')
+
+  # use luck potion
+  def use_luck_potion(self):
+    a = self.db.query("SELECT Sorte FROM Viking WHERE Nome = 'joao' ")
+    if a[0][0] <= 0:
+      return -1
+    else:
+      self.db.insert("UPDATE Viking SET Sorte = Sorte + 10 WHERE Nome = 'joao' ")
+      print('Sorte aumentada!')
+  
+  # increase player's attack damage
+  def increase_attack(self):
+    a = self.db.query("SELECT Ataque FROM Viking WHERE Nome = 'joao' ")
+    if a[0][0] <= 0:
+      return -1
+    else:
+      self.db.insert("UPDATE Viking SET Ataque = Ataque + 10 WHERE Nome = 'joao' ")
+      print('Ataque aumentado!')
+
   def start_game(self):
     self.show_menu()
     action = input('--------> ')
