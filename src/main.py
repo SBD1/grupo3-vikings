@@ -1,5 +1,5 @@
-from database import Database
 import os
+from database import Database
 
 class Game():
   def __init__(self):
