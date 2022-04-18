@@ -2,7 +2,6 @@ import os
 import sys
 from graph import Graph
 from database import Database
-from display_game_map import showMap
 
 class MapGraph():
   def __init__(self):
@@ -48,3 +47,33 @@ class MapGraph():
             right_vertex = str(i) + ',' + str(j + 1)
             self.graph.add_edge(current_vertex, right_vertex)
             self.graph.add_edge(current_vertex, bottom_vertex)
+
+  def get_vertexs(self):
+    return self.graph.get_vertexs()
+
+  def get_neighbors(self, vertex):
+    return self.graph.get_neighbors(vertex)
+
+  def update_graph(self):
+    vertexs = self.graph.get_vertexs()
+    for vertex in vertexs:
+      vertexs[vertex]['content'] = ''
+
+    # Viking position
+    query = self.db.query("SELECT Quadrado FROM Viking WHERE Nome = 'arthur'")
+    position = query[0][0]
+    vertexs[position]['content'] = 'Você'
+
+     # NPCS
+    query = self.db.query("SELECT * FROM InstanciaNPC")
+    for npc_tuple in query:
+      vertex = npc_tuple[3]
+      vertex_data = vertexs[vertex]
+      vertex_data['content'] = npc_tuple[1]
+
+    # Instancia barco
+    query = self.db.query("SELECT * FROM InstanciaBarco where nomeviking = 'arthur'")
+    for barco_tuple in query:
+      vertex = barco_tuple[5]
+      vertex_data = vertexs[vertex]
+      vertex_data['content'] = 'Barco'

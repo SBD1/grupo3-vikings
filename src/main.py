@@ -1,13 +1,18 @@
 import os
 from database import Database
 from map_graph import MapGraph
+from display_game_map import showMap
 
 class Game():
   def __init__(self):
     self.db = Database()
-    self.start_game()
     self.map_graph = MapGraph()
     self.map_graph.map_squares_to_graph_vertex()
+    self.map_graph.update_graph()
+    self.start_game()
+
+  def open_map(self):
+    showMap(self.map_graph.get_vertexs())
 
   def movement(self):
     print("Escolha para onde ir")
@@ -93,7 +98,8 @@ class Game():
     print("2 - Abrir mochila")
     print("3 - Visualizar status")
     print("4 - Visualizar habilidades")
-    print("5 - Sair")
+    print("5 - Abrir mapa")
+    print("6 - Sair")
     action = input('--------> ')
 
     if action == '1':
@@ -106,6 +112,8 @@ class Game():
     elif action == '4':
       return 0
     elif action == '5':
+      self.open_map()
+    elif action == '6':
       return -1
     else:
       print('Acao invalida.')
