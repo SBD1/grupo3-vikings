@@ -5,11 +5,11 @@ RETURNS VOID AS $$
 DECLARE 
 
 BEGIN
-  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (1, 'arma');
-  INSERT INTO Especializacao_do_item VALUES (2, 'arma');
-  INSERT INTO Especializacao_do_item VALUES (3, 'arma');
-  INSERT INTO Especializacao_do_item VALUES (4, 'arma');
-  INSERT INTO Especializacao_do_item VALUES (5, 'arma');
+  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (1, 'arma', false);
+  INSERT INTO Especializacao_do_item VALUES (2, 'arma', false);
+  INSERT INTO Especializacao_do_item VALUES (3, 'arma', false);
+  INSERT INTO Especializacao_do_item VALUES (4, 'arma', false);
+  INSERT INTO Especializacao_do_item VALUES (5, 'arma', false);
 
   INSERT INTO Arma 
     (Id, Nome, Descricao, Raridade, Peso, Valor_de_ataque, Valor_de_defesa, Valor_de_agilidade) 
@@ -19,11 +19,11 @@ BEGIN
   INSERT INTO Arma VALUES (4, 'Lança', 'Ponta de metal', 'comum', 8, 70, 2, 90);
   INSERT INTO Arma VALUES (5, 'Porrete', 'Ideal para viagens de saque', 'comum', 8, 70, 2, 90);
 
-  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (6, 'comida');
-  INSERT INTO Especializacao_do_item VALUES (7, 'comida');
-  INSERT INTO Especializacao_do_item VALUES (8, 'comida');
-  INSERT INTO Especializacao_do_item VALUES (9, 'comida');
-  INSERT INTO Especializacao_do_item VALUES (10, 'comida');
+  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (6, 'comida', true);
+  INSERT INTO Especializacao_do_item VALUES (7, 'comida', true);
+  INSERT INTO Especializacao_do_item VALUES (8, 'comida', true);
+  INSERT INTO Especializacao_do_item VALUES (9, 'comida', true);
+  INSERT INTO Especializacao_do_item VALUES (10, 'comida', true);
 
   INSERT INTO Comida
     (Id, Nome, Descricao, Raridade, Peso, Valor_de_cura)
@@ -33,9 +33,9 @@ BEGIN
   INSERT INTO Comida VALUES (9, 'Fruta Seca', 'Alguma fruta', 'comum', 6, 100);
   INSERT INTO Comida VALUES (10, 'Carne', 'Alguma Carne', 'comum', 6, 100);
 
-  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (11, 'pocao');
-  INSERT INTO Especializacao_do_item VALUES (12, 'pocao');
-  INSERT INTO Especializacao_do_item VALUES (13, 'pocao');
+  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (11, 'pocao', true);
+  INSERT INTO Especializacao_do_item VALUES (12, 'pocao', true);
+  INSERT INTO Especializacao_do_item VALUES (13, 'pocao', true);
 
   INSERT INTO Pocao
     (Id, Nome, Descricao, Raridade, Peso, Bonus, Duracao)
@@ -43,8 +43,8 @@ BEGIN
   INSERT INTO Pocao VALUES (12, 'Poção de Ataque', 'Aumenta o seu poder de ataque por alguns segundos', 'comum', 2, 40, 30);
   INSERT INTO Pocao VALUES (13, 'Poção de Defesa', 'Aumenta o seu poder defensivo por alguns segundos', 'comum', 2, 40, 30);
   
-  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (14, 'armadura');
-  INSERT INTO Especializacao_do_item VALUES (15, 'armadura');
+  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (14, 'armadura', false);
+  INSERT INTO Especializacao_do_item VALUES (15, 'armadura', false);
 
   INSERT INTO Armadura
     (Id, Nome, Descricao, Raridade, Peso, Valor_de_defesa, Valor_de_agilidade)

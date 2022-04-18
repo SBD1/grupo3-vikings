@@ -82,7 +82,7 @@ CREATE DOMAIN ITEM_TIPO
 CREATE TABLE Especializacao_do_item(
     Id INTEGER NOT NULL,
     Tipo ITEM_TIPO NOT NULL,
-    Consumivel BOOLEAN NOT NULL,
+    Consumivel BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT especializacao_do_item_pk PRIMARY KEY(Id)
 );
@@ -332,6 +332,14 @@ CREATE TABLE Recebe (
     CONSTRAINT habilidade_nome_fk FOREIGN KEY(Nome_habilidade) REFERENCES Habilidade(Nome),
     CONSTRAINT viking_nome_fk FOREIGN KEY(Nome_viking) REFERENCES Habilidade(Nome),
     CONSTRAINT entidade_nome_fk FOREIGN KEY(Nome_entidade) REFERENCES Entidade(Nome)
+);
+
+CREATE TABLE Dropa (
+    Nome_tipo_monstro VARCHAR(100) NOT NULL,
+    Id_item INTEGER NOT NULL,
+    
+    CONSTRAINT tipo_monstro_nome_fk FOREIGN KEY(Nome_tipo_monstro) REFERENCES TipoMonstro(Nome),
+    CONSTRAINT item_id_fk FOREIGN KEY(Id_item) REFERENCES Especializacao_do_item(Id)
 );
 
 CREATE TABLE Aesir (

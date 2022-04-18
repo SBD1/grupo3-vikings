@@ -4,7 +4,6 @@ SELECT criar_mapa_jogo();
 
 SELECT criar_itens();
 
-
 SELECT criar_artefatos();
 
 SELECT criar_viking('arthur');
