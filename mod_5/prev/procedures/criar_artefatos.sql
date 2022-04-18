@@ -20,11 +20,7 @@ BEGIN
     VALUES(i, random()*(1-10)+10, i * 100);
   END LOOP;
   
-  -- Adição dos Barcos
-  INSERT INTO Barco 
-    (Tipo, Capacidade, Velocidade, Ataque, Defesa)
-  VALUES ('knarr', 15, 10, 100, 80);
-  INSERT INTO Barco VALUES ('langskip', 15, 10, 100, 80);
+  
 
 END;
 $$ LANGUAGE plpgsql;
