@@ -123,6 +123,49 @@ class Game():
     else:
       return 0
 
+  # check if player has item to be dropped
+  def check_item(self):
+    a = self.db.query("SELECT Item FROM Item WHERE Item = '1,1' ")
+    if a:
+      print('Voce encontrou um item!')
+      return 1
+    else:
+      return 0
+  
+  # check if item is in squere
+  def check_item_squere(self):
+    a = self.db.query("SELECT Item FROM Item WHERE Item = '1,1' ")
+    b = self.db.query("SELECT Viking FROM Viking WHERE Quadrado = '1,1' ")
+    if a and b:
+      print('Item está no mesmo bloco, você pode pegá-lo!')
+      return 1
+    else:
+      return 0
+
+  # create a new monster
+  def create_monster(self):
+    if self.check_squere():
+      print('Não é possivel criar um monstro neste quadrado!')
+      return -1
+    self.db.insert("INSERT INTO Monstro (Quadrado) VALUES ('1,1')")
+    print('Monstro criado!')
+
+  # kill monster
+  def kill_monster(self):
+    if self.check_squere():
+      self.db.insert("DELETE FROM Monstro WHERE Quadrado = '1,1'")
+      print('Monstro morto!')
+    else:
+      print('Não há monstro neste quadrado!')
+
+  # drop item
+  def drop_item(self):
+    if self.check_item():
+      self.db.insert("DELETE FROM Item WHERE Item = '1,1'")
+      print('Item dropado!')
+    else:
+      print('Não há item para ser dropado!')
+
   def start_game(self):
     self.show_menu()
     action = input('--------> ')
