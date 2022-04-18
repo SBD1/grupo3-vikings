@@ -174,6 +174,12 @@ CREATE TABLE InstanciaBarco (
   CONSTRAINT instancia_barco_viking_fk FOREIGN KEY (NomeViking) REFERENCES Viking (Nome) ON DELETE CASCADE
 );
 
+CREATE SEQUENCE id_instancia_barco_seq
+START 1
+INCREMENT 1
+MINVALUE 1
+OWNED BY InstanciaBarco.IdBarco;
+
 CREATE TABLE NPC (
   IdNPC VARCHAR(100) NOT NULL,
   Tribo VARCHAR(20) NOT NULL,

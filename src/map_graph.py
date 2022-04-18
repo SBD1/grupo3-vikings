@@ -54,13 +54,13 @@ class MapGraph():
   def get_neighbors(self, vertex):
     return self.graph.get_neighbors(vertex)
 
-  def update_graph(self):
+  def update_graph(self, char):
     vertexs = self.graph.get_vertexs()
     for vertex in vertexs:
       vertexs[vertex]['content'] = ''
 
     # Viking position
-    query = self.db.query("SELECT Quadrado FROM Viking WHERE Nome = 'arthur'")
+    query = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{char}'")
     position = query[0][0]
     vertexs[position]['content'] = 'Você'
 
@@ -72,7 +72,7 @@ class MapGraph():
       vertex_data['content'] = npc_tuple[1]
 
     # Instancia barco
-    query = self.db.query("SELECT * FROM InstanciaBarco where nomeviking = 'arthur'")
+    query = self.db.query(f"SELECT * FROM InstanciaBarco where nomeviking = '{char}'")
     for barco_tuple in query:
       vertex = barco_tuple[5]
       vertex_data = vertexs[vertex]

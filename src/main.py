@@ -4,11 +4,12 @@ from map_graph import MapGraph
 from display_game_map import showMap
 
 class Game():
-  def __init__(self):
+  def __init__(self, char):
     self.db = Database()
     self.map_graph = MapGraph()
     self.map_graph.map_squares_to_graph_vertex()
-    self.map_graph.update_graph()
+    self.char = char
+    self.map_graph.update_graph(char)
     self.start_game()
 
   def open_map(self):
@@ -25,7 +26,7 @@ class Game():
     action = input('--------> ')
 
     if action == '1':
-      a = self.db.query("SELECT Quadrado FROM Viking WHERE Nome = 'joao' ")
+      a = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
       pos = a[0][0]
       new_pos = pos.split(',')
 
@@ -34,12 +35,12 @@ class Game():
         return -1
 
       new_pos = f'{str(int(new_pos[0]) - 1)},{new_pos[1]}'
-      self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='joao';")
+      self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
       print(f'Voce esta agora no quadrado {new_pos}')
       return 0
   
     elif action == '2':
-      a = self.db.query("SELECT Quadrado FROM Viking WHERE Nome = 'joao' ")
+      a = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
       pos = a[0][0]
       new_pos = pos.split(',')
 
@@ -48,12 +49,12 @@ class Game():
         return -1 
 
       new_pos = f'{str(int(new_pos[0]) + 1)},{new_pos[1]}'
-      self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='joao';")
+      self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
       print(f'Voce esta agora no quadrado {new_pos}')
       return 0
   
     elif action == '3':
-      a = self.db.query("SELECT Quadrado FROM Viking WHERE Nome = 'joao' ")
+      a = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
       pos = a[0][0]
       new_pos = pos.split(',')
 
@@ -62,12 +63,12 @@ class Game():
         return -1
 
       new_pos = f'{new_pos[0]},{str(int(new_pos[1]) - 1)}'
-      self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='joao';")
+      self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
       print(f'Voce esta agora no quadrado {new_pos}')
       return 0
 
     elif action == '4':
-      a = self.db.query("SELECT Quadrado FROM Viking WHERE Nome = 'joao' ")
+      a = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
       pos = a[0][0]
       new_pos = pos.split(',')
 
@@ -76,12 +77,12 @@ class Game():
         return -1
 
       new_pos = f'{new_pos[0]},{str(int(new_pos[1]) + 1)}'
-      self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='joao';")
+      self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
       print(f'Voce esta agora no quadrado {new_pos}')
       return 0
 
     elif action == '5':
-      a = self.db.query("SELECT Quadrado FROM Viking WHERE Nome = 'joao' ")
+      a = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
       print(f'Voce se encontra na posicao ({a[0][0]})')
       return 0
     elif action == '6':
@@ -104,6 +105,8 @@ class Game():
 
     if action == '1':
       self.movement()
+      self.db.commit()
+      self.map_graph.update_graph()
       return 0
     elif action == '2':
       return 0
@@ -187,7 +190,7 @@ class Game():
   
   # show status
   def show_status(self):
-    a = self.db.query("SELECT Nome, Vida, Ataque, Defesa, Inteligencia, Forca, Destreza, Sorte FROM Viking WHERE Nome = 'joao' ")
+    a = self.db.query(f"SELECT Nome, Vida, Ataque, Defesa, Inteligencia, Forca, Destreza, Sorte FROM Viking WHERE Nome = '{self.char}' ")
     print(f'Nome: {a[0][0]}')
     print(f'Vida: {a[0][1]}')
     print(f'Ataque: {a[0][2]}')
@@ -199,7 +202,7 @@ class Game():
 
   # show skills
   def show_skills(self):
-    a = self.db.query("SELECT Nome, Habilidade1, Habilidade2, Habilidade3 FROM Viking WHERE Nome = 'joao' ")
+    a = self.db.query(f"SELECT Nome, Habilidade1, Habilidade2, Habilidade3 FROM Viking WHERE Nome = '{self.char}' ")
     print(f'Nome: {a[0][0]}')
     print(f'Habilidade 1: {a[0][1]}')
     print(f'Habilidade 2: {a[0][2]}')
@@ -215,7 +218,7 @@ class Game():
   
   # use skill during fight
   def use_skill(self):
-    a = self.db.query("SELECT Nome, Habilidade1, Habilidade2, Habilidade3 FROM Viking WHERE Nome = 'joao' ")
+    a = self.db.query(f"SELECT Nome, Habilidade1, Habilidade2, Habilidade3 FROM Viking WHERE Nome = '{self.char}' ")
     print(f'Nome: {a[0][0]}')
     print(f'Habilidade 1: {a[0][1]}')
     print(f'Habilidade 2: {a[0][2]}')
@@ -232,7 +235,7 @@ class Game():
   
   # check player's health 
   def check_player_health(self):
-    a = self.db.query("SELECT Vida FROM Viking WHERE Nome = 'joao' ")
+    a = self.db.query(f"SELECT Vida FROM Viking WHERE Nome = '{self.char}' ")
     if a[0][0] <= 0:
       print('Voce morreu!')
       return -1
@@ -250,7 +253,7 @@ class Game():
 
   # fight with monster
   def fight_monster(self):
-    a = self.db.query("SELECT Vida FROM Viking WHERE Nome = 'joao' ")
+    a = self.db.query(f"SELECT Vida FROM Viking WHERE Nome = '{self.char}' ")
     b = self.db.query("SELECT Vida FROM Monstro WHERE Quadrado = '1,1' ")
     while a[0][0] > 0 and b[0][0] > 0:
       print('Voce ataca o monstro!')
@@ -281,12 +284,12 @@ class Game():
 
   # use life potion
   def use_life_potion(self):
-    a = self.db.query("SELECT Vida FROM Viking WHERE Nome = 'joao' ")
+    a = self.db.query(f"SELECT Vida FROM Viking WHERE Nome = '{self.char}' ")
     if a[0][0] <= 0:
       print('Voce está morto!')
       return -1
     else:
-      self.db.insert("UPDATE Viking SET Vida = Vida + 10 WHERE Nome = 'joao' ")
+      self.db.insert(f"UPDATE Viking SET Vida = Vida + 10 WHERE Nome = '{self.char}' ")
       print('Vida restaurada!')
 
   # use item
@@ -300,20 +303,20 @@ class Game():
 
   # use luck potion
   def use_luck_potion(self):
-    a = self.db.query("SELECT Sorte FROM Viking WHERE Nome = 'joao' ")
+    a = self.db.query(f"SELECT Sorte FROM Viking WHERE Nome = '{self.char}' ")
     if a[0][0] <= 0:
       return -1
     else:
-      self.db.insert("UPDATE Viking SET Sorte = Sorte + 10 WHERE Nome = 'joao' ")
+      self.db.insert(f"UPDATE Viking SET Sorte = Sorte + 10 WHERE Nome = '{self.char}' ")
       print('Sorte aumentada!')
   
   # increase player's attack damage
   def increase_attack(self):
-    a = self.db.query("SELECT Ataque FROM Viking WHERE Nome = 'joao' ")
+    a = self.db.query(f"SELECT Ataque FROM Viking WHERE Nome = '{self.char}' ")
     if a[0][0] <= 0:
       return -1
     else:
-      self.db.insert("UPDATE Viking SET Ataque = Ataque + 10 WHERE Nome = 'joao' ")
+      self.db.insert(f"UPDATE Viking SET Ataque = Ataque + 10 WHERE Nome = '{self.char}' ")
       print('Ataque aumentado!')
 
   def start_game(self):
@@ -345,5 +348,5 @@ class Game():
     self.db.close()
 
 
-game = Game()
+game = Game('arthur')
 game.close_db_connection()

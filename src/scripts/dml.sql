@@ -4,13 +4,16 @@ SELECT criar_mapa_jogo();
 
 SELECT criar_itens();
 
-SELECT criar_artefatos();
 
-SELECT criar_monstros();
+SELECT criar_artefatos();
 
 SELECT criar_viking('arthur');
 SELECT criar_viking('marcelo');
 SELECT criar_viking('joao');
+
+SELECT criar_monstros();
+
+SELECT criar_barcos();
 
 SELECT criar_deus();
 
@@ -25,14 +28,6 @@ INSERT INTO Instancia_item VALUES (6, 1, '0,1');
 
 INSERT INTO Item_Mochila VALUES (1, 3);
 INSERT INTO Item_Mochila VALUES (1, 4);
-
-INSERT INTO InstanciaBarco VALUES (1, 'knarr', 'arthur', 'barco1', 100, '4,5');
-INSERT INTO InstanciaBarco VALUES (2, 'knarr', 'arthur', 'barco2', 100, '6,5');
-INSERT INTO InstanciaBarco VALUES (3, 'langskip', 'marcelo', 'barco3', 100, '3,5');
-
-INSERT INTO InstanciaBarco (
-    IdBarco, Tipo, Integridade, Coordenadas
-) VALUES (4, 'knarr', 100, '9,5');
 
 INSERT INTO Npc VALUES ('Ferreiro', 'tribo 01', 0, 51);
 INSERT INTO Npc VALUES ('Vendedor', 'tribo 01', 0, 51);
