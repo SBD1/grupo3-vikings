@@ -220,11 +220,51 @@ class Game():
       print('Acao invalida.')
   
   # check player's health 
-  def check_health(self):
+  def check_player_health(self):
     a = self.db.query("SELECT Vida FROM Viking WHERE Nome = 'joao' ")
     if a[0][0] <= 0:
       print('Voce morreu!')
       return -1
+    else:
+      return 0
+  
+  # check monster's health
+  def check_monster_health(self):
+    a = self.db.query("SELECT Vida FROM Monstro WHERE Quadrado = '1,1' ")
+    if a[0][0] <= 0:
+      print('Monstro morreu!')
+      return -1
+    else:
+      return 0
+
+  # fight with monster
+  def fight_monster(self):
+    a = self.db.query("SELECT Vida FROM Viking WHERE Nome = 'joao' ")
+    b = self.db.query("SELECT Vida FROM Monstro WHERE Quadrado = '1,1' ")
+    while a[0][0] > 0 and b[0][0] > 0:
+      print('Voce ataca o monstro!')
+      print('Monstro ataca você!')
+      a[0][0] = a[0][0] - b[0][0]
+      b[0][0] = b[0][0] - a[0][0]
+      print(f'Vida do monstro: {b[0][0]}')
+      print(f'Vida do jogador: {a[0][0]}')
+      if self.check_monster_health() == -1:
+        break
+      if self.check_player_health() == -1:
+        break
+    if a[0][0] <= 0:
+      print('Voce morreu!')
+    else:
+      print('Monstro morreu!')
+
+  # check if player is in the same squere as monster
+  def check_player_monster(self):
+    a = self.db.query("SELECT Quadrado FROM Viking WHERE Quadrado = '1,1' ")
+    b = self.db.query("SELECT Quadrado FROM Monstro WHERE Quadrado = '1,1' ")
+    if a and b:
+      print('Voce está no mesmo bloco do monstro!')
+      self.fight_monster()
+      return 1
     else:
       return 0
 
@@ -238,7 +278,10 @@ class Game():
         # check if local has enemy
           # if enemy exists, fight
         self.check_squere()
+        self.check_player_monster()
+
         # check if local has item to be dropped
+        self.check_item_squere()
           # if exists, player choose to grab
         # check if local has npc
           # if npc exists, start conversation
