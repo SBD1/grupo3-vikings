@@ -12,15 +12,37 @@ GRAY = (186, 186, 186)
 RED = (255, 0, 0)
 ISLAND_COLOR = (255, 230, 204)
 WINDOW_HEIGHT = 800
-WINDOW_WIDTH = 1200
+WINDOW_WIDTH = 1500
 
 def drawGridLines(SCREEN):
   blockSize = 50 # Set the size of the grid block
-  for x in range(0, WINDOW_WIDTH, blockSize):
+  for x in range(0, WINDOW_WIDTH - 300, blockSize): # -300 pois o grid vai até 1200(largura) e a largura da tela é 1500
       for y in range(0, WINDOW_HEIGHT, blockSize):
           rect = pygame.Rect(x, y, blockSize, blockSize)
           pygame.draw.rect(SCREEN, BLACK, rect, 1)
 
+def drawInfo(SCREEN, FONT):
+  rect = pygame.Rect(1250, 50, 50, 50)
+  pygame.draw.rect(SCREEN, GRAY, rect, 0)
+  rect = pygame.Rect(1250, 100, 50, 50)
+  pygame.draw.rect(SCREEN, GREEN, rect, 0)
+  rect = pygame.Rect(1250, 150, 50, 50)
+  pygame.draw.rect(SCREEN, ISLAND_COLOR, rect, 0)
+  rect = pygame.Rect(1250, 200, 50, 50)
+  pygame.draw.rect(SCREEN, BLUE, rect, 0)
+
+  string = FONT.render('Vila Viking', True, BLACK)
+  SCREEN.blit(string, (1305, 70))
+  string = FONT.render('Floresta Negra', True, BLACK)
+  SCREEN.blit(string, (1305, 120))
+  string = FONT.render('Ilha', True, BLACK)
+  SCREEN.blit(string, (1305, 170))
+  string = FONT.render('Mar', True, BLACK)
+  SCREEN.blit(string, (1305, 220))
+      
+
+  string = FONT.render('Pressione qualquer tecla para fechar', True, BLACK)
+  SCREEN.blit(string, (1220, 300))
 
 def showMap(data):
   pygame.init()
@@ -46,6 +68,7 @@ def showMap(data):
       else:
           SCREEN.blit(string, [data[square]['center_x'], data[square]['center_y']])
   drawGridLines(SCREEN)
+  drawInfo(SCREEN, FONT)
   while True:
     pygame.display.update() 
     for event in pygame.event.get():
