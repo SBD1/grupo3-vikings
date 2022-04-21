@@ -24,9 +24,11 @@ INSERT INTO Instancia_item (Id, Id_item) VALUES (4, 1);
 INSERT INTO Instancia_item (Id, Id_item) VALUES (5, 2);
 
 INSERT INTO Instancia_item VALUES (6, 1, '0,1');
+INSERT INTO Instancia_item VALUES (7, 8);
 
 INSERT INTO Item_Mochila VALUES (1, 3);
 INSERT INTO Item_Mochila VALUES (1, 4);
+INSERT INTO Item_Mochila VALUES (1, 7);
 
 INSERT INTO Npc VALUES ('Ferreiro', 'tribo 01', 0, 51);
 INSERT INTO Npc VALUES ('Vendedor', 'tribo 01', 0, 51);

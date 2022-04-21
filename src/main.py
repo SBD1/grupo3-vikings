@@ -216,12 +216,17 @@ class Game():
     if len(id_itens_mochila) == 0:
       print(f'A mochila está vazia.')
     else:
-      tipo_itens_mochila = self.tuples_list_to_list(self.db.query(f"SELECT Tipo FROM Especializacao_do_item WHERE Id IN {id_itens_mochila} ") ) 
+      tipo_itens_mochila = self.db.query(f"SELECT Tipo, id_item, II.id as instancia_id, consumivel FROM instancia_item II INNER JOIN especializacao_do_item EI ON II.id_item = EI.id WHERE II.id IN {id_itens_mochila}")
+
       itens = []
-      for i, id in enumerate(id_itens_mochila): 
-          item =  self.tuples_list_to_list(self.db.query(f"SELECT Id, Nome, Raridade, Peso FROM {tipo_itens_mochila[i].strip()} WHERE Id = {id} "))  
+      for i in range(len(id_itens_mochila)): 
+          query = f"SELECT Id, Nome, Raridade, Peso FROM {tipo_itens_mochila[i][0].strip()} WHERE Id = {tipo_itens_mochila[i][1]}"
+      
+          consumivel = "Sim" if tipo_itens_mochila[i][3] else "Não"
+          item =  (*self.tuples_list_to_list(self.db.query(query)),  consumivel)  
+      
           itens.append(item)
-      print (tabulate(itens, headers=["Item","Id", "Nome", "Raridade", "Peso"],   showindex="always"))
+      print (tabulate(itens, headers=["Item","Id", "Nome", "Raridade", "Peso", "Consumivel"],   showindex="always"))
 
 
 
