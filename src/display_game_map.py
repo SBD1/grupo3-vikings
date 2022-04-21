@@ -21,7 +21,7 @@ def drawGridLines(SCREEN):
           rect = pygame.Rect(x, y, blockSize, blockSize)
           pygame.draw.rect(SCREEN, BLACK, rect, 1)
 
-def drawInfo(SCREEN, FONT, posicao):
+def drawInfo(SCREEN, FONT, posicao, estaEmBarco):
 
   string = FONT.render('Áreas do mapa', True, BLACK)
   SCREEN.blit(string, (1250, 30))
@@ -49,6 +49,9 @@ def drawInfo(SCREEN, FONT, posicao):
   SCREEN.blit(string, (1240, 300))
   string = FONT.render('Você está na coordenada [{}]'.format(posicao), True, BLACK)
   SCREEN.blit(string, (1240, 320))
+  if estaEmBarco:
+    string = FONT.render('Você está em um barco'.format(posicao), True, RED)
+    SCREEN.blit(string, (1240, 340))
 
   string = FONT.render('Pressione qualquer tecla para fechar', True, BLACK)
   SCREEN.blit(string, (1240, 750))
@@ -79,7 +82,11 @@ def showMap(data, posicao):
     else:
         SCREEN.blit(string, [data[square]['center_x'], data[square]['center_y']])
   drawGridLines(SCREEN)
-  drawInfo(SCREEN, FONT, posicao)
+  estaEmBarco = False
+  if 'Barco' in data[posicao]['content'] and 'Você' in data[posicao]['content']:
+    estaEmBarco = True
+  drawInfo(SCREEN, FONT, posicao, estaEmBarco)
+
   while True:
     pygame.display.update() 
     for event in pygame.event.get():

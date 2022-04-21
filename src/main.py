@@ -9,10 +9,10 @@ class Game():
     self.map_graph = MapGraph()
     self.map_graph.map_squares_to_graph_vertex()
     self.char = char
-    self.map_graph.update_graph(char)
     self.start_game()
 
   def open_map(self):
+    self.map_graph.update_graph(self.char)
     posicao = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
     showMap(self.map_graph.get_vertexs(), posicao[0][0])
 
@@ -25,6 +25,7 @@ class Game():
     print("5 - Informacoes do quadrado atual")
     print("6 - Trocar acao")
     action = input('--------> ')
+    
 
     if action == '1':
       a = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
@@ -36,8 +37,16 @@ class Game():
         return -1
 
       new_pos = f'{str(int(new_pos[0]) - 1)},{new_pos[1]}'
+      estaEmBarco = False
+      posicaoViking = pos
+      posicaoBarco = self.db.query(f"SELECT * FROM InstanciaBarco WHERE NomeViking = '{self.char}' AND Coordenadas = '{pos}'")
+      id_barco = 0
+      if len(posicaoBarco) > 0:
+        id_barco = posicaoBarco[0][0]
+        estaEmBarco = True
+      if estaEmBarco:
+        self.db.insert(f"UPDATE InstanciaBarco SET Coordenadas = '{new_pos}' WHERE IdBarco = {id_barco}")
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
-      print(f'Voce esta agora no quadrado {new_pos}')
       return 0
   
     elif action == '2':
@@ -50,8 +59,16 @@ class Game():
         return -1 
 
       new_pos = f'{str(int(new_pos[0]) + 1)},{new_pos[1]}'
+      estaEmBarco = False
+      posicaoViking = pos
+      posicaoBarco = self.db.query(f"SELECT * FROM InstanciaBarco WHERE NomeViking = '{self.char}' AND Coordenadas = '{pos}'")
+      id_barco = 0
+      if len(posicaoBarco) > 0:
+        id_barco = posicaoBarco[0][0]
+        estaEmBarco = True
+      if estaEmBarco:
+        self.db.insert(f"UPDATE InstanciaBarco SET Coordenadas = '{new_pos}' WHERE IdBarco = {id_barco}")
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
-      print(f'Voce esta agora no quadrado {new_pos}')
       return 0
   
     elif action == '3':
@@ -64,8 +81,16 @@ class Game():
         return -1
 
       new_pos = f'{new_pos[0]},{str(int(new_pos[1]) - 1)}'
+      estaEmBarco = False
+      posicaoViking = pos
+      posicaoBarco = self.db.query(f"SELECT * FROM InstanciaBarco WHERE NomeViking = '{self.char}' AND Coordenadas = '{pos}'")
+      id_barco = 0
+      if len(posicaoBarco) > 0:
+        id_barco = posicaoBarco[0][0]
+        estaEmBarco = True
+      if estaEmBarco:
+        self.db.insert(f"UPDATE InstanciaBarco SET Coordenadas = '{new_pos}' WHERE IdBarco = {id_barco}")
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
-      print(f'Voce esta agora no quadrado {new_pos}')
       return 0
 
     elif action == '4':
@@ -78,8 +103,16 @@ class Game():
         return -1
 
       new_pos = f'{new_pos[0]},{str(int(new_pos[1]) + 1)}'
+      estaEmBarco = False
+      posicaoViking = pos
+      posicaoBarco = self.db.query(f"SELECT * FROM InstanciaBarco WHERE NomeViking = '{self.char}' AND Coordenadas = '{pos}'")
+      id_barco = 0
+      if len(posicaoBarco) > 0:
+        id_barco = posicaoBarco[0][0]
+        estaEmBarco = True
+      if estaEmBarco:
+        self.db.insert(f"UPDATE InstanciaBarco SET Coordenadas = '{new_pos}' WHERE IdBarco = {id_barco}")
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
-      print(f'Voce esta agora no quadrado {new_pos}')
       return 0
 
     elif action == '5':
@@ -175,10 +208,8 @@ class Game():
     if action == '1':
       self.movement()
       self.db.commit()
-      try:
-        self.map_graph.update_graph(self.char)
-      except:
-        return 0
+      posicao_atual = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
+      print(f'Voce esta agora no quadrado {posicao_atual[0][0]}')
       return 0
     elif action == '2':
       return 0
