@@ -84,7 +84,12 @@ class Game():
     elif action == '5':
       a = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
       print(f'Voce se encontra na posicao ({a[0][0]})')
-      return 0
+      try:
+        self.open_map()
+        return 0
+      except:
+        print('Nao foi possivel abrir o mapa')
+        return -1
     elif action == '6':
       return 0
     else:
@@ -92,6 +97,34 @@ class Game():
       return 1
 
     return
+
+# call this function after killing a monster
+  def add_xp(xp, self):
+    a = self.db.query(f"SELECT Experiencia FROM Viking WHERE Nome = '{self.char}' ")
+    self.db.insert(f"UPDATE Viking SET Experiencia='{a[0][0] + xp}' WHERE Nome='{self.char}';")
+    self.db.commit()
+
+# call this function everytime a monster is killed
+  def check_level_up(self):
+    a = self.db.query(f"SELECT Experiencia FROM Viking WHERE Nome = '{self.char}' ")
+    check = self.db.query(f"SELECT Nivel FROM Viking WHERE Nome = '{self.char}' ")
+    b = self.db.query(f"SELECT Experiencia_para_Subir_de_Nivel FROM Nivel WHERE Valor = '{check[0][0]}' ")
+
+    if a[0][0] >= b[0][0]:
+      self.db.insert(f"UPDATE Viking SET Nivel='{int(check[0][0])+1}' WHERE Nome='{self.char}';")
+      self.db.insert(f"UPDATE Viking SET Experiencia='{0}' WHERE Nome='{self.char}';")
+      self.db.commit()
+      check = self.db.query(f"SELECT Nivel FROM Viking WHERE Nome = '{self.char}' ")
+      print(f'Parabens! Voce agora eh nivel {check[0][0]}!')
+
+  def status(self):
+    a = self.db.query(f"SELECT * FROM Viking WHERE Nome = '{self.char}' ")
+    print(f'Nome -> {a[0][0]}')
+    print(f'Experiencia -> {a[0][1]}, Nivel -> {a[0][2]}')
+    print(f'Quadrado -> {a[0][7]}')
+    print(f'Ataque -> {a[0][8]}, Defesa -> {a[0][9]}, Roubo de Vida -> {a[0][10]}')
+    print(f'Agilidade -> {a[0][11]}, Velocidade -> {a[0][12]}')
+    print(f'Nivel de Vida -> {a[0][13]}, Vida Restante -> {a[0][14]}')
 
   def take_action(self):
     print("Escolha o que fazer")
@@ -112,17 +145,20 @@ class Game():
         return 0
       return 0
     elif action == '2':
+      self.check_level_up()
       return 0
     elif action == '3':
+      self.status()
       return 0
     elif action == '4':
       return 0
     elif action == '5':
       try:
         self.open_map()
+        return 0
       except:
         print('Nao foi possivel abrir o mapa')
-        return 0
+        return -1
     elif action == '6':
       return -1
     else:
@@ -135,8 +171,8 @@ class Game():
     print("1 - Iniciar Jogo")
     print("2 - Sair")
 
-  # check if monster is in squere
-  def check_squere(self):
+  # check if monster is in square
+  def check_square(self):
     a = self.db.query("SELECT Quadrado FROM Monstro WHERE Quadrado = '1,1' ")
     if a:
       print('Voce encontrou um monstro!')
@@ -153,8 +189,8 @@ class Game():
     else:
       return 0
   
-  # check if item is in squere
-  def check_item_squere(self):
+  # check if item is in square
+  def check_item_square(self):
     a = self.db.query("SELECT Item FROM Item WHERE Item = '1,1' ")
     b = self.db.query("SELECT Viking FROM Viking WHERE Quadrado = '1,1' ")
     if a and b:
@@ -165,7 +201,7 @@ class Game():
 
   # create a new monster
   def create_monster(self):
-    if self.check_squere():
+    if self.check_square():
       print('Não é possivel criar um monstro neste quadrado!')
       return -1
     self.db.insert("INSERT INTO Monstro (Quadrado) VALUES ('1,1')")
@@ -173,7 +209,7 @@ class Game():
 
   # kill monster
   def kill_monster(self):
-    if self.check_squere():
+    if self.check_square():
       self.db.insert("DELETE FROM Monstro WHERE Quadrado = '1,1'")
       print('Monstro morto!')
     else:
@@ -189,7 +225,7 @@ class Game():
 
   # pick up item
   def pick_up_item(self):
-    if self.check_item_squere():
+    if self.check_item_square():
       self.db.insert("INSERT INTO Item (Item) VALUES ('1,1')")
       print('Item pegado!')
     else:
@@ -278,7 +314,7 @@ class Game():
     else:
       print('Monstro morreu!')
 
-  # check if player is in the same squere as monster
+  # check if player is in the same square as monster
   def check_player_monster(self):
     a = self.db.query("SELECT Quadrado FROM Viking WHERE Quadrado = '1,1' ")
     b = self.db.query("SELECT Quadrado FROM Monstro WHERE Quadrado = '1,1' ")
@@ -335,11 +371,11 @@ class Game():
       while(self.take_action() != -1):
         # check if local has enemy
           # if enemy exists, fight
-        # self.check_squere()
+        # self.check_square()
         # self.check_player_monster()
 
         # check if local has item to be dropped
-        # self.check_item_squere()
+        # self.check_item_square()
           # if exists, player choose to grab
         # check if local has npc
           # if npc exists, start conversation
