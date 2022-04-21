@@ -13,7 +13,8 @@ class Game():
     self.start_game()
 
   def open_map(self):
-    showMap(self.map_graph.get_vertexs())
+    posicao = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
+    showMap(self.map_graph.get_vertexs(), posicao[0][0])
 
   def movement(self):
     print("Escolha para onde ir")
@@ -89,7 +90,7 @@ class Game():
         return 0
       except:
         print('Nao foi possivel abrir o mapa')
-        return -1
+        return 0
     elif action == '6':
       return 0
     else:
@@ -192,7 +193,7 @@ class Game():
         return 0
       except:
         print('Nao foi possivel abrir o mapa')
-        return -1
+        return 0
     elif action == '6':
       return -1
     else:

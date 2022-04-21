@@ -6,8 +6,8 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-BLUE = (0, 0, 255)
-GREEN = (0, 255, 0)
+BLUE = (71, 71, 255)
+GREEN = (128, 255, 128)
 GRAY = (186, 186, 186)
 RED = (255, 0, 0)
 ISLAND_COLOR = (255, 230, 204)
@@ -21,7 +21,11 @@ def drawGridLines(SCREEN):
           rect = pygame.Rect(x, y, blockSize, blockSize)
           pygame.draw.rect(SCREEN, BLACK, rect, 1)
 
-def drawInfo(SCREEN, FONT):
+def drawInfo(SCREEN, FONT, posicao):
+
+  string = FONT.render('Áreas do mapa', True, BLACK)
+  SCREEN.blit(string, (1250, 30))
+
   rect = pygame.Rect(1250, 50, 50, 50)
   pygame.draw.rect(SCREEN, GRAY, rect, 0)
   rect = pygame.Rect(1250, 100, 50, 50)
@@ -41,10 +45,15 @@ def drawInfo(SCREEN, FONT):
   SCREEN.blit(string, (1305, 220))
       
 
-  string = FONT.render('Pressione qualquer tecla para fechar', True, BLACK)
-  SCREEN.blit(string, (1220, 300))
+  string = FONT.render('"?" pode significar Item ou Monstro', True, BLACK)
+  SCREEN.blit(string, (1240, 300))
+  string = FONT.render('Você está na coordenada [{}]'.format(posicao), True, BLACK)
+  SCREEN.blit(string, (1240, 320))
 
-def showMap(data):
+  string = FONT.render('Pressione qualquer tecla para fechar', True, BLACK)
+  SCREEN.blit(string, (1240, 750))
+
+def showMap(data, posicao):
   pygame.init()
   pygame.display.set_caption('Mapa Vikings')  
   SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -52,23 +61,25 @@ def showMap(data):
   FONT = pygame.font.SysFont(None, 20)
   blockSize = 50
   for square in data:
-      rect = pygame.Rect(data[square]['center_x'] - 20, data[square]['center_y'] - 20, blockSize, blockSize)
-      if data[square]['area'] == 1:
-          pygame.draw.rect(SCREEN, GRAY, rect, 0)
-      elif data[square]['area'] == 2:
-          pygame.draw.rect(SCREEN, GREEN, rect, 0)
-      elif data[square]['area'] == 3:
-          pygame.draw.rect(SCREEN, ISLAND_COLOR, rect, 0)
-      elif data[square]['area'] == 4:
-          pygame.draw.rect(SCREEN, BLUE, rect, 0)
-      square_text = data[square]['content']
-      string = FONT.render(square_text, True, BLACK if not square_text == 'Você' else RED)
-      if len(square_text) > 1:
-          SCREEN.blit(string, [data[square]['center_x'] - (2.5 * len(square_text)), data[square]['center_y']])
-      else:
-          SCREEN.blit(string, [data[square]['center_x'], data[square]['center_y']])
+    rect = pygame.Rect(data[square]['center_x'] - 20, data[square]['center_y'] - 20, blockSize, blockSize)
+    if data[square]['area'] == 1:
+        pygame.draw.rect(SCREEN, GRAY, rect, 0)
+    elif data[square]['area'] == 2:
+        pygame.draw.rect(SCREEN, GREEN, rect, 0)
+    elif data[square]['area'] == 3:
+        pygame.draw.rect(SCREEN, ISLAND_COLOR, rect, 0)
+    elif data[square]['area'] == 4:
+        pygame.draw.rect(SCREEN, BLUE, rect, 0)
+    square_text = data[square]['content']
+    if len(square_text) == 0:
+        square_text = ['']
+    string = FONT.render(square_text[0], True, BLACK if not 'Você' in square_text else RED)
+    if len(square_text[0]) > 1:
+        SCREEN.blit(string, [data[square]['center_x'] - (2.5 * len(square_text[0])), data[square]['center_y']])
+    else:
+        SCREEN.blit(string, [data[square]['center_x'], data[square]['center_y']])
   drawGridLines(SCREEN)
-  drawInfo(SCREEN, FONT)
+  drawInfo(SCREEN, FONT, posicao)
   while True:
     pygame.display.update() 
     for event in pygame.event.get():

@@ -16,7 +16,7 @@ class MapGraph():
         'description': square_tuple[2],
         'center_x': -1, # used for pygame 
         'center_y': -1,  # used for pygame 
-        'content': ''
+        'content': []
       }
       self.graph.add_vertex(square_tuple[0], data)
     self.map_edges_db_graph()
@@ -57,23 +57,38 @@ class MapGraph():
   def update_graph(self, char):
     vertexs = self.graph.get_vertexs()
     for vertex in vertexs:
-      vertexs[vertex]['content'] = ''
+      vertexs[vertex]['content'] = []
 
-    # Viking position
+    # Plotar Viking position
     query = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{char}'")
     position = query[0][0]
-    vertexs[position]['content'] = 'Você'
+    vertexs[position]['content'].append('Você')
 
-     # NPCS
+     # Plotar NPCS
     query = self.db.query("SELECT * FROM InstanciaNPC")
     for npc_tuple in query:
       vertex = npc_tuple[3]
       vertex_data = vertexs[vertex]
-      vertex_data['content'] = npc_tuple[1]
+      vertex_data['content'].append('NPC')
 
-    # Instancia barco
+    # Plotar Instancias de barco
     query = self.db.query(f"SELECT * FROM InstanciaBarco where nomeviking = '{char}'")
     for barco_tuple in query:
       vertex = barco_tuple[5]
       vertex_data = vertexs[vertex]
-      vertex_data['content'] = 'Barco'
+      vertex_data['content'].append('Barco')
+
+    # # Plotar Monstros
+    query = self.db.query(f"SELECT * FROM Monstro")
+    for monstro_tuple in query:
+      vertex = monstro_tuple[1]
+      vertex_data = vertexs[vertex]
+      vertex_data['content'].append('?')
+
+    # Plotar Items
+    query = self.db.query(f"SELECT * FROM Instancia_Item")
+    for item_tuple in query:
+      if item_tuple[2] != None:
+        vertex = item_tuple[2]
+        vertex_data = vertexs[vertex]
+        vertex_data['content'].append('?')
