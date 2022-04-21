@@ -2,6 +2,7 @@ import os
 from database import Database
 from map_graph import MapGraph
 from display_game_map import showMap
+from tabulate import tabulate
 
 class Game():
   def __init__(self, char):
@@ -195,6 +196,37 @@ class Game():
     print(f'Agilidade -> {a[0][11]}, Velocidade -> {a[0][12]}')
     print(f'Nivel de Vida -> {a[0][13]}, Vida Restante -> {a[0][14]}')
 
+
+  def tuples_list_to_list(self, lt:list):
+    return [item for t in lt for item in t]
+
+
+  def show_itens_mochila(self):
+   
+    id_mochila = self.tuples_list_to_list(self.db.query(f"SELECT Mochila FROM Viking WHERE Nome = '{self.char}' ") ) 
+    mochila = self.tuples_list_to_list(self.db.query(f"SELECT Tipo, VolumeOcupado FROM Mochila WHERE Numero = '{id_mochila[0]}' ") ) 
+
+    capacidade_mochila = self.tuples_list_to_list(self.db.query(f"SELECT Capacidade FROM Tipo_Mochila WHERE Nome = '{mochila[0]}' ") ) 
+
+
+    id_itens_mochila = tuple(self.tuples_list_to_list(self.db.query(f"SELECT Id_Item FROM Item_Mochila WHERE Numero_Mochila = '{id_mochila[0]}' ")))
+
+    print(f'Mochila do tipo {mochila[0]}.')
+    print(f'Capacidade total: {capacidade_mochila[0]}.')
+    print(f'Volume ocupado: {mochila[1]}.\n')
+
+    if len(id_itens_mochila) == 0:
+      print(f'A mochila está vazia.')
+      return 0
+    else:
+      tipo_itens_mochila = self.tuples_list_to_list(self.db.query(f"SELECT Tipo FROM Especializacao_do_item WHERE Id IN {id_itens_mochila} ") ) 
+      itens = []
+      for i, id in enumerate(id_itens_mochila): 
+          item =  self.tuples_list_to_list(self.db.query(f"SELECT Id, Nome, Raridade, Peso FROM {tipo_itens_mochila[i].strip()} WHERE Id = {id} "))  
+          itens.append(item)
+      print (tabulate(itens, headers=["Item","Id", "Nome", "Raridade", "Peso"],   showindex="always"))
+      return 0
+
   def take_action(self):
     print("Escolha o que fazer")
     print("1 - Andar")
@@ -212,6 +244,7 @@ class Game():
       print(f'Voce esta agora no quadrado {posicao_atual[0][0]}')
       return 0
     elif action == '2':
+      self.show_itens_mochila()
       return 0
     elif action == '3':
       self.status()
@@ -317,13 +350,6 @@ class Game():
     print(f'Habilidade 2: {a[0][2]}')
     print(f'Habilidade 3: {a[0][3]}')
   
-  # show inventory
-  def show_inventory(self):
-    a = self.db.query("SELECT Item FROM Item WHERE Item = '1,1' ")
-    if a:
-      print('Voce possui um item!')
-    else:
-      print('Voce não possui nenhum item!')
   
   # use skill during fight
   def use_skill(self):
