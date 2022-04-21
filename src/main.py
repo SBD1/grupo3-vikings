@@ -201,23 +201,20 @@ class Game():
     return [item for t in lt for item in t]
 
 
-  def show_itens_mochila(self):
+  def show_itens(self):
    
     id_mochila = self.tuples_list_to_list(self.db.query(f"SELECT Mochila FROM Viking WHERE Nome = '{self.char}' ") ) 
-    mochila = self.tuples_list_to_list(self.db.query(f"SELECT Tipo, VolumeOcupado FROM Mochila WHERE Numero = '{id_mochila[0]}' ") ) 
 
-    capacidade_mochila = self.tuples_list_to_list(self.db.query(f"SELECT Capacidade FROM Tipo_Mochila WHERE Nome = '{mochila[0]}' ") ) 
-
-
+    mochila = self.tuples_list_to_list(self.db.query(f"SELECT Tipo, Capacidade, VolumeOcupado, Numero FROM Mochila M inner join Tipo_Mochila TM on M.tipo = TM.nome  WHERE Numero = '{id_mochila[0]}' ") ) 
+ 
     id_itens_mochila = tuple(self.tuples_list_to_list(self.db.query(f"SELECT Id_Item FROM Item_Mochila WHERE Numero_Mochila = '{id_mochila[0]}' ")))
 
     print(f'Mochila do tipo {mochila[0]}.')
-    print(f'Capacidade total: {capacidade_mochila[0]}.')
-    print(f'Volume ocupado: {mochila[1]}.\n')
+    print(f'Capacidade total: {mochila[1]}.')
+    print(f'Volume ocupado: {mochila[2]}.\n')
 
     if len(id_itens_mochila) == 0:
       print(f'A mochila está vazia.')
-      return 0
     else:
       tipo_itens_mochila = self.tuples_list_to_list(self.db.query(f"SELECT Tipo FROM Especializacao_do_item WHERE Id IN {id_itens_mochila} ") ) 
       itens = []
@@ -225,9 +222,11 @@ class Game():
           item =  self.tuples_list_to_list(self.db.query(f"SELECT Id, Nome, Raridade, Peso FROM {tipo_itens_mochila[i].strip()} WHERE Id = {id} "))  
           itens.append(item)
       print (tabulate(itens, headers=["Item","Id", "Nome", "Raridade", "Peso"],   showindex="always"))
-      return 0
+
+
 
   def take_action(self):
+
     print("Escolha o que fazer")
     print("1 - Andar")
     print("2 - Abrir mochila")
@@ -244,12 +243,13 @@ class Game():
       print(f'Voce esta agora no quadrado {posicao_atual[0][0]}')
       return 0
     elif action == '2':
-      self.show_itens_mochila()
+      self.show_itens()
       return 0
     elif action == '3':
       self.status()
       return 0
     elif action == '4':
+      self.show_skills()
       return 0
     elif action == '5':
       try:
@@ -344,11 +344,20 @@ class Game():
 
   # show skills
   def show_skills(self):
-    a = self.db.query(f"SELECT Nome, Habilidade1, Habilidade2, Habilidade3 FROM Viking WHERE Nome = '{self.char}' ")
-    print(f'Nome: {a[0][0]}')
-    print(f'Habilidade 1: {a[0][1]}')
-    print(f'Habilidade 2: {a[0][2]}')
-    print(f'Habilidade 3: {a[0][3]}')
+    habilidade = self.tuples_list_to_list(self.db.query(f"SELECT Nome_habilidade, Nome_entidade, Descricao, Multiplicador_agilidade, Multiplicador_ataque, Multiplicador_defesa, Multiplicador_roubo_de_vida FROM Recebe R  inner join Habilidade H on R.nome_habilidade = H.nome WHERE Nome_viking = '{self.char}' ") ) 
+    if len(habilidade) == 0:
+      print(f"{self.char} não possui habilidade especiais.")
+      print(f"Para receber uma habilidade é necessario adorar uma entidade.")
+    else:
+      print(f"{self.char} adora a entidade: {habilidade[1]}")
+      print(f"e por isso recebeu a habilidade: {habilidade[0]}")
+      print(f"{habilidade[2]}")
+      print(f"\n Bônus:")
+      print(f"\t Multiplicador agilidade: {habilidade[3]}")
+      print(f"\t Multiplicador ataque: {habilidade[4]}")
+      print(f"\t Multiplicador defesa: {habilidade[5]}")
+      print(f"\t Multiplicador roubo de vida: {habilidade[6]}")
+    
   
   
   # use skill during fight

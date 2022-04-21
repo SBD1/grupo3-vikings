@@ -330,7 +330,7 @@ CREATE TABLE Recebe (
     
     CONSTRAINT recebe_pk PRIMARY KEY(Nome_habilidade),
     CONSTRAINT habilidade_nome_fk FOREIGN KEY(Nome_habilidade) REFERENCES Habilidade(Nome),
-    CONSTRAINT viking_nome_fk FOREIGN KEY(Nome_viking) REFERENCES Habilidade(Nome),
+    CONSTRAINT viking_nome_fk FOREIGN KEY(Nome_viking) REFERENCES Viking(Nome),
     CONSTRAINT entidade_nome_fk FOREIGN KEY(Nome_entidade) REFERENCES Entidade(Nome)
 );
 
