@@ -104,6 +104,38 @@ class Game():
     self.db.insert(f"UPDATE Viking SET Experiencia='{a[0][0] + xp}' WHERE Nome='{self.char}';")
     self.db.commit()
 
+  def add_life_level(self):
+    a = self.db.query(f"SELECT Nivel_de_Vida FROM Viking WHERE Nome = '{self.char}' ")
+    self.db.insert(f"UPDATE Viking SET Nivel_de_Vida='{a[0][0]+10}', Vida_Restante='{a[0][0]+10}' WHERE Nome='{self.char}';")
+    self.db.commit()
+
+  def add_atribute(self):
+    print('Voce deseja adicionar 10 pontos em que atributo?')
+    print("1 - Ataque")
+    print("2 - Defesa")
+    print("3 - Roubo de vida")
+    print("4 - Agilidade")
+    print("5 - Velocidade")
+    action = input('--------> ')
+
+    atribute = 'nil'
+
+    if action == '1': 
+      atribute = 'Ataque'
+    if action == '2':
+      atribute = 'Defesa'
+    if action == '3':
+      atribute = 'Roubo_de_Vida'
+    if action == '4':
+      atribute = 'Agilidade'
+    if action == '5':
+      atribute = 'Velocidade'
+    
+    if atribute != 'nil':
+      a = self.db.query(f"SELECT {atribute} FROM Viking WHERE Nome = '{self.char}' ")
+      self.db.insert(f"UPDATE Viking SET {atribute}='{a[0][0]+10}' WHERE Nome='{self.char}';")
+      self.db.commit()
+
 # call this function everytime a monster is killed
   def check_level_up(self):
     a = self.db.query(f"SELECT Experiencia FROM Viking WHERE Nome = '{self.char}' ")
@@ -111,8 +143,11 @@ class Game():
     b = self.db.query(f"SELECT Experiencia_para_Subir_de_Nivel FROM Nivel WHERE Valor = '{check[0][0]}' ")
 
     if a[0][0] >= b[0][0]:
-      self.db.insert(f"UPDATE Viking SET Nivel='{int(check[0][0])+1}' WHERE Nome='{self.char}';")
+      self.db.insert(f"UPDATE Viking SET Nivel='{check[0][0]+1}' WHERE Nome='{self.char}';")
       self.db.insert(f"UPDATE Viking SET Experiencia='{0}' WHERE Nome='{self.char}';")
+      points = self.db.query(f"SELECT Pontos_ao_Subir FROM Nivel WHERE Valor = '{check[0][0]+1}' ")
+      self.add_atribute()
+      self.add_life_level()
       self.db.commit()
       check = self.db.query(f"SELECT Nivel FROM Viking WHERE Nome = '{self.char}' ")
       print(f'Parabens! Voce agora eh nivel {check[0][0]}!')
@@ -145,7 +180,6 @@ class Game():
         return 0
       return 0
     elif action == '2':
-      self.check_level_up()
       return 0
     elif action == '3':
       self.status()

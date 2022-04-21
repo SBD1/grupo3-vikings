@@ -5,7 +5,7 @@ RETURNS VOID AS $$
 DECLARE 
 
 BEGIN
-  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (1, 'arma', false);
+  INSERT INTO Especializacao_do_item (Id, Tipo, Consumivel) VALUES (1, 'arma', false);
   INSERT INTO Especializacao_do_item VALUES (2, 'arma', false);
   INSERT INTO Especializacao_do_item VALUES (3, 'arma', false);
   INSERT INTO Especializacao_do_item VALUES (4, 'arma', false);
@@ -19,7 +19,7 @@ BEGIN
   INSERT INTO Arma VALUES (4, 'Lança', 'Ponta de metal', 'comum', 8, 70, 2, 90);
   INSERT INTO Arma VALUES (5, 'Porrete', 'Ideal para viagens de saque', 'comum', 8, 70, 2, 90);
 
-  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (6, 'comida', true);
+  INSERT INTO Especializacao_do_item (Id, Tipo, Consumivel) VALUES (6, 'comida', true);
   INSERT INTO Especializacao_do_item VALUES (7, 'comida', true);
   INSERT INTO Especializacao_do_item VALUES (8, 'comida', true);
   INSERT INTO Especializacao_do_item VALUES (9, 'comida', true);
@@ -33,7 +33,7 @@ BEGIN
   INSERT INTO Comida VALUES (9, 'Fruta Seca', 'Alguma fruta', 'comum', 6, 100);
   INSERT INTO Comida VALUES (10, 'Carne', 'Alguma Carne', 'comum', 6, 100);
 
-  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (11, 'pocao', true);
+  INSERT INTO Especializacao_do_item (Id, Tipo, Consumivel) VALUES (11, 'pocao', true);
   INSERT INTO Especializacao_do_item VALUES (12, 'pocao', true);
   INSERT INTO Especializacao_do_item VALUES (13, 'pocao', true);
 
@@ -43,7 +43,7 @@ BEGIN
   INSERT INTO Pocao VALUES (12, 'Poção de Ataque', 'Aumenta o seu poder de ataque por alguns segundos', 'comum', 2, 40, 30);
   INSERT INTO Pocao VALUES (13, 'Poção de Defesa', 'Aumenta o seu poder defensivo por alguns segundos', 'comum', 2, 40, 30);
   
-  INSERT INTO Especializacao_do_item (Id, Tipo) VALUES (14, 'armadura', false);
+  INSERT INTO Especializacao_do_item (Id, Tipo, Consumivel) VALUES (14, 'armadura', false);
   INSERT INTO Especializacao_do_item VALUES (15, 'armadura', false);
 
   INSERT INTO Armadura
