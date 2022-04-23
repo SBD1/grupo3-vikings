@@ -511,6 +511,36 @@ class Game():
             self.db.commit()
             break
 
+      if action == '2':
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+        print("--- Iniciar Jogo Salvo ---\n")
+        print("> Insira 0 para voltar ao Menu Principal\n")
+
+        game_number = 0
+        save_games = self.db.query("SELECT * FROM Viking")
+        
+        for save_game in save_games:
+          game_number = game_number + 1
+          print(str(game_number) + " - " + save_game[0])
+
+        number = input("\nInsira o número do jogo que deseja carregar: ")
+
+        if number != "0":
+          while int(number) < 0 or int(number) > game_number:
+            print("\n!! > Número inválido!\n")
+
+            number = input("Insira o número do jogo que deseja carregar: ")
+
+            if number == "0": break
+
+          if int(number) > 0 and int(number) <= game_number:
+            save_game_successful = True
+
+            self.char = save_games[int(number) - 1][0]
+
+            break
+
       if action == '3':
         break
 
