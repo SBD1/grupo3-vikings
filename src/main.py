@@ -270,10 +270,13 @@ class Game():
       return 1
 
   def show_menu(self):
-    print("Bem-vindo ao mundo Viking!")
-    print("Menu Principal")
-    print("1 - Iniciar Jogo")
-    print("2 - Sair")
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    print("Bem-vindo ao mundo Viking!\n")
+    print("--- Menu Principal ---\n")
+    print("1 - Iniciar Novo Jogo")
+    print("2 - Iniciar Jogo Salvo")
+    print("3 - Sair")
 
   # check if monster is in square
   def check_square(self):
@@ -469,11 +472,51 @@ class Game():
       print('Ataque aumentado!')
 
   def start_game(self):
-    self.show_menu()
-    action = input('--------> ')
+    new_game_successful, save_game_successful = False, False
+
+    while 1:
+      self.show_menu()
+      action = input('--------> ')
+
+      if action == '1':
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+        print("--- Iniciar Novo Jogo ---\n")
+        print("> Insira 0 para voltar ao Menu Principal\n")
+
+        viking_name = input("Insira o nome do viking: ")
+
+        if viking_name != "0": 
+          is_name_already_use = self.db.query("SELECT * FROM Personagem Where Nome='" + viking_name + "'")
+          
+          while is_name_already_use:
+            print("\n!! > Esse nome já está sendo utilizado!\n")
+
+            viking_name = input("Insira o nome do viking: ")
+            
+            if viking_name == "0": break
+            
+            is_name_already_use = self.db.query("SELECT * FROM Personagem Where Nome='" + viking_name + "'")
+
+          if not is_name_already_use:
+            new_game_successful = True
+
+            self.char = viking_name
+
+            query_result = self.db.query("SELECT criar_viking('" + viking_name + "')")
+
+            print("\nII > Parabéns! Você ganhou uma mochila básica para iniciar sua aventura.\n")
+            input("II > Está pronto para começar? Insira qualquer tecla para continuar.")
+
+            self.db.commit()
+            break
+
+      if action == '3':
+        break
+
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    if action == '1':
+    if new_game_successful or save_game_successful:
       while(self.take_action() != -1):
         # check if local has enemy
           # if enemy exists, fight
@@ -492,7 +535,6 @@ class Game():
     else: 
       return 0
 
-     
   def close_db_connection(self):
     self.db.close()
 
