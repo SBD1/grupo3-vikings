@@ -553,7 +553,7 @@ class Game():
     self.db.insert("INSERT INTO Monstro (Quadrado) VALUES ('1,1')")
     print('Monstro criado!')
 
-  kill monster
+  # kill monster
   def kill_monster(self):
     if self.check_square():
       self.db.insert("DELETE FROM Monstro WHERE Quadrado = '1,1'")
