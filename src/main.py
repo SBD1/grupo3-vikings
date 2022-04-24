@@ -48,6 +48,7 @@ class Game():
       if estaEmBarco:
         self.db.insert(f"UPDATE InstanciaBarco SET Coordenadas = '{new_pos}' WHERE IdBarco = {id_barco}")
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
+      self.check_square(new_pos)
       return 0
   
     elif action == '2':
@@ -70,6 +71,7 @@ class Game():
       if estaEmBarco:
         self.db.insert(f"UPDATE InstanciaBarco SET Coordenadas = '{new_pos}' WHERE IdBarco = {id_barco}")
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
+      self.check_square(new_pos)
       return 0
   
     elif action == '3':
@@ -92,6 +94,7 @@ class Game():
       if estaEmBarco:
         self.db.insert(f"UPDATE InstanciaBarco SET Coordenadas = '{new_pos}' WHERE IdBarco = {id_barco}")
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
+      self.check_square(new_pos)
       return 0
 
     elif action == '4':
@@ -114,6 +117,7 @@ class Game():
       if estaEmBarco:
         self.db.insert(f"UPDATE InstanciaBarco SET Coordenadas = '{new_pos}' WHERE IdBarco = {id_barco}")
       self.db.insert(f"UPDATE Viking SET Quadrado='{new_pos}' WHERE Nome='{self.char}';")
+      self.check_square(new_pos)
       return 0
 
     elif action == '5':
@@ -479,13 +483,12 @@ class Game():
     print("3 - Sair")
 
   # check if monster is in square
-  def check_square(self):
-    a = self.db.query("SELECT Quadrado FROM Monstro WHERE Quadrado = '1,1' ")
-    if a:
-      print('Voce encontrou um monstro!')
-      return 1
-    else:
-      return 0
+  def check_square(self, posicao_atual):     
+    monster = self.db.query(f"SELECT * FROM Monstro WHERE Quadrado = '{posicao_atual}'")
+    if(len(monster)):
+      print('Monstro encontrado!')
+      print(f"Um {monster[0][0]} se encontra nesse quadrado.")
+ 
 
   # check if player has item to be dropped
   def check_item(self):
@@ -514,7 +517,7 @@ class Game():
     self.db.insert("INSERT INTO Monstro (Quadrado) VALUES ('1,1')")
     print('Monstro criado!')
 
-  # kill monster
+  kill monster
   def kill_monster(self):
     if self.check_square():
       self.db.insert("DELETE FROM Monstro WHERE Quadrado = '1,1'")
