@@ -369,6 +369,49 @@ class Game():
 
         print()
 
+  def show_equipment(self):
+    md = self.db.query(f"SELECT MaoDireita FROM Viking WHERE Nome='{self.char}'")[0][0]
+    if md:
+      ii = self.db.query(f"SELECT Id_item FROM Instancia_item WHERE Id={md}")[0][0]
+      ei = self.db.query(f"SELECT * FROM Especializacao_do_item WHERE Id={ii}")[0]
+
+      if "arma " in ei[1]:
+        a = self.db.query(f"SELECT * FROM Arma WHERE Id='{ei[0]}'")[0]
+        print(f"\n> Mão Direita: {a[1]} - {a[2]} | Peso: {a[4]}; Ataque: {a[5]}; Defesa: {a[6]}; Agilidade: {a[7]} | {a[3]}")
+      elif "comida" in ei[1]:
+        c = self.db.query(f"SELECT * FROM Comida WHERE Id='{ei[0]}'")[0]
+        print(f"\n> Mão Direita: {c[1]} - {c[2]} | Peso: {c[4]}; Pontos de Cura: {c[5]} | {c[3]}")
+      elif "pocao" in ei[1]:
+        p = self.db.query(f"SELECT * FROM Pocao WHERE Id='{ei[0]}'")[0]
+        print(f"\n> Mão Direita: {p[1]} - {p[2]} | Peso: {p[4]}; Bônus: {p[5]}; Duração: {p[6]} | {p[3]}")
+      elif "armadura" in ei[1]:
+        ar = self.db.query(f"SELECT * FROM Armadura WHERE Id='{ei[0]}'")[0]
+        print(f"\n> Mão Direita: {ar[1]} - {ar[2]} | Peso: {ar[4]}; Defesa: {ar[5]}; Agilidade: {ar[6]} | {ar[3]}")
+
+    else:
+      print("\n> Mão Direita vazia!")
+
+    me = self.db.query(f"SELECT MaoEsquerda FROM Viking WHERE Nome='{self.char}'")[0][0]
+    if me:
+      iie = self.db.query(f"SELECT Id_item FROM Instancia_item WHERE Id={me}")[0][0]
+      eie = self.db.query(f"SELECT * FROM Especializacao_do_item WHERE Id={iie}")[0]
+
+      if "arma " in eie[1]:
+        a = self.db.query(f"SELECT * FROM Arma WHERE Id='{eie[0]}'")[0]
+        print(f"\n> Mão Esquerda: {a[1]} - {a[2]} | Peso: {a[4]}; Ataque: {a[5]}; Defesa: {a[6]}; Agilidade: {a[7]} | {a[3]}\n")
+      elif "comida" in eie[1]:
+        c = self.db.query(f"SELECT * FROM Comida WHERE Id='{eie[0]}'")[0]
+        print(f"\n> Mão Esquerda: {c[1]} - {c[2]} | Peso: {c[4]}; Pontos de Cura: {c[5]} | {c[3]}\n")
+      elif "pocao" in eie[1]:
+        p = self.db.query(f"SELECT * FROM Pocao WHERE Id='{eie[0]}'")[0]
+        print(f"\n> Mão Esquerda: {p[1]} - {p[2]} | Peso: {p[4]}; Bônus: {p[5]}; Duração: {p[6]} | {p[3]}\n")
+      elif "armadura" in eie[1]:
+        ar = self.db.query(f"SELECT * FROM Armadura WHERE Id='{eie[0]}'")[0]
+        print(f"\n> Mão Esquerda: {ar[1]} - {ar[2]} | Peso: {ar[4]}; Defesa: {ar[5]}; Agilidade: {ar[6]} | {ar[3]}\n")
+
+    else:
+      print("\n> Mão Esquerda vazia!\n")
+
   def take_action(self):
     print("Escolha o que fazer")
     print("1 - Investigar local atual")
@@ -401,7 +444,9 @@ class Game():
       return 0
 
     elif action == '3':
+      self.show_equipment()
       return 0
+    
     elif action == '4':
       self.show_itens()
       return 0
