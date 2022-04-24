@@ -241,108 +241,116 @@ class Game():
           itens.append(item)
       print (tabulate(itens, headers=["Item","Id", "Nome", "Raridade", "Peso", "Consumivel"],   showindex="always"))
 
+  def investigate_location(self, posicao_atual):
+    items_found = self.db.query(f"SELECT * FROM Instancia_item WHERE Quadrado = '{posicao_atual[0][0]}'")
+      
+    if items_found:
+      if len(items_found) > 1: print("\nII > Itens Encontrados.\n")
+      else: print("\nII > Item Encontrado.\n")
 
+      item_number = 0      
+      for item in items_found:
+        ei = self.db.query(f"SELECT * FROM Especializacao_do_item WHERE Id='{item[1]}'")[0]
+
+        if "arma " in ei[1]:
+          item_number = item_number + 1
+          a = self.db.query(f"SELECT * FROM Arma WHERE Id='{item[1]}'")[0]            
+          print(f"{item_number}) {a[1]} - {a[2]} | Peso: {a[4]}; Ataque: {a[5]}; Defesa: {a[6]}; Agilidade: {a[7]} | {a[3]}")
+          items_found[item_number - 1] = item + (a[4], )
+        elif "comida" in ei[1]:
+          item_number = item_number + 1
+          c = self.db.query(f"SELECT * FROM Comida WHERE Id='{item[1]}'")[0]
+          print(f"{item_number}) {c[1]} - {c[2]} | Peso: {c[4]}; Pontos de Cura: {c[5]} | {c[3]}")
+          items_found[item_number - 1] = item + (c[4], )
+        elif "pocao" in ei[1]:
+          item_number = item_number + 1
+          p = self.db.query(f"SELECT * FROM Pocao WHERE Id='{item[1]}'")[0]
+          print(f"{item_number}) {p[1]} - {p[2]} | Peso: {p[4]}; Bônus: {p[5]}; Duração: {p[6]} | {p[3]}")
+          items_found[item_number - 1] = item + (p[4], )
+        elif "armadura" in ei[1]:
+          item_number = item_number + 1
+          ar = self.db.query(f"SELECT * FROM Armadura WHERE Id='{item[1]}'")[0]
+          print(f"{item_number}) {ar[1]} - {ar[2]} | Peso: {ar[4]}; Defesa: {ar[5]}; Agilidade: {ar[6]} | {ar[3]}")
+          items_found[item_number - 1] = item + (ar[4], )
+
+      print("\nII > Insira os números, separados por vírgula, dos itens que deseja coletar.")
+      print("II > Insira 0 para não coletar.")
+            
+      s = input('--------> ')
+      print()
+
+      if s != "0":
+        mp = self.db.query(f"SELECT Mochila FROM Viking Where Nome='{self.char}'")[0]
+        dmp = self.db.query(f"SELECT * FROM Mochila Where Numero={mp[0]}")[0]
+        cm = self.db.query(f"SELECT Capacidade FROM Tipo_Mochila Where Nome='{dmp[1]}'")[0][0]
+
+        for i in s.split(","):
+          try:
+            if (int(i) > 0 and int(i) <= item_number):
+              vom = self.db.query(f"SELECT VolumeOcupado FROM Mochila Where Numero={mp[0]}")[0][0]
+
+              if (vom + items_found[int(i) - 1][3] > cm):
+                print(f"O item número {i} não cabe na mochila. Tente liberar espaço.")
+              else:
+                nvo = vom + items_found[int(i) - 1][3]
+
+                self.db.insert(f"INSERT INTO Item_Mochila VALUES ('{dmp[0]}', '{items_found[int(i) - 1][0]}')")
+                self.db.insert(f"UPDATE Mochila SET VolumeOcupado='{nvo}' WHERE Numero='{dmp[0]}'")
+                self.db.insert(f"UPDATE Instancia_item SET Quadrado=NULL WHERE Id='{items_found[int(i) - 1][0]}'")
+                self.db.commit()
+
+                print(f"O item número {i} foi guardado com sucesso!")
+            else:
+              print(f"O número {i} não é um número válido!")
+          except:
+            print(f"O número {i} não é um número válido!")
+
+        print()
 
   def take_action(self):
-
     print("Escolha o que fazer")
-    print("1 - Andar")
-    print("2 - Abrir mochila")
-    print("3 - Visualizar status")
-    print("4 - Visualizar habilidades")
-    print("5 - Abrir mapa")
-    print("6 - Sair")
+    print("1 - Investigar local atual")
+    print("2 - Andar")
+    print("3 - Abrir mochila")
+    print("4 - Visualizar status")
+    print("5 - Visualizar habilidades")
+    print("6 - Abrir mapa")
+    print("7 - Sair")
+
     action = input('--------> ')
 
     if action == '1':
+      posicao_atual = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
+      print(f'Local atual: {posicao_atual[0][0]}')
+      self.investigate_location(posicao_atual)
+      return 0
+
+    elif action == '2':
       self.movement()
       self.db.commit()
       posicao_atual = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
       print(f'Voce esta agora no quadrado {posicao_atual[0][0]}')
 
-      items_found = self.db.query(f"SELECT * FROM Instancia_item WHERE Quadrado = '{posicao_atual[0][0]}'")
-      
-      if items_found:
-        if len(items_found) > 1: print("\nII > Itens Encontrados.\n")
-        else: print("\nII > Item Encontrado.\n")
+      self.investigate_location(posicao_atual)
 
-        item_number = 0      
-        for item in items_found:
-          ei = self.db.query(f"SELECT * FROM Especializacao_do_item WHERE Id='{item[1]}'")[0]
-
-          if "arma " in ei[1]:
-            item_number = item_number + 1
-            a = self.db.query(f"SELECT * FROM Arma WHERE Id='{item[1]}'")[0]            
-            print(f"{item_number}) {a[1]} - {a[2]} | Peso: {a[4]}; Ataque: {a[5]}; Defesa: {a[6]}; Agilidade: {a[7]} | {a[3]}")
-            items_found[item_number - 1] = item + (a[4], )
-          elif "comida" in ei[1]:
-            item_number = item_number + 1
-            c = self.db.query(f"SELECT * FROM Comida WHERE Id='{item[1]}'")[0]
-            print(f"{item_number}) {c[1]} - {c[2]} | Peso: {c[4]}; Pontos de Cura: {c[5]} | {c[3]}")
-            items_found[item_number - 1] = item + (c[4], )
-          elif "pocao" in ei[1]:
-            item_number = item_number + 1
-            p = self.db.query(f"SELECT * FROM Pocao WHERE Id='{item[1]}'")[0]
-            print(f"{item_number}) {p[1]} - {p[2]} | Peso: {p[4]}; Bônus: {p[5]}; Duração: {p[6]} | {p[3]}")
-            items_found[item_number - 1] = item + (p[4], )
-          elif "armadura" in ei[1]:
-            item_number = item_number + 1
-            ar = self.db.query(f"SELECT * FROM Armadura WHERE Id='{item[1]}'")[0]
-            print(f"{item_number}) {ar[1]} - {ar[2]} | Peso: {ar[4]}; Defesa: {ar[5]}; Agilidade: {ar[6]} | {ar[3]}")
-            items_found[item_number - 1] = item + (ar[4], )
-
-        print("\nII > Insira os números, separados por vírgula, dos itens que deseja coletar.")
-        print("II > Insira 0 para não coletar.")
-            
-        s = input('--------> ')
-        print()
-
-        if s != "0":
-          mp = self.db.query(f"SELECT Mochila FROM Viking Where Nome='{self.char}'")[0]
-          dmp = self.db.query(f"SELECT * FROM Mochila Where Numero={mp[0]}")[0]
-          cm = self.db.query(f"SELECT Capacidade FROM Tipo_Mochila Where Nome='{dmp[1]}'")[0][0]
-
-          for i in s.split(","):
-            try:
-              if (int(i) > 0 and int(i) <= item_number):
-                vom = self.db.query(f"SELECT VolumeOcupado FROM Mochila Where Numero={mp[0]}")[0][0]
-
-                if (vom + items_found[int(i) - 1][3] > cm):
-                  print(f"O item número {i} não cabe na mochila. Tente liberar espaço.")
-                else:
-                  nvo = vom + items_found[int(i) - 1][3]
-
-                  self.db.insert(f"INSERT INTO Item_Mochila VALUES ('{dmp[0]}', '{items_found[int(i) - 1][0]}')")
-                  self.db.insert(f"UPDATE Mochila SET VolumeOcupado='{nvo}' WHERE Numero='{dmp[0]}'")
-                  self.db.insert(f"UPDATE Instancia_item SET Quadrado=NULL WHERE Id='{items_found[int(i) - 1][0]}'")
-                  self.db.commit()
-
-                  print(f"O item número {i} foi guardado com sucesso!")
-              else:
-                print(f"O número {i} não é um número válido!")
-            except:
-              print(f"O número {i} não é um número válido!")
-
-          print()
-
-      return 0
-    elif action == '2':
-      self.show_itens()
       return 0
     elif action == '3':
-      self.status()
+      self.show_itens()
       return 0
     elif action == '4':
-      self.show_skills()
+      self.status()
       return 0
     elif action == '5':
+      self.show_skills()
+      return 0
+    elif action == '6':
       try:
         self.open_map()
         return 0
       except:
         print('Nao foi possivel abrir o mapa')
         return 0
-    elif action == '6':
+    elif action == '7':
       return -1
     else:
       print('Acao invalida.')
