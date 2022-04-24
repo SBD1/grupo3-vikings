@@ -522,7 +522,7 @@ class Game():
   # check if monster is in square
   def check_square(self, posicao_atual):     
     monster = self.db.query(f"SELECT * FROM Monstro WHERE Quadrado = '{posicao_atual}'")
-    if(len(monster)):
+    if monster:
       print('Monstro encontrado!')
       print(f"Um {monster[0][0]} se encontra nesse quadrado.")
  
