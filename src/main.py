@@ -659,7 +659,8 @@ class Game():
             self.char = viking_name
 
             query_result = self.db.query("SELECT criar_viking('" + viking_name + "')")
-
+            fala_npc = self.db.query("SELECT * FROM fala WHERE idnpc = 'GuiaDeJornada'")
+            print('\nII > {}'.format(fala_npc[0][1]))
             print("\nII > Parabéns! Você ganhou uma mochila básica para iniciar sua aventura.\n")
             input("II > Está pronto para começar? Insira qualquer tecla para continuar.")
 

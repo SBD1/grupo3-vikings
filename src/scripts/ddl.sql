@@ -97,6 +97,12 @@ CREATE TABLE Instancia_item(
     CONSTRAINT instancia_item_quadrado_fk FOREIGN KEY (Quadrado) REFERENCES Quadrado (Coordenadas) ON DELETE SET NULL
 );
 
+CREATE SEQUENCE id_instancia_item_seq
+START 1
+INCREMENT 1
+MINVALUE 1
+OWNED BY Instancia_item.Id;
+
 CREATE TABLE Item_Mochila (
   Numero_Mochila INTEGER NOT NULL,
   Id_Item INTEGER NOT NULL,
@@ -199,6 +205,11 @@ CREATE TABLE InstanciaNPC (
   CONSTRAINT instancia_npc_tipo_fk FOREIGN KEY (Tipo) REFERENCES NPC (IdNPC) ON DELETE CASCADE,
   CONSTRAINT instancia_npc_quadrado_fk FOREIGN KEY (Quadrado) REFERENCES Quadrado (Coordenadas) ON DELETE CASCADE
 );
+CREATE SEQUENCE id_instancia_npc_seq
+START 1
+INCREMENT 1
+MINVALUE 1
+OWNED BY InstanciaNPC.Id;
 
 CREATE TABLE Fala (
   IdNPC VARCHAR(100) NOT NULL,

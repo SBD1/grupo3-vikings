@@ -22,10 +22,12 @@ services:
       - ../mod_5/prev/procedures/criar_mapa_jogo.sql:/docker-entrypoint-initdb.d/9criar_mapa_jogo.sql
       - ../mod_5/prev/procedures/criar_artefatos.sql:/docker-entrypoint-initdb.d/a1criar_artefatos.sql
       - ../mod_5/prev/procedures/criar_itens.sql:/docker-entrypoint-initdb.d/a2criar_itens.sql
-      - ../mod_5/prev/procedures/criar_viking.sql:/docker-entrypoint-initdb.d/a3criar_viking.sql
-      - ../mod_5/prev/procedures/criar_monstros.sql:/docker-entrypoint-initdb.d/a4criar_monstros.sql
-      - ../mod_5/prev/procedures/criar_deus.sql:/docker-entrypoint-initdb.d/a5criar_deus.sql
-      - ../mod_5/prev/procedures/criar_barcos.sql:/docker-entrypoint-initdb.d/a6criar_barcos.sql
+      - ./scripts/procedures/criar_instancias_itens_iniciais_mapa.sql:/docker-entrypoint-initdb.d/a3criar_instancias_itens_iniciais_mapa.sql
+      - ../mod_5/prev/procedures/criar_barcos.sql:/docker-entrypoint-initdb.d/a4criar_barcos.sql
+      - ../mod_5/prev/procedures/criar_viking.sql:/docker-entrypoint-initdb.d/a5criar_viking.sql
+      - ../mod_5/prev/procedures/criar_monstros.sql:/docker-entrypoint-initdb.d/a6criar_monstros.sql
+      - ../mod_5/prev/procedures/criar_deus.sql:/docker-entrypoint-initdb.d/a7criar_deus.sql
+      - ./scripts/procedures/criar_npc_e_instancias.sql:/docker-entrypoint-initdb.d/a8criar_npc_e_instancias.sql
       - ./scripts/dml.sql:/docker-entrypoint-initdb.d/zdml.sql
     networks:
       - vikingNet
