@@ -273,7 +273,64 @@ class Game():
           print(f"{item_number}) {ar[1]} - {ar[2]} | Peso: {ar[4]}; Defesa: {ar[5]}; Agilidade: {ar[6]} | {ar[3]}")
           items_found[item_number - 1] = item + (ar[4], )
 
+      selected_items = []
 
+      mo = self.db.query(f"SELECT MaosOcupadas FROM Viking WHERE Nome='{self.char}'")[0][0]
+      if mo:
+        print("\nII > Suas mãos estão ocupadas.")
+      else:
+        mdo = self.db.query(f"SELECT MaoDireita FROM Viking WHERE Nome='{self.char}'")[0][0]
+        
+        if mdo:
+          print("\nII > Sua Mão Direita está ocupada.")
+        else:
+          print("\nII > Insira o número do item que deseja equipar na Mão Direita.")
+          print("II > Insira 0 para não coletar.")
+
+          e = input('--------> ')
+          print()
+
+          if e != "0":
+            try:
+              if (int(e) > 0 and int(e) <= item_number):
+                self.db.insert(f"UPDATE Viking SET MaoDireita='{items_found[int(e) - 1][0]}' WHERE Nome='{self.char}'")
+                self.db.insert(f"UPDATE Instancia_item SET Quadrado=NULL WHERE Id='{items_found[int(e) - 1][0]}'")
+                self.db.commit()
+                
+                print(f"O item número {e} foi equipado na Mão Direita com sucesso!")
+                selected_items.append(items_found[int(e) - 1][0])
+              else:
+                print(f"O número {e} não é um número válido!")
+            except:
+              print(f"O número {e} não é um número válido!")
+
+        mde = self.db.query(f"SELECT MaoEsquerda FROM Viking WHERE Nome='{self.char}'")[0][0]
+
+        if mde:
+          print("\nII > Sua Mão Esquerda está ocupada.")
+        else:
+          print("\nII > Insira o número do item que deseja equipar na Mão Esquerda.")
+          print("II > Insira 0 para não coletar.")
+
+          e1 = input('--------> ')
+          print()
+
+          if e1 != "0":
+            try:
+              if (int(e1) > 0 and int(e1) <= item_number):
+                if items_found[int(e1) - 1][0] not in selected_items:
+                  self.db.insert(f"UPDATE Viking SET MaoEsquerda='{items_found[int(e1) - 1][0]}' WHERE Nome='{self.char}'")
+                  self.db.insert(f"UPDATE Instancia_item SET Quadrado=NULL WHERE Id='{items_found[int(e1) - 1][0]}'")
+                  self.db.commit()
+
+                  print(f"O item número {e1} foi equipado na Mão Esquerda com sucesso!")
+                  selected_items.append(items_found[int(e1) - 1][0])
+                else:
+                  print(f"O número {e1} foi selecionado anteriormente.")
+              else:
+                print(f"O número {e1} não é um número válido!")
+            except:
+              print(f"O número {e1} não é um número válido!")
 
       print("\nII > Insira os números, separados por vírgula, dos itens que deseja coletar.")
       print("II > Insira 0 para não coletar.")
@@ -289,19 +346,22 @@ class Game():
         for i in s.split(","):
           try:
             if (int(i) > 0 and int(i) <= item_number):
-              vom = self.db.query(f"SELECT VolumeOcupado FROM Mochila Where Numero={mp[0]}")[0][0]
+              if items_found[int(i) - 1][0] not in selected_items:
+                vom = self.db.query(f"SELECT VolumeOcupado FROM Mochila Where Numero={mp[0]}")[0][0]
 
-              if (vom + items_found[int(i) - 1][3] > cm):
-                print(f"O item número {i} não cabe na mochila. Tente liberar espaço.")
+                if (vom + items_found[int(i) - 1][3] > cm):
+                  print(f"O item número {i} não cabe na mochila. Tente liberar espaço.")
+                else:
+                  nvo = vom + items_found[int(i) - 1][3]
+
+                  self.db.insert(f"INSERT INTO Item_Mochila VALUES ('{dmp[0]}', '{items_found[int(i) - 1][0]}')")
+                  self.db.insert(f"UPDATE Mochila SET VolumeOcupado='{nvo}' WHERE Numero='{dmp[0]}'")
+                  self.db.insert(f"UPDATE Instancia_item SET Quadrado=NULL WHERE Id='{items_found[int(i) - 1][0]}'")
+                  self.db.commit()
+
+                  print(f"O item número {i} foi guardado com sucesso!")
               else:
-                nvo = vom + items_found[int(i) - 1][3]
-
-                self.db.insert(f"INSERT INTO Item_Mochila VALUES ('{dmp[0]}', '{items_found[int(i) - 1][0]}')")
-                self.db.insert(f"UPDATE Mochila SET VolumeOcupado='{nvo}' WHERE Numero='{dmp[0]}'")
-                self.db.insert(f"UPDATE Instancia_item SET Quadrado=NULL WHERE Id='{items_found[int(i) - 1][0]}'")
-                self.db.commit()
-
-                print(f"O item número {i} foi guardado com sucesso!")
+                print(f"O número {i} foi selecionado anteriormente.")                
             else:
               print(f"O número {i} não é um número válido!")
           except:
