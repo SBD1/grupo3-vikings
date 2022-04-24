@@ -126,7 +126,7 @@ class Game():
         print('Nao foi possivel abrir o mapa')
         return 0
     elif action == '6':
-      return 0
+      return -6
     else:
       print('Acao invalida.')
       return 1
@@ -273,6 +273,8 @@ class Game():
           print(f"{item_number}) {ar[1]} - {ar[2]} | Peso: {ar[4]}; Defesa: {ar[5]}; Agilidade: {ar[6]} | {ar[3]}")
           items_found[item_number - 1] = item + (ar[4], )
 
+
+
       print("\nII > Insira os números, separados por vírgula, dos itens que deseja coletar.")
       print("II > Insira 0 para não coletar.")
             
@@ -311,11 +313,12 @@ class Game():
     print("Escolha o que fazer")
     print("1 - Investigar local atual")
     print("2 - Andar")
-    print("3 - Abrir mochila")
-    print("4 - Visualizar status")
-    print("5 - Visualizar habilidades")
-    print("6 - Abrir mapa")
-    print("7 - Sair")
+    print("3 - Visualizar itens equipados")
+    print("4 - Abrir mochila")
+    print("5 - Visualizar status")
+    print("6 - Visualizar habilidades")
+    print("7 - Abrir mapa")
+    print("8 - Sair")
 
     action = input('--------> ')
 
@@ -326,31 +329,36 @@ class Game():
       return 0
 
     elif action == '2':
-      self.movement()
+      r = self.movement()
+
       self.db.commit()
       posicao_atual = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
       print(f'Voce esta agora no quadrado {posicao_atual[0][0]}')
 
-      self.investigate_location(posicao_atual)
+      if (r != -6):
+        self.investigate_location(posicao_atual)
 
       return 0
+
     elif action == '3':
-      self.show_itens()
       return 0
     elif action == '4':
-      self.status()
+      self.show_itens()
       return 0
     elif action == '5':
-      self.show_skills()
+      self.status()
       return 0
     elif action == '6':
+      self.show_skills()
+      return 0
+    elif action == '7':
       try:
         self.open_map()
         return 0
       except:
         print('Nao foi possivel abrir o mapa')
         return 0
-    elif action == '7':
+    elif action == '8':
       return -1
     else:
       print('Acao invalida.')
