@@ -187,6 +187,19 @@ class Game():
       check = self.db.query(f"SELECT Nivel FROM Viking WHERE Nome = '{self.char}' ")
       print(f'Parabens! Voce agora eh nivel {check[0][0]}!')
 
+      if check[0][0] == 2:
+          m = self.db.query(f"SELECT Mochila FROM Viking WHERE Nome='joao'")
+          self.db.insert(f"UPDATE Mochila SET Tipo='normal' WHERE Numero='{m[0][0]}'")
+          self.db.commit()
+
+          print("\nII > Você ganhou uma mochila melhor para continuar sua jornada!\n")
+      elif check[0][0] == 3:
+          m = self.db.query(f"SELECT Mochila FROM Viking WHERE Nome='joao'")
+          self.db.insert(f"UPDATE Mochila SET Tipo='reforcada' WHERE Numero='{m[0][0]}'")
+          self.db.commit()
+
+          print("\nII > Você ganhou uma mochila reforçada!\n")
+
   def status(self):
     a = self.db.query(f"SELECT * FROM Viking WHERE Nome = '{self.char}' ")
     print(f'Nome -> {a[0][0]}')
