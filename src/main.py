@@ -412,6 +412,41 @@ class Game():
     else:
       print("\n> Mão Esquerda vazia!\n")
 
+  def unequip_items(self):
+    print("II > Deseja desequipar algo?")
+    print("I > Insira d para desequipar a Mão Direita.")
+    print("I > Insira e para desequipar a Mão Esquerda.")
+    print("I > Insira a para desequipar ambas Mãos.")
+    print("I > Insira 0 para não desequipar.")
+
+    s = input('--------> ')
+    print()
+
+    q = self.db.query(f"SELECT MaoDireita, MaoEsquerda, Quadrado FROM Viking WHERE Nome='{self.char}'")[0]
+
+    if (s == "d" or s == "a"):
+      if q[0]:
+        self.db.insert(f"UPDATE Viking SET MaoDireita=NULL WHERE Nome='{self.char}'")
+        self.db.insert(f"UPDATE Instancia_item SET Quadrado='{q[2]}' WHERE Id={q[0]}")
+        self.db.commit()
+
+        print("Mão Direita desequipada!\n")
+      else:
+        print("Mão Direita sem equipamento!\n")
+    
+    if (s == "e" or s == "a"):
+      if q[1]:
+        self.db.insert(f"UPDATE Viking SET MaoEsquerda=NULL WHERE Nome='{self.char}'")
+        self.db.insert(f"UPDATE Instancia_item SET Quadrado='{q[2]}' WHERE Id={q[1]}")
+        self.db.commit()
+
+        print("Mão Esquerda desequipada!\n")
+      else:
+        print("Mão Esquerda sem equipamento!\n") 
+    
+    if (s not in ["d", "e", "a"]):
+      print("Não desequipar selecionado.\n")
+
   def take_action(self):
     print("Escolha o que fazer")
     print("1 - Investigar local atual")
@@ -445,6 +480,7 @@ class Game():
 
     elif action == '3':
       self.show_equipment()
+      self.unequip_items()
       return 0
     
     elif action == '4':
