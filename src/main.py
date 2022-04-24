@@ -1,3 +1,4 @@
+from itertools import count
 import os
 from database import Database
 from map_graph import MapGraph
@@ -562,7 +563,22 @@ class Game():
       print('Não há monstro neste quadrado!')
 
   # drop item
-  def drop_item(self):
+  def drop_item(self, monster, square):
+    itens_to_drop = self.tuples_list_to_list(self.db.query(f"SELECT id_item FROM Dropa WHERE nome_tipo_monstro = '{monster}' "))
+
+    if(len(itens_to_drop) == 0):
+      print("Nenhum item para ser dropado.")
+    
+    count = self.tuples_list_to_list(self.db.query(f"SELECT COUNT(*) id FROM instancia_item"))[0]
+
+    for item_to_drop in itens_to_drop:
+      count = count + 1
+      self.db.insert(f"INSERT INTO instancia_item (id, id_item, quadrado) VALUES ({count}, {item_to_drop}, '{square}')")
+      self.db.commit()
+
+    print("Itens dropados.")
+
+
     if self.check_item():
       self.db.insert("DELETE FROM Item WHERE Item = '1,1'")
       print('Item dropado!')
