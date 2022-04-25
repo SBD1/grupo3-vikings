@@ -269,7 +269,6 @@ class Game():
               nvo = vom - saved_items[int(i) - 1][2]
 
               self.db.insert(f"DELETE FROM Item_Mochila WHERE Numero_Mochila='{mp}' AND Id_Item='{saved_items[int(i) - 1][1]}'")
-              self.db.insert(f"UPDATE Mochila SET VolumeOcupado='{nvo}' WHERE Numero='{mp}'")
               self.db.insert(f"UPDATE Instancia_item SET Quadrado='{q}' WHERE Id='{saved_items[int(i) - 1][1]}'")
               self.db.commit()
               
@@ -288,7 +287,6 @@ class Game():
     mochila = self.tuples_list_to_list(self.db.query(f"SELECT Tipo, Capacidade, VolumeOcupado, Numero FROM Mochila M inner join Tipo_Mochila TM on M.tipo = TM.nome  WHERE Numero = '{id_mochila[0]}' ") ) 
  
     id_itens_mochila = tuple(self.tuples_list_to_list(self.db.query(f"SELECT Id_Item FROM Item_Mochila WHERE Numero_Mochila = '{id_mochila[0]}' ")))
-
     print(f'Mochila do tipo {mochila[0]}.')
     print(f'Capacidade total: {mochila[1]}.')
     print(f'Volume ocupado: {mochila[2]}.\n')
@@ -428,7 +426,6 @@ class Game():
                   nvo = vom + items_found[int(i) - 1][3]
 
                   self.db.insert(f"INSERT INTO Item_Mochila VALUES ('{dmp[0]}', '{items_found[int(i) - 1][0]}')")
-                  self.db.insert(f"UPDATE Mochila SET VolumeOcupado='{nvo}' WHERE Numero='{dmp[0]}'")
                   self.db.insert(f"UPDATE Instancia_item SET Quadrado=NULL WHERE Id='{items_found[int(i) - 1][0]}'")
                   self.db.commit()
 

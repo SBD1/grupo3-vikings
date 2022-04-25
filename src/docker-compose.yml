@@ -14,7 +14,7 @@ services:
       - ./scripts/ddl.sql:/docker-entrypoint-initdb.d/1ddl.sql
       - ../mod_5/prev/trigger_functions/verificar_item_igual.sql:/docker-entrypoint-initdb.d/2verificar_item_igual.sql
       - ../mod_5/prev/trigger_functions/verificar_maos_ocupadas.sql:/docker-entrypoint-initdb.d/3verificar_maos_ocupadas.sql
-      # - ../mod_5/prev/trigger_functions/atualizar_volume_ocupado_mochila.sql:/docker-entrypoint-initdb.d/4atualizar_volume_ocupado_mochila.sql
+      - ../mod_5/prev/trigger_functions/atualizar_volume_ocupado_mochila.sql:/docker-entrypoint-initdb.d/4atualizar_volume_ocupado_mochila.sql
       - ../mod_5/prev/trigger_functions/atribuir_se_item_consumivel.sql:/docker-entrypoint-initdb.d/5atribuir_se_item_consumivel.sql
       - ../mod_5/prev/trigger_functions/verificar_quadrado_barco.sql:/docker-entrypoint-initdb.d/6verificar_quadrado_barco.sql
       - ../mod_5/prev/trigger_functions/verificar_especializacao_viking.sql:/docker-entrypoint-initdb.d/7verificar_especializacao_viking.sql
