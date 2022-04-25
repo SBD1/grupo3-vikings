@@ -6,11 +6,11 @@ from display_game_map import showMap
 from tabulate import tabulate
 
 class Game():
-  def __init__(self, char):
+  def __init__(self):
     self.db = Database()
     self.map_graph = MapGraph()
     self.map_graph.map_squares_to_graph_vertex()
-    self.char = char
+    self.char = ''
     self.start_game()
 
   def open_map(self):
@@ -288,27 +288,27 @@ class Game():
  
     id_itens_mochila = tuple(self.tuples_list_to_list(self.db.query(f"SELECT Id_Item FROM Item_Mochila WHERE Numero_Mochila = '{id_mochila[0]}' ")))
     print(f'Mochila do tipo {mochila[0]}.')
-    print(f'Capacidade total: {mochila[1]}.')
-    print(f'Volume ocupado: {mochila[2]}.\n')
+    print(f'Capacidade total: {mochila[1]}kg')
+    print(f'Volume ocupado: {mochila[2]}kg\n')
 
     if len(id_itens_mochila) == 0:
       print(f'A mochila está vazia.')
     else:
-      tipo_itens_mochila = self.db.query(f"SELECT Tipo, id_item, II.id as instancia_id, consumivel FROM instancia_item II INNER JOIN especializacao_do_item EI ON II.id_item = EI.id WHERE II.id IN {id_itens_mochila}")
-
+      tipo_itens_mochila = self.db.query(f"SELECT Tipo, id_item, II.id as instancia_id, consumivel \
+      FROM instancia_item II \
+      INNER JOIN especializacao_do_item EI \
+      ON II.id_item = EI.id \
+      WHERE II.id IN ({','.join(map(str, id_itens_mochila))})")
       itens = []
       for i in range(len(id_itens_mochila)): 
           query = f"SELECT Id, Nome, Raridade, Peso FROM {tipo_itens_mochila[i][0].strip()} WHERE Id = {tipo_itens_mochila[i][1]}"
-      
           consumivel = "Sim" if tipo_itens_mochila[i][3] else "Não"
           item =  (*self.tuples_list_to_list(self.db.query(query)),  consumivel)  
-      
           itens.append(item)
-      print (tabulate(itens, headers=["Item","Id", "Nome", "Raridade", "Peso", "Consumivel"],   showindex="always"))
+      print (tabulate(itens, headers=["Item","Id", "Nome", "Raridade", "Peso(kg)", "Consumivel"],   showindex="always"))
 
       print("\nII > Deseja retirar algo? (s/n)")
       s = input('--------> ')
-      print()
 
       if s == "s": self.withdraw_items()
 
@@ -890,5 +890,5 @@ class Game():
     self.db.close()
 
 
-game = Game('arthur')
+game = Game()
 game.close_db_connection()
