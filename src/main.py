@@ -280,6 +280,40 @@ class Game():
     
     print()
 
+  def choose_entity(self):
+    print("Escolha uma entidade para adorar e receba a sua primeira habilidade!")
+    print("1 - Thor, Deus associado a forca, trovoes, relampagos e tempestades.")
+    print("    Habilidade - Arma de Trovao.")
+    print("2 - Loki, Deus associado a trapaca, travessuras, fogo e tambem magia.")
+    print("    Habilidade - Arma de Fogo e Sangue.")
+    print("3 - Freyja, Deusa associada a beleza, fertilidade, amor e seidhr, magia para visualizacao e alteracao do futuro.")
+    print("    Habilidade - Visao do Futuro.")
+    print("4 - Surtur, Lider dos gigantes de fogo e inimigo dos deuses, causador de destruicao extrema durante o ragnarok.")
+    print("    Habilidade - Fogo primeval.")
+
+    s = input('--------> ')
+    
+    if s == '1':
+      skill = 'Arma de Trovao'
+      ent = 'Thor'
+    elif s == '2':
+      skill = 'Arma de Fogo e Sangue'
+      ent = 'Loki'
+    elif s == '3':
+      skill = 'Visao do Futuro'
+      ent = 'Freyja'
+    elif s == '4':
+      skill = 'Fogo primeval'
+      ent = 'Surtur'
+    else:
+      print('Habilidade invalida!')
+      return -1
+    
+    query_result = self.db.query(f"SELECT criar_recebe('{skill}', '{self.char}', '{ent}')")
+    self.db.commit()
+
+    return 0
+
   def show_itens(self):
    
     id_mochila = self.tuples_list_to_list(self.db.query(f"SELECT Mochila FROM Viking WHERE Nome = '{self.char}' ") ) 
@@ -824,6 +858,8 @@ class Game():
             self.char = viking_name
 
             query_result = self.db.query("SELECT criar_viking('" + viking_name + "')")
+            while self.choose_entity() == -1:
+              continue
             fala_npc = self.db.query("SELECT * FROM fala WHERE idnpc = 'GuiaDeJornada'")
             print('\nII > {}'.format(fala_npc[0][1]))
             print("\nII > Parabéns! Você ganhou uma mochila básica para iniciar sua aventura.\n")

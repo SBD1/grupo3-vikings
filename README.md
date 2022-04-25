@@ -14,6 +14,16 @@
 
 Repositório direcionado para o desenvolvimento do projeto da disciplina. Será desenvolvido um jogo no estilo ***multi-user dungeon (mud)*** sobre vikings.
 
+
+## Como rodar
+Para rodar o jogo, siga os seguintes passos:
+- 1: Em uma aba no terminal, entre na pasta `src/`;
+- 2: Entre com o comando `docker-compose up --build`;
+- 3: Em outra aba no terminal, instale os requerimentos com `pip install -r requirements.txt`;
+- 4: Apos a instalacao, rode o jogo com o comando `python main.py`;
+
+**OBS** Para rodar o jogo o docker-compose necessita estar rodando em outra aba
+
 ## Entregas
 
 | Módulo | Entrega | Desenvolvimento | Melhorias |

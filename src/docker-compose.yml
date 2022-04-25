@@ -28,6 +28,8 @@ services:
       - ../mod_5/prev/procedures/criar_monstros.sql:/docker-entrypoint-initdb.d/a6criar_monstros.sql
       - ../mod_5/prev/procedures/criar_deus.sql:/docker-entrypoint-initdb.d/a7criar_deus.sql
       - ./scripts/procedures/criar_npc_e_instancias.sql:/docker-entrypoint-initdb.d/a8criar_npc_e_instancias.sql
+      - ./scripts/procedures/criar_habilidade.sql:/docker-entrypoint-initdb.d/a9criar_habilidade.sql
+      - ./scripts/procedures/criar_recebe.sql:/docker-entrypoint-initdb.d/a10criar_recebe.sql
       - ./scripts/dml.sql:/docker-entrypoint-initdb.d/zdml.sql
     networks:
       - vikingNet

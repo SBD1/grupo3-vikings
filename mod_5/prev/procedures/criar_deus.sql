@@ -10,7 +10,7 @@ BEGIN
 
     INSERT INTO Aesir VALUES('Thor', 'Aesir', 5, 1);
     INSERT INTO Aesir VALUES('Loki', 'Aesir', 1, 5);
-    INSERT INTO Vanir VALUES('Thor', 'Vanir', 2, 4);
+    INSERT INTO Vanir VALUES('Freyja', 'Vanir', 2, 4);
     INSERT INTO Jotun VALUES('Surtur', 'Jotun', 5, 5, 0, 5);
 
 END;
