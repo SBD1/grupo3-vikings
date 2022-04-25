@@ -217,6 +217,68 @@ class Game():
   def tuples_list_to_list(self, lt:list):
     return [item for t in lt for item in t]
 
+  def withdraw_items(self):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    
+    q = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome='{self.char}'")[0][0]
+    mp = self.db.query(f"SELECT Mochila FROM Viking WHERE Nome='{self.char}'")[0][0]
+    saved_items = self.db.query(f"SELECT * FROM Item_Mochila WHERE Numero_Mochila={mp}")
+    
+    if saved_items:
+      if len(saved_items) > 1: print("\nII > Itens Guardados.\n")
+      else: print("\nII > Item Guardado.\n")
+    
+      item_number = 0
+      for item in saved_items:
+        ii = self.db.query(f"SELECT * FROM Instancia_item WHERE Id='{item[1]}'")[0]
+        ei = self.db.query(f"SELECT * FROM Especializacao_do_item WHERE Id='{ii[1]}'")[0]
+        
+        if "arma " in ei[1]:
+          item_number = item_number + 1
+          a = self.db.query(f"SELECT * FROM Arma WHERE Id='{ei[0]}'")[0]            
+          print(f"{item_number}) {a[1]} - {a[2]} | Peso: {a[4]}; Ataque: {a[5]}; Defesa: {a[6]}; Agilidade: {a[7]} | {a[3]}")
+          saved_items[item_number - 1] = item + (a[4], )
+        elif "comida" in ei[1]:
+          item_number = item_number + 1
+          c = self.db.query(f"SELECT * FROM Comida WHERE Id='{ei[0]}'")[0]
+          print(f"{item_number}) {c[1]} - {c[2]} | Peso: {c[4]}; Pontos de Cura: {c[5]} | {c[3]}")
+          saved_items[item_number - 1] = item + (c[4], )
+        elif "pocao" in ei[1]:
+          item_number = item_number + 1
+          p = self.db.query(f"SELECT * FROM Pocao WHERE Id='{ei[0]}'")[0]
+          print(f"{item_number}) {p[1]} - {p[2]} | Peso: {p[4]}; Bônus: {p[5]}; Duração: {p[6]} | {p[3]}")
+          saved_items[item_number - 1] = item + (p[4], )
+        elif "armadura" in ei[1]:
+          item_number = item_number + 1
+          ar = self.db.query(f"SELECT * FROM Armadura WHERE Id='{ei[0]}'")[0]
+          print(f"{item_number}) {ar[1]} - {ar[2]} | Peso: {ar[4]}; Defesa: {ar[5]}; Agilidade: {ar[6]} | {ar[3]}")
+          saved_items[item_number - 1] = item + (ar[4], )
+    
+      print("\nII > Insira os números, separados por vírgula, dos itens que deseja retirar.")
+      print("II > Insira 0 para não retirar.")
+
+      s = input('--------> ')
+      print()
+
+      if s != "0":
+        for i in list(set(s.split(','))):
+          try:
+            if (int(i) > 0 and int(i) <= item_number):
+              vom = self.db.query(f"SELECT VolumeOcupado FROM Mochila Where Numero={mp}")[0][0]
+              nvo = vom - saved_items[int(i) - 1][2]
+
+              self.db.insert(f"DELETE FROM Item_Mochila WHERE Numero_Mochila='{mp}' AND Id_Item='{saved_items[int(i) - 1][1]}'")
+              self.db.insert(f"UPDATE Mochila SET VolumeOcupado='{nvo}' WHERE Numero='{mp}'")
+              self.db.insert(f"UPDATE Instancia_item SET Quadrado='{q}' WHERE Id='{saved_items[int(i) - 1][1]}'")
+              self.db.commit()
+              
+              print(f"O item número {i} foi retirado com sucesso!")
+            else:
+              print(f"O número {i} não é um número válido!")
+          except:
+            print(f"O número {i} não é um número válido!")
+    
+    print()
 
   def show_itens(self):
    
@@ -244,6 +306,12 @@ class Game():
       
           itens.append(item)
       print (tabulate(itens, headers=["Item","Id", "Nome", "Raridade", "Peso", "Consumivel"],   showindex="always"))
+
+      print("\nII > Deseja retirar algo? (s/n)")
+      s = input('--------> ')
+      print()
+
+      if s == "s": self.withdraw_items()
 
   def investigate_location(self, posicao_atual):
     items_found = self.db.query(f"SELECT * FROM Instancia_item WHERE Quadrado = '{posicao_atual[0][0]}'")

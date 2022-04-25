@@ -9,7 +9,7 @@ DECLARE
 BEGIN
   INSERT INTO Personagem (Nome, Tipo) VALUES (nome, 'viking');
   id_mochila := nextval('id_mochila_sequence');
-  INSERT INTO Mochila VALUES (id_mochila, 'basica');
+  INSERT INTO Mochila VALUES (id_mochila, 'basica', 8);
   quadrado_inicial_viking := '8,0';
   INSERT INTO Viking
     (Nome, Experiencia, Nivel, Mochila, Quadrado, Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade, Nivel_de_Vida, Vida_Restante)
