@@ -609,14 +609,16 @@ class Game():
       print('Acao invalida.')
       return 1
 
-  def show_menu(self):
+  def show_menu(self, n):
     os.system('cls' if os.name == 'nt' else 'clear')
 
     print("Bem-vindo ao mundo Viking!\n")
     print("--- Menu Principal ---\n")
-    print("1 - Iniciar Novo Jogo")
-    print("2 - Iniciar Jogo Salvo")
-    print("3 - Sair")
+
+    if n: print("1 - Iniciar Novo Jogo")
+    else: print("1 - Continuar Jogo")
+
+    print("2 - Sair")
 
   # check if monster is in square
   def check_square(self, posicao_atual):     
@@ -828,78 +830,50 @@ class Game():
   def start_game(self):
     new_game_successful, save_game_successful = False, False
 
-    while 1:
-      self.show_menu()
+    v = self.db.query(f"SELECT Nome FROM Viking")
+
+    if v:
+      self.show_menu(False)
       action = input('--------> ')
 
       if action == '1':
-        os.system('cls' if os.name == 'nt' else 'clear')
+        self.char = v[0][0]
+        save_game_successful = True
 
-        print("--- Iniciar Novo Jogo ---\n")
-        print("> Insira 0 para voltar ao Menu Principal\n")
+    else:
+      while 1:
+        self.show_menu(True)
+        action = input('--------> ')
 
-        viking_name = input("Insira o nome do viking: ")
+        if action == '1':
+          os.system('cls' if os.name == 'nt' else 'clear')
 
-        if viking_name != "0": 
-          is_name_already_use = self.db.query("SELECT * FROM Personagem Where Nome='" + viking_name + "'")
-          
-          while is_name_already_use:
-            print("\n!! > Esse nome já está sendo utilizado!\n")
+          print("--- Iniciar Novo Jogo ---\n")
+          print("> Insira 0 para voltar ao Menu Principal\n")
 
-            viking_name = input("Insira o nome do viking: ")
-            
-            if viking_name == "0": break
-            
-            is_name_already_use = self.db.query("SELECT * FROM Personagem Where Nome='" + viking_name + "'")
+          viking_name = input("Insira o nome do viking: ")
 
-          if not is_name_already_use:
+          if viking_name != "0":
             new_game_successful = True
 
             self.char = viking_name
 
             query_result = self.db.query("SELECT criar_viking('" + viking_name + "')")
+
+            fala_npc = self.db.query("SELECT * FROM fala WHERE idnpc = 'GuiaDeJornada'")
+            print('\nII > {}\n'.format(fala_npc[0][1]))
+
             while self.choose_entity() == -1:
               continue
-            fala_npc = self.db.query("SELECT * FROM fala WHERE idnpc = 'GuiaDeJornada'")
-            print('\nII > {}'.format(fala_npc[0][1]))
-            print("\nII > Parabéns! Você ganhou uma mochila básica para iniciar sua aventura.\n")
+
+            print("\nII > Parabéns! Você também ganhou uma mochila básica para iniciar sua aventura.\n")
             input("II > Está pronto para começar? Insira qualquer tecla para continuar.")
 
             self.db.commit()
             break
 
-      if action == '2':
-        os.system('cls' if os.name == 'nt' else 'clear')
-
-        print("--- Iniciar Jogo Salvo ---\n")
-        print("> Insira 0 para voltar ao Menu Principal\n")
-
-        game_number = 0
-        save_games = self.db.query("SELECT * FROM Viking")
-        
-        for save_game in save_games:
-          game_number = game_number + 1
-          print(str(game_number) + " - " + save_game[0])
-
-        number = input("\nInsira o número do jogo que deseja carregar: ")
-
-        if number != "0":
-          while int(number) < 0 or int(number) > game_number:
-            print("\n!! > Número inválido!\n")
-
-            number = input("Insira o número do jogo que deseja carregar: ")
-
-            if number == "0": break
-
-          if int(number) > 0 and int(number) <= game_number:
-            save_game_successful = True
-
-            self.char = save_games[int(number) - 1][0]
-
-            break
-
-      if action == '3':
-        break
+        if action == "2":
+          break
 
     os.system('cls' if os.name == 'nt' else 'clear')
 
