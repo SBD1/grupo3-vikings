@@ -645,6 +645,13 @@ class Game():
       return monster[0][0]
     return ' '
  
+  # check if npc is in square
+  def check_square_npc(self, posicao_atual):     
+      npc = self.db.query(f"SELECT * FROM InstanciaNPC WHERE Quadrado = '{posicao_atual}'")
+      if npc:
+        print('NPC encontrado!')
+        print(f"Um {npc[0][1]} se encontra nesse quadrado.")
+        return npc
 
   # check if player has item to be dropped
   def check_item(self):
@@ -687,22 +694,15 @@ class Game():
 
     if(len(itens_to_drop) == 0):
       print("Nenhum item para ser dropado.")
-    
-    count = self.tuples_list_to_list(self.db.query(f"SELECT COUNT(*) id FROM instancia_item"))[0]
-
-    for item_to_drop in itens_to_drop:
-      count = count + 1
-      self.db.insert(f"INSERT INTO instancia_item (id, id_item, quadrado) VALUES ({count}, {item_to_drop}, '{square}')")
-      self.db.commit()
-
-    print("Itens dropados.")
-
-
-    if self.check_item():
-      self.db.insert("DELETE FROM Item WHERE Item = '1,1'")
-      print('Item dropado!')
     else:
-      print('Não há item para ser dropado!')
+      count = self.tuples_list_to_list(self.db.query(f"SELECT COUNT(*) id FROM instancia_item"))[0]
+
+      for item_to_drop in itens_to_drop:
+        count = count + 1
+        self.db.insert(f"INSERT INTO instancia_item (id, id_item, quadrado) VALUES ({count}, {item_to_drop}, '{square}')")
+        self.db.commit()
+
+      print("Itens dropados.")
 
   # pick up item
   def pick_up_item(self):
@@ -1047,7 +1047,7 @@ class Game():
       monster_xp = self.fight(monster)
       if monster_xp != -1:
         self.add_xp(monster_xp)
-        # self.drop_item(monster, square)
+        self.drop_item(monster, square[0][0])
         self.a_used = 0
         self.reset_status()
       else:
