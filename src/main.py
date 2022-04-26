@@ -4,6 +4,7 @@ from database import Database
 from map_graph import MapGraph
 from display_game_map import showMap
 from tabulate import tabulate
+import random
 
 class Game():
   def __init__(self):
@@ -11,6 +12,7 @@ class Game():
     self.map_graph = MapGraph()
     self.map_graph.map_squares_to_graph_vertex()
     self.char = ''
+    self.a_used = 0
     self.start_game()
 
   def open_map(self):
@@ -139,7 +141,7 @@ class Game():
     return
 
 # call this function after killing a monster
-  def add_xp(xp, self):
+  def add_xp(self, xp):
     a = self.db.query(f"SELECT Experiencia FROM Viking WHERE Nome = '{self.char}' ")
     self.db.insert(f"UPDATE Viking SET Experiencia='{a[0][0] + xp}' WHERE Nome='{self.char}';")
     self.db.commit()
@@ -176,7 +178,7 @@ class Game():
       self.db.insert(f"UPDATE Viking SET {atribute}='{a[0][0]+10}' WHERE Nome='{self.char}';")
       self.db.commit()
 
-# call this function everytime a monster is killed
+  # call this function everytime a monster is killed
   def check_level_up(self):
     a = self.db.query(f"SELECT Experiencia FROM Viking WHERE Nome = '{self.char}' ")
     check = self.db.query(f"SELECT Nivel FROM Viking WHERE Nome = '{self.char}' ")
@@ -186,26 +188,33 @@ class Game():
       self.db.insert(f"UPDATE Viking SET Nivel='{check[0][0]+1}' WHERE Nome='{self.char}';")
       self.db.insert(f"UPDATE Viking SET Experiencia='{0}' WHERE Nome='{self.char}';")
       points = self.db.query(f"SELECT Pontos_ao_Subir FROM Nivel WHERE Valor = '{check[0][0]+1}' ")
+      print(f'Parabens! Voce agora eh nivel {check[0][0]}!')
       self.add_atribute()
       self.add_life_level()
       self.db.commit()
       check = self.db.query(f"SELECT Nivel FROM Viking WHERE Nome = '{self.char}' ")
-      print(f'Parabens! Voce agora eh nivel {check[0][0]}!')
 
       if check[0][0] == 2:
-          m = self.db.query(f"SELECT Mochila FROM Viking WHERE Nome='joao'")
+          m = self.db.query(f"SELECT Mochila FROM Viking WHERE Nome='{self.char}'")
           self.db.insert(f"UPDATE Mochila SET Tipo='normal' WHERE Numero='{m[0][0]}'")
           self.db.commit()
 
           print("\nII > Você ganhou uma mochila melhor para continuar sua jornada!\n")
       elif check[0][0] == 3:
-          m = self.db.query(f"SELECT Mochila FROM Viking WHERE Nome='joao'")
+          m = self.db.query(f"SELECT Mochila FROM Viking WHERE Nome='{self.char}'")
           self.db.insert(f"UPDATE Mochila SET Tipo='reforcada' WHERE Numero='{m[0][0]}'")
           self.db.commit()
 
           print("\nII > Você ganhou uma mochila reforçada!\n")
+    else:
+      print()
+      print("Voce ainda nao tem experiencia suficiente para upar.")
+      print(f'Faltam {b[0][0] - a[0][0]} de XP para o proximo nivel.')
+      print()
+
 
   def status(self):
+    print()
     a = self.db.query(f"SELECT * FROM Viking WHERE Nome = '{self.char}' ")
     print(f'Nome -> {a[0][0]}')
     print(f'Experiencia -> {a[0][1]}, Nivel -> {a[0][2]}')
@@ -213,6 +222,7 @@ class Game():
     print(f'Ataque -> {a[0][8]}, Defesa -> {a[0][9]}, Roubo de Vida -> {a[0][10]}')
     print(f'Agilidade -> {a[0][11]}, Velocidade -> {a[0][12]}')
     print(f'Nivel de Vida -> {a[0][13]}, Vida Restante -> {a[0][14]}')
+    print()
 
 
   def tuples_list_to_list(self, lt:list):
@@ -346,8 +356,8 @@ class Game():
 
       if s == "s": self.withdraw_items()
 
-  def investigate_location(self, posicao_atual):
-    items_found = self.db.query(f"SELECT * FROM Instancia_item WHERE Quadrado = '{posicao_atual[0][0]}'")
+  def investigate_location(self, a_pos):
+    items_found = self.db.query(f"SELECT * FROM Instancia_item WHERE Quadrado = '{a_pos[0][0]}'")
       
     if items_found:
       if len(items_found) > 1: print("\nII > Itens Encontrados.\n")
@@ -560,25 +570,27 @@ class Game():
     print("5 - Visualizar status")
     print("6 - Visualizar habilidades")
     print("7 - Abrir mapa")
-    print("8 - Sair")
+    print("8 - Verificar se posso subir de nivel")
+    print("9 - Sair")
 
     action = input('--------> ')
 
     if action == '1':
-      posicao_atual = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
-      print(f'Local atual: {posicao_atual[0][0]}')
-      self.investigate_location(posicao_atual)
+      a_pos = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
+      print(f'Local atual: {a_pos[0][0]}')
+      self.investigate_location(a_pos)
       return 0
 
     elif action == '2':
       r = self.movement()
 
       self.db.commit()
-      posicao_atual = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
-      print(f'Voce esta agora no quadrado {posicao_atual[0][0]}')
+      a_pos = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
+      print(f'Voce esta agora no quadrado {a_pos[0][0]}')
+      self.monster_encounter(a_pos)
 
       if (r != -6):
-        self.investigate_location(posicao_atual)
+        self.investigate_location(a_pos)
 
       return 0
 
@@ -604,6 +616,9 @@ class Game():
         print('Nao foi possivel abrir o mapa')
         return 0
     elif action == '8':
+      self.check_level_up()
+      return 0
+    elif action == '9':
       return -1
     else:
       print('Acao invalida.')
@@ -619,11 +634,14 @@ class Game():
     print("3 - Sair")
 
   # check if monster is in square
-  def check_square(self, posicao_atual):     
-    monster = self.db.query(f"SELECT * FROM Monstro WHERE Quadrado = '{posicao_atual}'")
+  def check_square(self, a_pos):     
+    monster = self.db.query(f"SELECT * FROM Monstro WHERE Quadrado = '{a_pos[0][0]}'")
     if monster:
+      os.system('cls' if os.name == 'nt' else 'clear')
       print('Monstro encontrado!')
       print(f"Um {monster[0][0]} se encontra nesse quadrado.")
+      return monster[0][0]
+    return ' '
  
 
   # check if player has item to be dropped
@@ -692,17 +710,17 @@ class Game():
     else:
       print('Não há item neste quadrado!')
   
-  # show status
-  def show_status(self):
-    a = self.db.query(f"SELECT Nome, Vida, Ataque, Defesa, Inteligencia, Forca, Destreza, Sorte FROM Viking WHERE Nome = '{self.char}' ")
-    print(f'Nome: {a[0][0]}')
-    print(f'Vida: {a[0][1]}')
-    print(f'Ataque: {a[0][2]}')
-    print(f'Defesa: {a[0][3]}')
-    print(f'Inteligencia: {a[0][4]}')
-    print(f'Forca: {a[0][5]}')
-    print(f'Destreza: {a[0][6]}')
-    print(f'Sorte: {a[0][7]}')
+  # # show status
+  # def show_status(self):
+  #   a = self.db.query(f"SELECT Nome, Vida, Ataque, Defesa, Inteligencia, Forca, Destreza, Sorte FROM Viking WHERE Nome = '{self.char}' ")
+  #   print(f'Nome: {a[0][0]}')
+  #   print(f'Vida: {a[0][1]}')
+  #   print(f'Ataque: {a[0][2]}')
+  #   print(f'Defesa: {a[0][3]}')
+  #   print(f'Inteligencia: {a[0][4]}')
+  #   print(f'Forca: {a[0][5]}')
+  #   print(f'Destreza: {a[0][6]}')
+  #   print(f'Sorte: {a[0][7]}')
 
   # show skills
   def show_skills(self):
@@ -719,25 +737,6 @@ class Game():
       print(f"\t Multiplicador ataque: {habilidade[4]}")
       print(f"\t Multiplicador defesa: {habilidade[5]}")
       print(f"\t Multiplicador roubo de vida: {habilidade[6]}")
-    
-  
-  
-  # use skill during fight
-  def use_skill(self):
-    a = self.db.query(f"SELECT Nome, Habilidade1, Habilidade2, Habilidade3 FROM Viking WHERE Nome = '{self.char}' ")
-    print(f'Nome: {a[0][0]}')
-    print(f'Habilidade 1: {a[0][1]}')
-    print(f'Habilidade 2: {a[0][2]}')
-    print(f'Habilidade 3: {a[0][3]}')
-    action = input('--------> ')
-    if action == '1':
-      print('Voce usou a habilidade 1')
-    elif action == '2':
-      print('Voce usou a habilidade 2')
-    elif action == '3':
-      print('Voce usou a habilidade 3')
-    else:
-      print('Acao invalida.')
   
   # check player's health 
   def check_player_health(self):
@@ -921,6 +920,172 @@ class Game():
 
     else: 
       return 0
+
+  def check_player_health(self):
+    player_health = self.db.query(f"SELECT Vida_Restante FROM Viking WHERE Nome = '{self.char}'")
+    return player_health[0][0]
+
+  def check_monster_health(self, monster):
+    monster_health = self.db.query(f"SELECT Vida_Restante FROM Monstro WHERE Nome = '{monster}'")
+    if monster_health[0][0] <= 0:
+      monster_xp = self.db.query(f"SELECT Experiencia FROM Monstro M INNER JOIN TipoMonstro TM ON M.tipo = TM.nome WHERE M.Nome = '{monster}'")
+      self.db.insert(f"DELETE FROM Monstro WHERE Nome = '{monster}' ")
+      return monster_xp[0][0]
+    else:
+      return 0
+
+  def use_skill(self):
+    a = self.db.query(f"SELECT Nome_habilidade FROM Recebe WHERE Nome_viking = '{self.char}' ")
+    b = self.db.query(f"SELECT * FROM Habilidade WHERE Nome = '{a[0][0]}' ")
+    print()
+    print(f'1 - Habilidade: {a[0][0]}')
+    print(f'Efeitos: {b[0][5]}')
+    print(f'0 - Retornar')
+    action = input('--------> ')
+    if action == '1':
+      query = self.db.query(f"SELECT Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade FROM Viking WHERE Nome = '{self.char}'")
+      new_att = query[0][0] * b[0][2]
+      new_def = query[0][1] * b[0][3]
+      new_ls = query[0][2] * b[0][4]
+      new_ag = query[0][3] * b[0][1]
+      self.db.insert(f"UPDATE Viking SET Ataque = '{new_att}', Defesa = '{new_def}', Roubo_de_Vida = '{new_ls}', Agilidade = '{new_ag}'")
+      self.db.commit()
+      return
+    else:
+      return
+  
+  # MONSTER ATTACK MISSING
+  def attack(self, is_monster, monster):
+    if not is_monster:
+      dmg = self.db.query(f"SELECT Ataque FROM Viking WHERE Nome = '{self.char}' ")
+      # weapon_dmg = self.db.query(f"")
+      # new_dmg = dmg[0][0] + weapon_dmg[0][0]
+      m_attributes = self.db.query(f"SELECT Vida_restante, Defesa FROM Monstro WHERE Nome = '{monster}'")
+      real_dmg = dmg[0][0] // m_attributes[0][1]
+      monster_new_health = m_attributes[0][0] - real_dmg
+      if monster_new_health < 0:
+        monster_new_health = 0
+      self.db.insert(f"UPDATE Monstro SET Vida_restante = '{monster_new_health}'")
+      self.db.commit()
+      if monster_new_health > 0:
+        print(f'Voce deu {real_dmg} de dano e seu inimigo possui {monster_new_health} de vida!')
+      else:
+        print(f'Voce deu {real_dmg} de dano e matou seu inimigo!')
+      return
+    else:
+      # monster attack
+      return
+
+  def flee(self):
+    query = self.db.query(f"SELECT Velocidade FROM Viking WHERE Nome = '{self.char}'")
+    has_fled = random.randrange(100)
+    random_treshold = random.randrange(100)
+    random_treshold_five = random.randrange(5)
+    if has_fled >= random_treshold * (random_treshold_five/query[0][0]):
+      print()
+      print('Voce escapou com sucesso!')
+      print()
+      return 0
+    print()
+    print('Nao conseguiu escapar!')
+    print()
+    return -1
+
+  def player_turn(self, monster):
+    print()
+    print('Sua vez de realizar uma acao na batalha!')
+    print('1 - Ataque')
+    print('2 - Usar habilidade')
+    print('3 - Tentar fugir')
+    print('4 - Ver status')
+    action = input('--------> ')
+    
+    while True:
+      if action == '1':
+        self.attack(False, monster)
+        return
+      elif action == '2' and self.a_used == 0:
+        self.use_skill()
+        self.a_used = 1
+        return
+      elif action == '2' and self.a_used != 0:
+        print()
+        print('Voce ja usou a habilidade nessa batalha!')
+        print()
+        print('Sua vez de realizar uma acao na batalha!')
+        print('1 - Ataque')
+        print('2 - Usar habilidade')
+        print('3 - Tentar fugir')
+        print('4 - Ver status')
+        action = input('--------> ')
+        pass
+      elif action == '3':
+        if self.flee() == 0:
+          self.a_used = 0
+          self.db.insert(f"UPDATE Viking SET Quadrado = '8,1' WHERE Nome = '{self.char}'")
+        return
+      elif action == '4':
+        self.status()
+        return
+      else:
+        print('Acao invalida!')
+        print()
+        print('Sua vez de realizar uma acao na batalha!')
+        print('1 - Ataque')
+        print('2 - Usar habilidade')
+        print('3 - Tentar fugir')
+        print('4 - Ver status')
+        action = input('--------> ')
+        pass
+
+  # NOT IMPLEMENTED YET
+  def monster_turn(self, monster):
+    pass
+
+  def reset_status(self):
+    a = self.db.query(f"SELECT Nome_habilidade FROM Recebe WHERE Nome_viking = '{self.char}' ")
+    b = self.db.query(f"SELECT * FROM Habilidade WHERE Nome = '{a[0][0]}' ")
+    query = self.db.query(f"SELECT Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade FROM Viking WHERE Nome = '{self.char}'")
+    new_att = query[0][0] // b[0][2]
+    new_def = query[0][1] // b[0][3]
+    new_ls = query[0][2] // b[0][4]
+    new_ag = query[0][3] // b[0][1]
+    print(new_att)
+    print(new_def)
+    print(new_ls)
+    print(new_ag)
+    self.db.insert(f"UPDATE Viking SET Ataque = '{new_att}', Defesa = '{new_def}', Roubo_de_Vida = '{new_ls}', Agilidade = '{new_ag}'")
+    self.db.commit()
+
+  def fight(self, monster):
+    while True:
+      if self.check_player_health() <= 0:
+        return -1
+      is_monster_dead = self.check_monster_health(monster)
+      if is_monster_dead != 0:
+        return is_monster_dead
+      self.player_turn(monster)
+      # self.monster_turn(monster)
+  
+  def monster_encounter(self, square):
+    monster = self.check_square(square)
+    if monster != ' ':
+      monster_xp = self.fight(monster)
+      if monster_xp != -1:
+        self.add_xp(monster_xp)
+        # self.drop_item(monster, square)
+        self.a_used = 0
+        self.reset_status()
+      else:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print('Voce foi morto.')
+        self.a_used = 0
+        self.reset_status()
+        self.db.insert(f"UPDATE Viking SET Quadrado = '8,1', Vida_Restante = Nivel_de_Vida WHERE Nome = '{self.char}'")
+        input('Aperte qualquer tecla para continuar.')
+        os.system('cls' if os.name == 'nt' else 'clear')
+    else:
+      pass
 
   def close_db_connection(self):
     self.db.close()
