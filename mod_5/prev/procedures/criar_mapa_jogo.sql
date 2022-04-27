@@ -17,10 +17,10 @@ DECLARE
 BEGIN
   INSERT INTO Mapa (ID, QtdLinhas, QtdColunas) VALUES(1, 16, 24);
   
-  INSERT INTO Area (IdArea, Tipo, Tamanho, IdMapa) VALUES(1, 'Vila Viking', 77, 1);
-  INSERT INTO Area VALUES(2, 'Floresta Negra', 133, 1);
-  INSERT INTO Area VALUES(3, 'Ilha', 36, 1);
-  INSERT INTO Area VALUES(4, 'Mar', 138, 1);
+  INSERT INTO Area (IdArea, Tipo, IdMapa) VALUES(1, 'Vila Viking', 1);
+  INSERT INTO Area (IdArea, Tipo, IdMapa) VALUES(2, 'Floresta Negra', 1);
+  INSERT INTO Area (IdArea, Tipo, IdMapa) VALUES(3, 'Ilha', 1);
+  INSERT INTO Area (IdArea, Tipo, IdMapa) VALUES(4, 'Mar', 1);
   
   -- Valores baseados no mapa de referência: https://github.com/SBD1/grupo8-Vikings/blob/main/src/assets/mapa.png
   -- Quadrados Vila Viking

@@ -10,14 +10,14 @@ CREATE TABLE Mapa (
 CREATE TABLE Area (
     IdArea INTEGER NOT NULL,
     Tipo VARCHAR(20) NOT NULL DEFAULT 'terra',
-    Tamanho INTEGER NOT NULL,
+    Tamanho INTEGER NOT NULL DEFAULT 0,
     IdMapa INTEGER NOT NULL,
 
     CONSTRAINT area_pk PRIMARY KEY (IdArea),
     CONSTRAINT area_id_mapa_fk FOREIGN KEY (IdMapa) REFERENCES Mapa (ID) ON DELETE CASCADE,
 
     CONSTRAINT area_ck_tipo CHECK(Tipo IN ('Vila Viking', 'Floresta Negra', 'Ilha', 'Mar')),
-    CONSTRAINT area_ck_tamanho CHECK(Tamanho > 0)
+    CONSTRAINT area_ck_tamanho CHECK(Tamanho >= 0)
 );
 
 CREATE TABLE Quadrado (

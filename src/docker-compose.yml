@@ -19,17 +19,18 @@ services:
       - ../mod_5/prev/trigger_functions/verificar_quadrado_barco.sql:/docker-entrypoint-initdb.d/6verificar_quadrado_barco.sql
       - ../mod_5/prev/trigger_functions/verificar_especializacao_viking.sql:/docker-entrypoint-initdb.d/7verificar_especializacao_viking.sql
       - ./scripts/trigger_functions/verificar_area_viking.sql:/docker-entrypoint-initdb.d/8verificar_area_viking.sql
-      - ../mod_5/prev/procedures/criar_mapa_jogo.sql:/docker-entrypoint-initdb.d/9criar_mapa_jogo.sql
-      - ../mod_5/prev/procedures/criar_artefatos.sql:/docker-entrypoint-initdb.d/a1criar_artefatos.sql
-      - ../mod_5/prev/procedures/criar_itens.sql:/docker-entrypoint-initdb.d/a2criar_itens.sql
-      - ./scripts/procedures/criar_instancias_itens_iniciais_mapa.sql:/docker-entrypoint-initdb.d/a3criar_instancias_itens_iniciais_mapa.sql
-      - ../mod_5/prev/procedures/criar_barcos.sql:/docker-entrypoint-initdb.d/a4criar_barcos.sql
-      - ../mod_5/prev/procedures/criar_viking.sql:/docker-entrypoint-initdb.d/a5criar_viking.sql
-      - ../mod_5/prev/procedures/criar_monstros.sql:/docker-entrypoint-initdb.d/a6criar_monstros.sql
-      - ../mod_5/prev/procedures/criar_deus.sql:/docker-entrypoint-initdb.d/a7criar_deus.sql
-      - ./scripts/procedures/criar_npc_e_instancias.sql:/docker-entrypoint-initdb.d/a8criar_npc_e_instancias.sql
-      - ./scripts/procedures/criar_habilidade.sql:/docker-entrypoint-initdb.d/a9criar_habilidade.sql
-      - ./scripts/procedures/criar_recebe.sql:/docker-entrypoint-initdb.d/a10criar_recebe.sql
+      - ./scripts/trigger_functions/atribuir_tamanho_area.sql:/docker-entrypoint-initdb.d/9atribuir_tamanho_area.sql
+      - ../mod_5/prev/procedures/criar_mapa_jogo.sql:/docker-entrypoint-initdb.d/a1criar_mapa_jogo.sql
+      - ../mod_5/prev/procedures/criar_artefatos.sql:/docker-entrypoint-initdb.d/a2criar_artefatos.sql
+      - ../mod_5/prev/procedures/criar_itens.sql:/docker-entrypoint-initdb.d/a3criar_itens.sql
+      - ./scripts/procedures/criar_instancias_itens_iniciais_mapa.sql:/docker-entrypoint-initdb.d/a4criar_instancias_itens_iniciais_mapa.sql
+      - ../mod_5/prev/procedures/criar_barcos.sql:/docker-entrypoint-initdb.d/a5criar_barcos.sql
+      - ../mod_5/prev/procedures/criar_viking.sql:/docker-entrypoint-initdb.d/a6criar_viking.sql
+      - ../mod_5/prev/procedures/criar_monstros.sql:/docker-entrypoint-initdb.d/a7criar_monstros.sql
+      - ../mod_5/prev/procedures/criar_deus.sql:/docker-entrypoint-initdb.d/a8criar_deus.sql
+      - ./scripts/procedures/criar_npc_e_instancias.sql:/docker-entrypoint-initdb.d/a9criar_npc_e_instancias.sql
+      - ./scripts/procedures/criar_habilidade.sql:/docker-entrypoint-initdb.d/b1criar_habilidade.sql
+      - ./scripts/procedures/criar_recebe.sql:/docker-entrypoint-initdb.d/b2criar_recebe.sql
       - ./scripts/dml.sql:/docker-entrypoint-initdb.d/zdml.sql
     networks:
       - vikingNet
