@@ -7,7 +7,7 @@ BEGIN
     UPDATE Area SET Tamanho = Tamanho + 1 WHERE IdArea = NEW.Area;
 
   ELSIF (TG_OP = 'DELETE') THEN
-    UPDATE Area SET Tamanho = Tamanho + 1 WHERE IdArea = OLD.Area;
+    UPDATE Area SET Tamanho = Tamanho - 1 WHERE IdArea = OLD.Area;
   END IF;
  
  RETURN NULL;
