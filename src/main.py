@@ -332,8 +332,8 @@ class Game():
  
     id_itens_mochila = tuple(self.tuples_list_to_list(self.db.query(f"SELECT Id_Item FROM Item_Mochila WHERE Numero_Mochila = '{id_mochila[0]}' ")))
     print(f'Mochila do tipo {mochila[0]}.')
-    print(f'Capacidade total: {mochila[1]}kg')
-    print(f'Volume ocupado: {mochila[2]}kg\n')
+    print(f'Capacidade total: {mochila[1]:.2f}kg')
+    print(f'Volume ocupado: {mochila[2]:.2f}kg\n')
 
     if len(id_itens_mochila) == 0:
       print(f'A mochila está vazia.')
@@ -349,7 +349,14 @@ class Game():
           consumivel = "Sim" if tipo_itens_mochila[i][3] else "Não"
           item =  (*self.tuples_list_to_list(self.db.query(query)),  consumivel)  
           itens.append(item)
-      print (tabulate(itens, headers=["Item","Id", "Nome", "Raridade", "Peso(kg)", "Consumivel"],   showindex="always"))
+      print (
+        tabulate(
+          itens,
+          headers=["Item","Id", "Nome", "Raridade", "Peso(kg)", "Consumivel"],
+          showindex="always",
+          floatfmt=(None, None, None, None, '.2f', None)
+        )
+      )
 
       print("\nII > Deseja retirar algo? (s/n)")
       s = input('--------> ')

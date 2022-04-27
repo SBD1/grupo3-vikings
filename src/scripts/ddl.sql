@@ -62,7 +62,7 @@ CREATE TABLE Tipo_Mochila (
 CREATE TABLE Mochila (
   Numero INTEGER NOT NULL,
   Tipo VARCHAR(20) NOT NULL,
-  VolumeOcupado INTEGER NOT NULL DEFAULT 0,
+  VolumeOcupado NUMERIC(4,2) NOT NULL DEFAULT 0,
 
   CONSTRAINT mochila_pk PRIMARY KEY (Numero),
   CONSTRAINT mochila_tipo_fk FOREIGN KEY (Tipo) REFERENCES Tipo_Mochila (Nome) ON DELETE CASCADE,
@@ -267,7 +267,7 @@ CREATE TABLE Arma (
     Nome VARCHAR(100) NOT NULL,
     Descricao VARCHAR(300) NOT NULL,
     Raridade ITEM_RARIDADE NOT NULL,
-    Peso INTEGER NOT NULL,
+    Peso NUMERIC(4,2) NOT NULL,
     Valor_de_ataque INTEGER NOT NULL,
     Valor_de_defesa INTEGER NOT NULL,
     Valor_de_agilidade INTEGER NOT NULL,
@@ -281,7 +281,7 @@ CREATE TABLE Comida (
     Nome VARCHAR(100) NOT NULL,
     Descricao VARCHAR(300) NOT NULL,
     Raridade ITEM_RARIDADE NOT NULL,
-    Peso INTEGER NOT NULL,
+    Peso NUMERIC(4,2) NOT NULL,
     Valor_de_cura INTEGER NOT NULL,
 
     CONSTRAINT comida_pk PRIMARY KEY(Id),
@@ -293,7 +293,7 @@ CREATE TABLE Pocao (
   Nome VARCHAR(100) NOT NULL,
   Descricao VARCHAR(300) NOT NULL,
   Raridade ITEM_RARIDADE NOT NULL,
-  Peso INTEGER NOT NULL,
+  Peso NUMERIC(4,2) NOT NULL,
   Bonus INTEGER NOT NULL,
   Duracao INTEGER NOT NULL,
 
@@ -306,7 +306,7 @@ CREATE TABLE Armadura (
   Nome VARCHAR(100) NOT NULL,
   Descricao VARCHAR(300) NOT NULL,
   Raridade ITEM_RARIDADE NOT NULL,
-  Peso INTEGER NOT NULL,
+  Peso NUMERIC(4,2) NOT NULL,
   Valor_de_defesa INTEGER NOT NULL,
   Valor_de_agilidade INTEGER NOT NULL,
 
