@@ -9,8 +9,8 @@ DECLARE
 BEGIN
 
   -- Adição das mochilas do Jogo
-  INSERT INTO Tipo_Mochila VALUES('basica', 20);
-  INSERT INTO Tipo_Mochila VALUES('normal', 35);
+  INSERT INTO Tipo_Mochila VALUES('basica', 15);
+  INSERT INTO Tipo_Mochila VALUES('normal', 30);
   INSERT INTO Tipo_Mochila VALUES('reforcada', 50);
 
   -- Adição dos Níveis

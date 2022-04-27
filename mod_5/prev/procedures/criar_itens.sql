@@ -11,7 +11,7 @@ BEGIN
 
   INSERT INTO Arma 
     (Id, Nome, Descricao, Raridade, Peso, Valor_de_ataque, Valor_de_defesa, Valor_de_agilidade) 
-  VALUES (1, 'Machado', 'Machado corta cabeças', 'comum', 7, 30, 4, 3);
+  VALUES (1, 'Machado', 'Machado corta cabeças', 'incomum', 7, 30, 4, 3);
   INSERT INTO Arma VALUES (2, 'Espada', 'Espada de prata','comum', 6, 70, 2, 90);
   INSERT INTO Arma VALUES (3, 'Faca', 'Faca simples', 'comum', 0.7, 70, 2, 90);
   INSERT INTO Arma VALUES (4, 'Lança', 'Ponta de metal', 'comum', 5.5, 70, 2, 90);

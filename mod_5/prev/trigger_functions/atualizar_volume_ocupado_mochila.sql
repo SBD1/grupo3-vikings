@@ -4,7 +4,7 @@ RETURNS TRIGGER AS $atualizar_volume_ocupado_mochila$
 
 DECLARE 
 
-  volume_ocupado_atual INTEGER;
+  volume_ocupado_atual NUMERIC(4,2);
   peso_item NUMERIC(4,2);
   tableName VARCHAR(50);
   capacidade_mochila INTEGER;
