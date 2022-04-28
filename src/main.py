@@ -596,6 +596,18 @@ class Game():
       print(f'Voce esta agora no quadrado {a_pos[0][0]}')
       self.monster_encounter(a_pos)
 
+      npc = self.check_square_npc(a_pos[0][0])
+      if npc:
+        fala = self.db.query(f"SELECT Texto FROM Fala WHERE IdNPC = '{npc[0][1]}' ")
+        print(fala[0][0])
+
+        if(npc[0][1] == "Sacerdote"):
+          while self.choose_entity() == -1:
+            continue
+          self.db.insert(f"UPDATE InstanciaNPC SET Ativo = False WHERE quadrado = '{a_pos[0][0]}' ")
+
+
+
       if (r != -6):
         self.investigate_location(a_pos)
 
@@ -654,9 +666,9 @@ class Game():
  
   # check if npc is in square
   def check_square_npc(self, posicao_atual):     
-      npc = self.db.query(f"SELECT * FROM InstanciaNPC WHERE Quadrado = '{posicao_atual}'")
+      npc = self.db.query(f"SELECT * FROM InstanciaNPC WHERE Quadrado = '{posicao_atual}' and Ativo = True")
       if npc:
-        print('NPC encontrado!')
+        # print('NPC encontrado!')
         print(f"Um {npc[0][1]} se encontra nesse quadrado.")
         return npc
 
@@ -869,8 +881,8 @@ class Game():
             fala_npc = self.db.query("SELECT * FROM fala WHERE idnpc = 'GuiaDeJornada'")
             print('\nII > {}\n'.format(fala_npc[0][1]))
 
-            while self.choose_entity() == -1:
-              continue
+            # while self.choose_entity() == -1:
+            #   continue
 
             print("\nII > Parabéns! Você também ganhou uma mochila básica para iniciar sua aventura.\n")
             input("II > Está pronto para começar? Insira qualquer tecla para continuar.")
