@@ -568,17 +568,100 @@ class Game():
     if (s not in ["d", "e", "a"]):
       print("Não desequipar selecionado.\n")
 
+  def consume_items(self):
+    td, dd, te, de = "", "", "", ""
+
+    ms = self.db.query(f"SELECT MaoDireita, MaoEsquerda FROM Viking WHERE Nome='{self.char}'")[0]
+
+    if ms[0]:
+      imd = self.db.query(f"SELECT Id_item FROM Instancia_item WHERE Id={ms[0]}")[0]
+      eid = self.db.query(f"SELECT Id, Tipo, Consumivel FROM Especializacao_do_item WHERE Id={imd[0]}")[0]
+
+      if eid[2]:
+        if "comida" in eid[1]:
+          c = self.db.query(f"SELECT * FROM Comida WHERE Id='{eid[0]}'")[0]
+          td = "comida"
+          dd = c
+
+          print(f"\n> Mão Direita: {c[1]} - {c[2]} | Peso: {c[4]}; Pontos de Cura: {c[5]} | {c[3]}\n")
+        elif "pocao" in eid[1]:
+          p = self.db.query(f"SELECT * FROM Pocao WHERE Id='{eid[0]}'")[0]
+          td = "pocao"
+          dd = p
+
+          print(f"\n> Mão Direita: {p[1]} - {p[2]} | Peso: {p[4]}; Bônus: {p[5]}; Duração: {p[6]} | {p[3]}\n")
+
+      else:
+        print("\nI > O item da Mão Direita não é consumível.\n")
+
+    else:
+      print("\nI > Mão Direita vazia!\n")
+    
+    if ms[1]:
+      ime = self.db.query(f"SELECT Id_item FROM Instancia_item WHERE Id={ms[1]}")[0]
+      eie = self.db.query(f"SELECT Id, Tipo, Consumivel FROM Especializacao_do_item WHERE Id={ime[0]}")[0]
+      
+      if eie[1]:
+        if "comida" in eie[1]:
+          c = self.db.query(f"SELECT * FROM Comida WHERE Id='{eie[0]}'")[0]
+          te = "comida"
+          de = c
+
+          print(f"> Mão Esquerda: {c[1]} - {c[2]} | Peso: {c[4]}; Pontos de Cura: {c[5]} | {c[3]}\n")
+        elif "pocao" in eie[1]:
+          p = self.db.query(f"SELECT * FROM Pocao WHERE Id='{eie[0]}'")[0]
+          te = "pocao"
+          de = p
+
+          print(f"> Mão Esquerda: {p[1]} - {p[2]} | Peso: {p[4]}; Bônus: {p[5]}; Duração: {p[6]} | {p[3]}\n")
+
+      else:
+        print("I > O item da Mão Esquerda não é consumível.\n")
+
+    else:
+      print("Mão Esquerda vazia!\n")
+
+    print("II > Deseja consumir algo?")
+    print("I > Insira d para consumir o item da Mão Direita.")
+    print("I > Insira e para consumir o item da Mão Esquerda.")
+    print("I > Insira 0 para não consumir.")
+
+    choice = input('--------> ')
+    print()
+
+    if choice == "d":
+      if td == "comida":
+        nv = self.db.query(f"SELECT Nivel_de_Vida FROM Viking WHERE Nome={self.char}")[0][0]
+        nnv = nv + de[5]
+
+        self.db.insert(f"UPDATE Viking SET Nivel_de_Vida={nnv} WHERE Nome='{self.char}'")
+        self.db.insert(f"DELETE FROM Instancia_item WHERE Id={ms[0]}")
+        self.db.commit()
+
+        print("Você ganhou " + str(de[5]) + " pontos de nível de vida.\n")
+    elif choice == "e":
+      if te == "comida":
+        nv = self.db.query(f"SELECT Nivel_de_Vida FROM Viking WHERE Nome='{self.char}'")[0][0]
+        nnv = nv + de[5]
+        
+        self.db.insert(f"UPDATE Viking SET Nivel_de_Vida={nnv} WHERE Nome='{self.char}'")
+        self.db.insert(f"DELETE FROM Instancia_item WHERE Id={ms[1]}")
+        self.db.commit()
+
+        print("Você ganhou " + str(de[5]) + " pontos de nível de vida.\n")
+
   def take_action(self):
     print("Escolha o que fazer")
     print("1 - Investigar local atual")
     print("2 - Andar")
-    print("3 - Visualizar itens equipados")
-    print("4 - Abrir mochila")
-    print("5 - Visualizar status")
-    print("6 - Visualizar habilidades")
-    print("7 - Abrir mapa")
-    print("8 - Verificar se posso subir de nivel")
-    print("9 - Sair")
+    print("3 - Consumir item")
+    print("4 - Visualizar itens equipados")
+    print("5 - Abrir mochila")
+    print("6 - Visualizar status")
+    print("7 - Visualizar habilidades")
+    print("8 - Abrir mapa")
+    print("9 - Verificar se posso subir de nivel")
+    print("0 - Sair")
 
     action = input('--------> ')
 
@@ -612,30 +695,34 @@ class Game():
       return 0
 
     elif action == '3':
+      self.consume_items()
+      return 0
+
+    elif action == '4':
       self.show_equipment()
       self.unequip_items()
       return 0
     
-    elif action == '4':
+    elif action == '5':
       self.show_itens()
       return 0
-    elif action == '5':
+    elif action == '6':
       self.status()
       return 0
-    elif action == '6':
+    elif action == '7':
       self.show_skills()
       return 0
-    elif action == '7':
+    elif action == '8':
       try:
         self.open_map()
         return 0
       except:
         print('Nao foi possivel abrir o mapa')
         return 0
-    elif action == '8':
+    elif action == '9':
       self.check_level_up()
       return 0
-    elif action == '9':
+    elif action == '0':
       return -1
     else:
       print('Acao invalida.')
