@@ -65,7 +65,7 @@ class MapGraph():
     vertexs[position]['content'].append('Você')
 
      # Plotar NPCS
-    query = self.db.query("SELECT * FROM InstanciaNPC")
+    query = self.db.query("SELECT * FROM InstanciaNPC WHERE Ativo = True")
     for npc_tuple in query:
       vertex = npc_tuple[3]
       vertex_data = vertexs[vertex]
