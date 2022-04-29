@@ -23,7 +23,7 @@ BEGIN
   INSERT INTO Personagem VALUES('Ymir'      , 'monstro');
 
   INSERT INTO Monstro VALUES ('Garm'       , '8,9'  , 'Garm'      , 2 , 5,   1,   5, 4,  25,   25   );
-  INSERT INTO Monstro VALUES ('Fenrisulfr' , '8,10' , 'Fenrisulfr', 5 , 2,   1,   4, 5,  30,   30   );
+  INSERT INTO Monstro VALUES ('Fenrisulfr' , '8,12' , 'Fenrisulfr', 5 , 2,   1,   4, 5,  30,   30   );
   INSERT INTO Monstro VALUES ('Draugr'     , '2,12' , 'Draugr'    , 12, 5,   1,  10, 10, 50,   50   );
   INSERT INTO Monstro VALUES ('Grendel'    , '13,12', 'Grendel'   , 20, 20,  3,  15, 20, 700,  700  );
   INSERT INTO Monstro VALUES ('Jormungand' , '4,13' , 'Jormungand', 25, 15,  10, 10, 40, 1200, 1200 );
