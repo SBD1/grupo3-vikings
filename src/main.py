@@ -590,8 +590,6 @@ class Game():
 
     elif action == '2':
       r = self.movement()
-
-      self.db.commit()
       a_pos = self.db.query(f"SELECT Quadrado FROM Viking WHERE Nome = '{self.char}' ")
       print(f'Voce esta agora no quadrado {a_pos[0][0]}')
       self.monster_encounter(a_pos)
@@ -659,7 +657,6 @@ class Game():
     monster = self.db.query(f"SELECT * FROM Monstro WHERE Quadrado = '{a_pos[0][0]}'")
     if monster:
       os.system('cls' if os.name == 'nt' else 'clear')
-      print('Monstro encontrado!')
       print(f"Um {monster[0][0]} se encontra nesse quadrado.")
       return monster[0][0]
     return ' '
@@ -690,22 +687,6 @@ class Game():
       return 1
     else:
       return 0
-
-  # create a new monster
-  def create_monster(self):
-    if self.check_square():
-      print('Não é possivel criar um monstro neste quadrado!')
-      return -1
-    self.db.insert("INSERT INTO Monstro (Quadrado) VALUES ('1,1')")
-    print('Monstro criado!')
-
-  # kill monster
-  def kill_monster(self):
-    if self.check_square():
-      self.db.insert("DELETE FROM Monstro WHERE Quadrado = '1,1'")
-      print('Monstro morto!')
-    else:
-      print('Não há monstro neste quadrado!')
 
   # drop item
   def drop_item(self, monster, square):
@@ -765,46 +746,6 @@ class Game():
     if a[0][0] <= 0:
       print('Voce morreu!')
       return -1
-    else:
-      return 0
-  
-  # check monster's health
-  def check_monster_health(self):
-    a = self.db.query("SELECT Vida FROM Monstro WHERE Quadrado = '1,1' ")
-    if a[0][0] <= 0:
-      print('Monstro morreu!')
-      return -1
-    else:
-      return 0
-
-  # fight with monster
-  def fight_monster(self):
-    a = self.db.query(f"SELECT Vida FROM Viking WHERE Nome = '{self.char}' ")
-    b = self.db.query("SELECT Vida FROM Monstro WHERE Quadrado = '1,1' ")
-    while a[0][0] > 0 and b[0][0] > 0:
-      print('Voce ataca o monstro!')
-      print('Monstro ataca você!')
-      a[0][0] = a[0][0] - b[0][0]
-      b[0][0] = b[0][0] - a[0][0]
-      print(f'Vida do monstro: {b[0][0]}')
-      print(f'Vida do jogador: {a[0][0]}')
-      if self.check_monster_health() == -1:
-        break
-      if self.check_player_health() == -1:
-        break
-    if a[0][0] <= 0:
-      print('Voce morreu!')
-    else:
-      print('Monstro morreu!')
-
-  # check if player is in the same square as monster
-  def check_player_monster(self):
-    a = self.db.query("SELECT Quadrado FROM Viking WHERE Quadrado = '1,1' ")
-    b = self.db.query("SELECT Quadrado FROM Monstro WHERE Quadrado = '1,1' ")
-    if a and b:
-      print('Voce está no mesmo bloco do monstro!')
-      self.fight_monster()
-      return 1
     else:
       return 0
 
@@ -925,7 +866,7 @@ class Game():
       self.db.insert(f"DELETE FROM Monstro WHERE Nome = '{monster}' ")
       return monster_xp[0][0]
     else:
-      return 0
+      return -1
 
   def use_skill(self):
     a = self.db.query(f"SELECT Nome_habilidade FROM Recebe WHERE Nome_viking = '{self.char}' ")
@@ -964,7 +905,7 @@ class Game():
         monster_new_health = int(m_attributes[0][0] - real_dmg)
         if monster_new_health < 0:
           monster_new_health = 0
-        self.db.insert(f"UPDATE Monstro SET Vida_restante = '{monster_new_health}'")
+        self.db.insert(f"UPDATE Monstro SET Vida_restante = '{monster_new_health}' WHERE Nome = '{monster}'")
         self.db.commit()
         if monster_new_health > 0:
           print(f'Voce deu {real_dmg} de dano e seu inimigo possui {monster_new_health} de vida!')
@@ -982,7 +923,7 @@ class Game():
         player_new_health = int(p_attributes[0][0] - real_dmg)
         if player_new_health < 0:
           player_new_health = 0
-        self.db.insert(f"UPDATE Viking SET Vida_restante = '{player_new_health}'")
+        self.db.insert(f"UPDATE Viking SET Vida_restante = '{player_new_health}' WHERE Nome = '{self.char}'")
         self.db.commit()
         if player_new_health > 0:
           print(f'Voce recebeu {real_dmg} de dano e agora possui {player_new_health} de vida!')
@@ -1059,7 +1000,8 @@ class Game():
       if self.check_player_health() <= 0:
         return -1
       is_monster_dead = self.check_monster_health(monster)
-      if is_monster_dead != 0:
+      if is_monster_dead != -1:
+        print(monster)
         return is_monster_dead
       self.player_turn(monster)
       self.attack(True, monster)
@@ -1070,8 +1012,8 @@ class Game():
       monster_xp = self.fight(monster)
       if monster_xp != -1:
         self.add_xp(monster_xp)
-        self.drop_item(monster, square[0][0])
         self.reset_status()
+        # self.drop_item(monster, square[0][0])
       else:
         os.system('cls' if os.name == 'nt' else 'clear')
         print('Voce foi morto.')
