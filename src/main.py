@@ -947,50 +947,58 @@ class Game():
     else:
       return
   
-  # MONSTER ATTACK MISSING
   def attack(self, is_monster, monster):
+    luck1 = random.uniform(1.0, 1.5)
+    luck2 = random.randrange(5)
+    q1 = self.db.query(f"SELECT Agilidade FROM Viking WHERE Nome = '{self.char}' ")
+    q2 = self.db.query(f"SELECT Agilidade FROM Monstro WHERE Nome = '{monster}' ")
+    monster_ag = q2[0][0]
+    player_ag = q1[0][0]
     if not is_monster:
-      dmg = self.db.query(f"SELECT Ataque FROM Viking WHERE Nome = '{self.char}' ")
-      # weapon_dmg = self.db.query(f"")
-      # new_dmg = dmg[0][0] + weapon_dmg[0][0]
-      m_attributes = self.db.query(f"SELECT Vida_restante, Defesa FROM Monstro WHERE Nome = '{monster}'")
-      real_dmg = dmg[0][0] // m_attributes[0][1]
-      monster_new_health = m_attributes[0][0] - real_dmg
-      if monster_new_health < 0:
-        monster_new_health = 0
-      self.db.insert(f"UPDATE Monstro SET Vida_restante = '{monster_new_health}'")
-      self.db.commit()
-      if monster_new_health > 0:
-        print(f'Voce deu {real_dmg} de dano e seu inimigo possui {monster_new_health} de vida!')
-      else:
-        print(f'Voce deu {real_dmg} de dano e matou seu inimigo!')
-      return
+      if ((player_ag >= monster_ag) * luck1) > 0.5:
+        dmg = self.db.query(f"SELECT Ataque FROM Viking WHERE Nome = '{self.char}' ")
+        # weapon_dmg = self.db.query(f"")
+        # new_dmg = dmg[0][0] + weapon_dmg[0][0]
+        m_attributes = self.db.query(f"SELECT Vida_restante, Defesa FROM Monstro WHERE Nome = '{monster}'")
+        real_dmg = (dmg[0][0] // m_attributes[0][1]) * luck2
+        monster_new_health = int(m_attributes[0][0] - real_dmg)
+        if monster_new_health < 0:
+          monster_new_health = 0
+        self.db.insert(f"UPDATE Monstro SET Vida_restante = '{monster_new_health}'")
+        self.db.commit()
+        if monster_new_health > 0:
+          print(f'Voce deu {real_dmg} de dano e seu inimigo possui {monster_new_health} de vida!')
+        else:
+          print(f'Voce deu {real_dmg} de dano e matou seu inimigo!')
+        return
+      else: 
+        print('Voce errou o ataque...')
+        return
     else:
-      # monster attack
-      return
-
-  def flee(self):
-    query = self.db.query(f"SELECT Velocidade FROM Viking WHERE Nome = '{self.char}'")
-    has_fled = random.randrange(100)
-    random_treshold = random.randrange(100)
-    random_treshold_five = random.randrange(5)
-    if has_fled >= random_treshold * (random_treshold_five/query[0][0]):
-      print()
-      print('Voce escapou com sucesso!')
-      print()
-      return 0
-    print()
-    print('Nao conseguiu escapar!')
-    print()
-    return -1
+      if ((player_ag <= monster_ag) * luck1) > 0.5:
+        dmg = self.db.query(f"SELECT Ataque FROM Monstro WHERE Nome = '{monster}' ")
+        p_attributes = self.db.query(f"SELECT Vida_restante, Defesa FROM Viking WHERE Nome = '{self.char}'")
+        real_dmg = (dmg[0][0] // (p_attributes[0][1]//5)) * luck2
+        player_new_health = int(p_attributes[0][0] - real_dmg)
+        if player_new_health < 0:
+          player_new_health = 0
+        self.db.insert(f"UPDATE Viking SET Vida_restante = '{player_new_health}'")
+        self.db.commit()
+        if player_new_health > 0:
+          print(f'Voce recebeu {real_dmg} de dano e agora possui {player_new_health} de vida!')
+        else:
+          print(f'Voce recebeu {real_dmg} de dano e morreu..')
+        return
+      else:
+        print('O inimigo errou o ataque!')
+        return
 
   def player_turn(self, monster):
     print()
     print('Sua vez de realizar uma acao na batalha!')
     print('1 - Ataque')
     print('2 - Usar habilidade')
-    print('3 - Tentar fugir')
-    print('4 - Ver status')
+    print('3 - Ver status')
     action = input('--------> ')
     
     while True:
@@ -1013,11 +1021,6 @@ class Game():
         action = input('--------> ')
         pass
       elif action == '3':
-        if self.flee() == 0:
-          self.a_used = 0
-          self.db.insert(f"UPDATE Viking SET Quadrado = '8,1' WHERE Nome = '{self.char}'")
-        return
-      elif action == '4':
         self.status()
         return
       else:
@@ -1031,24 +1034,25 @@ class Game():
         action = input('--------> ')
         pass
 
-  # NOT IMPLEMENTED YET
-  def monster_turn(self, monster):
-    pass
-
   def reset_status(self):
-    a = self.db.query(f"SELECT Nome_habilidade FROM Recebe WHERE Nome_viking = '{self.char}' ")
-    b = self.db.query(f"SELECT * FROM Habilidade WHERE Nome = '{a[0][0]}' ")
-    query = self.db.query(f"SELECT Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade FROM Viking WHERE Nome = '{self.char}'")
-    new_att = query[0][0] // b[0][2]
-    new_def = query[0][1] // b[0][3]
-    new_ls = query[0][2] // b[0][4]
-    new_ag = query[0][3] // b[0][1]
-    print(new_att)
-    print(new_def)
-    print(new_ls)
-    print(new_ag)
-    self.db.insert(f"UPDATE Viking SET Ataque = '{new_att}', Defesa = '{new_def}', Roubo_de_Vida = '{new_ls}', Agilidade = '{new_ag}'")
-    self.db.commit()
+    if self.a_used > 0:
+      a = self.db.query(f"SELECT Nome_habilidade FROM Recebe WHERE Nome_viking = '{self.char}' ")
+      b = self.db.query(f"SELECT * FROM Habilidade WHERE Nome = '{a[0][0]}' ")
+      query = self.db.query(f"SELECT Ataque, Defesa, Roubo_de_Vida, Agilidade, Velocidade FROM Viking WHERE Nome = '{self.char}'")
+      new_att = query[0][0] // b[0][2]
+      new_def = query[0][1] // b[0][3]
+      new_ls = query[0][2] // b[0][4]
+      new_ag = query[0][3] // b[0][1]
+      print(new_att)
+      print(new_def)
+      print(new_ls)
+      print(new_ag)
+      self.db.insert(f"UPDATE Viking SET Ataque = '{new_att}', Defesa = '{new_def}', Roubo_de_Vida = '{new_ls}', Agilidade = '{new_ag}'")
+      self.db.commit()
+      self.a_used = 0
+      return
+    else:
+      return
 
   def fight(self, monster):
     while True:
@@ -1058,7 +1062,7 @@ class Game():
       if is_monster_dead != 0:
         return is_monster_dead
       self.player_turn(monster)
-      # self.monster_turn(monster)
+      self.attack(True, monster)
   
   def monster_encounter(self, square):
     monster = self.check_square(square)
@@ -1067,12 +1071,10 @@ class Game():
       if monster_xp != -1:
         self.add_xp(monster_xp)
         self.drop_item(monster, square[0][0])
-        self.a_used = 0
         self.reset_status()
       else:
         os.system('cls' if os.name == 'nt' else 'clear')
         print('Voce foi morto.')
-        self.a_used = 0
         self.reset_status()
         self.db.insert(f"UPDATE Viking SET Quadrado = '8,1', Vida_Restante = Nivel_de_Vida WHERE Nome = '{self.char}'")
         input('Aperte qualquer tecla para continuar.')
