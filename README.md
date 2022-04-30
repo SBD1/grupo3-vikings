@@ -27,6 +27,8 @@ Para rodar o jogo, siga os seguintes passos:
 
 [Vídeo da Apresentação](./media/apresentacao-grupo8-vikings.mp4)
 
+**Observação:** Os integrantes João Gabriel e Marcelo não puderam participar do vídeo de apresentação. Mas contribuíram na implementação do projeto.
+
 ## Entregas
 
 | Módulo | Entrega | Desenvolvimento | Melhorias |
