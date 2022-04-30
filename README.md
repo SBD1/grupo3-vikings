@@ -14,7 +14,6 @@
 
 Repositório direcionado para o desenvolvimento do projeto da disciplina. Será desenvolvido um jogo no estilo ***multi-user dungeon (mud)*** sobre vikings.
 
-
 ## Como rodar
 Para rodar o jogo, siga os seguintes passos:
 - 1: Em uma aba no terminal, entre na pasta `src/`;
@@ -23,6 +22,10 @@ Para rodar o jogo, siga os seguintes passos:
 - 4: Apos a instalacao, rode o jogo com o comando `python main.py`;
 
 **OBS** Para rodar o jogo o docker-compose necessita estar rodando em outra aba
+
+## Apresentação
+
+[Vídeo da Apresentação](./media/apresenta%C3%A7%C3%A3o-grupo8-vikings.mp4)
 
 ## Entregas
 
@@ -33,3 +36,6 @@ Para rodar o jogo, siga os seguintes passos:
 | 3 | [Entrega](./mod_3/README.md) | [Versões Prévias](./mod_3/prev/README.md) | - |
 | 4 | [Entrega](./mod_4/README.md) | [Versões Prévias](./mod_4/prev/README.md) | - |
 | 5 | [Entrega](./mod_5/README.md) | - | - |
+| Final | [Entrega](./src/) | - | - |
+
+
