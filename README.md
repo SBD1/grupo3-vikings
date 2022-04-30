@@ -25,7 +25,7 @@ Para rodar o jogo, siga os seguintes passos:
 
 ## Apresentação
 
-[Vídeo da Apresentação](./media/apresenta%C3%A7%C3%A3o-grupo8-vikings.mp4)
+[Vídeo da Apresentação](./media/apresentacao-grupo8-vikings.mp4)
 
 ## Entregas
 
