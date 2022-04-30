@@ -589,7 +589,7 @@ class Game():
           td = "pocao"
           dd = p
 
-          print(f"\n> Mão Direita: {p[1]} - {p[2]} | Peso: {p[4]}; Bônus: {p[5]}; Duração: {p[6]} | {p[3]}\n")
+          print(f"\n> Mão Direita: {p[1]} - {p[2]} | Peso: {p[4]}; Bônus: {p[5]} | {p[3]}\n")
 
       else:
         print("\nI > O item da Mão Direita não é consumível.\n")
@@ -613,7 +613,7 @@ class Game():
           te = "pocao"
           de = p
 
-          print(f"> Mão Esquerda: {p[1]} - {p[2]} | Peso: {p[4]}; Bônus: {p[5]}; Duração: {p[6]} | {p[3]}\n")
+          print(f"> Mão Esquerda: {p[1]} - {p[2]} | Peso: {p[4]}; Bônus: {p[5]} | {p[3]}\n")
 
       else:
         print("I > O item da Mão Esquerda não é consumível.\n")
@@ -632,13 +632,41 @@ class Game():
     if choice == "d":
       if td == "comida":
         nv = self.db.query(f"SELECT Nivel_de_Vida FROM Viking WHERE Nome={self.char}")[0][0]
-        nnv = nv + de[5]
+        nnv = nv + dd[5]
 
         self.db.insert(f"UPDATE Viking SET Nivel_de_Vida={nnv} WHERE Nome='{self.char}'")
         self.db.insert(f"DELETE FROM Instancia_item WHERE Id={ms[0]}")
         self.db.commit()
 
-        print("Você ganhou " + str(de[5]) + " pontos de nível de vida.\n")
+        print("Você ganhou " + str(dd[5]) + " pontos de nível de vida.\n")
+      elif td == "pocao":
+        if "Vida" in dd[1]:
+          nv = self.db.query(f"SELECT Nivel_de_Vida FROM Viking WHERE Nome='{self.char}'")[0][0]
+          nnv = nv + dd[5]
+
+          self.db.insert(f"UPDATE Viking SET Nivel_de_Vida={nnv} WHERE Nome='{self.char}'")
+          self.db.insert(f"DELETE FROM Instancia_item WHERE Id={ms[0]}")
+          self.db.commit()
+
+          print("Você ganhou " + str(dd[5]) + " pontos de nível de vida.\n")
+        elif "Ataque" in dd[1]:
+          na = self.db.query(f"SELECT Ataque FROM Viking WHERE Nome='{self.char}'")[0][0]
+          nna = na + dd[5]
+
+          self.db.insert(f"UPDATE Viking SET Ataque={nna} WHERE Nome='{self.char}'")
+          self.db.insert(f"DELETE FROM Instancia_item WHERE Id={ms[0]}")
+          self.db.commit()
+
+          print("Você ganhou " + str(dd[5]) + " pontos de ataque.\n")
+        elif "Defesa" in dd[1]:
+          nd = self.db.query(f"SELECT Defesa FROM Viking WHERE Nome='{self.char}'")[0][0]
+          nnd = nd + dd[5]
+
+          self.db.insert(f"UPDATE Viking SET Defesa={nnd} WHERE Nome='{self.char}'")
+          self.db.insert(f"DELETE FROM Instancia_item WHERE Id={ms[0]}")
+          self.db.commit()
+
+          print("Você ganhou " + str(dd[5]) + " pontos de defesa.\n")
     elif choice == "e":
       if te == "comida":
         nv = self.db.query(f"SELECT Nivel_de_Vida FROM Viking WHERE Nome='{self.char}'")[0][0]
@@ -649,6 +677,34 @@ class Game():
         self.db.commit()
 
         print("Você ganhou " + str(de[5]) + " pontos de nível de vida.\n")
+      elif te == "pocao":
+        if "Vida" in de[1]:
+          nv = self.db.query(f"SELECT Nivel_de_Vida FROM Viking WHERE Nome='{self.char}'")[0][0]
+          nnv = nv + de[5]
+
+          self.db.insert(f"UPDATE Viking SET Nivel_de_Vida={nnv} WHERE Nome='{self.char}'")
+          self.db.insert(f"DELETE FROM Instancia_item WHERE Id={ms[1]}")
+          self.db.commit()
+
+          print("Você ganhou " + str(de[5]) + " pontos de nível de vida.\n")
+        elif "Ataque" in de[1]:
+          na = self.db.query(f"SELECT Ataque FROM Viking WHERE Nome='{self.char}'")[0][0]
+          nna = na + de[5]
+
+          self.db.insert(f"UPDATE Viking SET Ataque={nna} WHERE Nome='{self.char}'")
+          self.db.insert(f"DELETE FROM Instancia_item WHERE Id={ms[1]}")
+          self.db.commit()
+
+          print("Você ganhou " + str(de[5]) + " pontos de ataque.\n")
+        elif "Defesa" in de[1]:
+          nd = self.db.query(f"SELECT Defesa FROM Viking WHERE Nome='{self.char}'")[0][0]
+          nnd = nd + de[5]
+
+          self.db.insert(f"UPDATE Viking SET Defesa={nnd} WHERE Nome='{self.char}'")
+          self.db.insert(f"DELETE FROM Instancia_item WHERE Id={ms[1]}")
+          self.db.commit()
+
+          print("Você ganhou " + str(de[5]) + " pontos de defesa.\n")
 
   def take_action(self):
     print("Escolha o que fazer")
@@ -686,8 +742,6 @@ class Game():
           while self.choose_entity() == -1:
             continue
           self.db.insert(f"UPDATE InstanciaNPC SET Ativo = False WHERE quadrado = '{a_pos[0][0]}' ")
-
-
 
       if (r != -6):
         self.investigate_location(a_pos)
@@ -1096,6 +1150,8 @@ class Game():
   def monster_encounter(self, square):
     monster = self.check_square(square)
     if monster != ' ':
+      
+
       monster_xp = self.fight(monster)
       if monster_xp != -1:
         self.add_xp(monster_xp)
